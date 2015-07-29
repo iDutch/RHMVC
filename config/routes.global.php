@@ -1,6 +1,6 @@
 <?php
 return array(
-    'basepath' => '/router/docs',
+    'basepath' => '', //Strip off subdirectories when needed.
     'routes' => array(
         '^/users/(?<param_1>[0-9]+)(/?(?<param_2>\w*))' => array(
             'layout'    => 'onepage.phtml',
