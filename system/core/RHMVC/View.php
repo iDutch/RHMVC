@@ -10,7 +10,9 @@ class View
 {
 
     private $view;
-    private $vars;
+    private $vars = array();
+    private $javascripts = array();
+    private $stylesheets = array();
 
     public function __construct($view)
     {
@@ -21,6 +23,40 @@ class View
     {
         foreach ($vars as $key => $value) {
             $this->{$key} = $value;
+        }
+    }
+
+    public function appendJSFile($file)
+    {
+        $this->javascripts[]['file'] = $file;
+    }
+
+    public function appendCSSFile($file)
+    {
+        $this->stylesheets[]['file'] = $file;
+    }
+
+    public function appendJSInline($content)
+    {
+        $this->javascripts[]['inline'] = $content;
+    }
+
+    public function appendCSSInline($content)
+    {
+        $this->stylesheets[]['inline'] = $content;
+    }
+
+    public function getJS()
+    {
+        $js = null;
+        foreach ($this->javascripts as $types) {
+            foreach ($types as $type => $value) {
+                if($type === 'file'){
+                    $js .= '<script type="text/javascript" src="'.$value.'"></script>';
+                } else {
+                    $js .= '<script type="text/javascript">' . $value . '</script>';
+                }
+            }
         }
     }
 
@@ -39,7 +75,7 @@ class View
     }
 
     function __set($key, $value){
-        $this->vars[$key] = $value; //create new set data[key] = value without seeters;
+        $this->vars[$key] = $value; //create new set data[key] = value without setters;
     }
 
     function __get($key){
