@@ -20,15 +20,18 @@ class SomeController extends AbstractController
             'p2' => $param_2,
             'bar' => $this->invokeController('BarController', 'barAction'),
         ));
+
         return $view->parse();
     }
 
     public function sidebarAction()
     {
-        $this->layout->setVars(array(
-            //'title' => 'Side',
+        $view = new View(__DIR__ . '/../../application/views/some/sidebar.phtml');
+        $view->setVars(array(
+            'content' => 'Sidebar!',
         ));
-        return 'Sidebar';
+
+        return $view->parse();
     }
 
 } 

@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 require __DIR__ . '/../system/core/RHMVC/Router.php';
 require __DIR__ . '/../system/core/RHMVC/Dispatcher.php';
 require __DIR__ . '/../system/core/RHMVC/AbstractController.php';
+require __DIR__ . '/../system/core/RHMVC/Helper.php';
 require __DIR__ . '/../system/core/RHMVC/View.php';
 
 $router = new Router();
