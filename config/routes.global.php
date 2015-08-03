@@ -2,30 +2,16 @@
 return array(
     'basepath' => '/RHMVC/docs', //Strip off subdirectories when needed.
     'routes' => array(
-        '^/users/(?<param_1>[0-9]+)(/?(?<param_2>\w*))' => array(
-            'layout'    => 'onepage.phtml',
-            'header'    => array(
-                array(
-                    'controller'    => 'SomeController',
-                    'action'        => 'headerAction',
-                    'params' => array(),
-                ),
-            ),
+        '^/(?<platform>dating|webcams)/notification/(?<ext>php|js)' => array(
+            'layout' => 'tool.phtml',
             'content'   => array(
                 array(
-                    'controller'    => 'SomeController',
-                    'action'        => 'contentAction',
+                    'controller'    => 'ToolController',
+                    'action'        => 'notificationAction',
                     'params' => array(
-                        'param_1' => null,
-                        'param_2' => 'Je bent zelf een param!',
+                        'platform' => 'dating',
+                        'ext' => 'php',
                     ),
-                ),
-            ),
-            'sidebar'   => array(
-                array(
-                    'controller'    => 'SomeController',
-                    'action'        => 'sidebarAction',
-                    'params' => array(),
                 ),
             ),
         ),
@@ -34,7 +20,7 @@ return array(
             'content'   => array(
                 array(
                     'controller'    => 'ErrorController',
-                    'action'        => 'error404action',
+                    'action'        => 'error404Action',
                     'params' => array(),
                 ),
             ),

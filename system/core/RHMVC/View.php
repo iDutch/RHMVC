@@ -31,6 +31,19 @@ class View
         return ob_get_flush();
     }
 
+    public function renderJS()
+    {
+        ob_start();
+        require $this->view;
+        $html = ob_get_clean();
+
+        header("Content-Type: text/x-javascript; charset=utf-8");
+        foreach (preg_split("/[\r\n]+/", $html) as $line) {
+            printf("document.write('%s');\n", addslashes(trim($line)));
+        }
+    }
+
+
     public function parse()
     {
         ob_start();
