@@ -6,7 +6,7 @@
  * Time: 16:58
  */
 
-class Profiles {
+class ProfileModel extends AbstractModel {
 
     private $platform;
     private $platform_settings;
@@ -20,9 +20,9 @@ class Profiles {
     private function loadPlatformSettings($platform){
         $local = array();
 
-        $global = require __DIR__ . '/../config/platforms.global.php';
-        if(file_exists(__DIR__ . '/../config/platforms.local.php')){
-            $local = require __DIR__ . '/../config/platforms.local.php';
+        $global = require __DIR__ . '/../../config/platforms.global.php';
+        if(file_exists(__DIR__ . '/../../config/platforms.local.php')){
+            $local = require __DIR__ . '/../../config/platforms.local.php';
         }
         $settings = array_merge($global, $local);
 
@@ -31,25 +31,25 @@ class Profiles {
 
     private function getFromCache($request)
     {
-        $mapper = new Mapper($this->platform_settings['api_type']);
+        $mapper = new MapperModel($this->platform_settings['api_type']);
 
         //Setup memcached
-        $memcached = new Memcached;
+        $memcached = new Memcached('profiles');
         $memcached->addServer('127.0.0.1', 11211);
 
         //Load profiles from Memcached when exists else do API call
-        $key_location = md5($this->platform.$request);
+        $key_location = 'cache_' . md5($this->platform.$request);
         if (!$profiles = $memcached->get($key_location)) {
-            //Cache mapped response so we don't need to map everytime.
+            //Cache mapped response so we don't need to request, fetch and map everytime.
             $profiles = $mapper->mapResponse((array) json_decode(file_get_contents($this->platform_settings['url'] . $this->platform_settings['api'] . '?' . $this->platform_settings['defaultquery'] . '&' . $request)));
-            $memcached->set($key_location, $profiles, $this->platform_settings['cache_ttl'] || 3600);
+            $memcached->set($key_location, $profiles, isset($this->platform_settings['cache_ttl']) ? $this->platform_settings['cache_ttl'] : 3600);
         }
         return $profiles;
     }
 
     public function get($query_string)
     {
-        $mapper = new Mapper($this->platform_settings['api_type']);
+        $mapper = new MapperModel($this->platform_settings['api_type']);
 
         $request = http_build_query($mapper->mapRequest($query_string));
 

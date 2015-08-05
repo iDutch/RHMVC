@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    <!-- Piwik -->
+    var _paqinit = _paqinit || false;
+    var _paq = _paq || [];
+    _paq.push(["setDocumentTitle", "<?= $this->tool_type . " " . $this->platform?>"]);
+    _paq.push(["trackVisibleContentImpressions", true, 750]);
+    _paq.push(["setCustomVariable",1,"Type","<?= $this->tool_type ?>","page"]);
+    _paq.push(["setCustomVariable",2,"Platform","<?= $this->platform ?>","page"]);
+
+    (function() {
+        var u="//<?= $this->tracker_domain ?>/";
+        if (!_paqinit) {
+            _paq.push(["setTrackerUrl", u+"js/"]);
+            _paq.push(["setSiteId", <?= $this->tracker_website_id ?>]);
+            _paqinit = true;
+        }
+        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+        g.type="text/javascript"; g.async=true; g.defer=true; g.src=u+"js/"; s.parentNode.insertBefore(g,s);
+    })();
+    <!-- End Piwik Code -->
+</script>

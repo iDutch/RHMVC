@@ -1,12 +1,12 @@
 <?php
 
-class Mapper {
+class MapperModel extends AbstractModel {
 
     private $mapper_settings;
 
     public function __construct($api_type)
     {
-        $settings = require __DIR__ . '/../config/mapper.global.php';
+        $settings = require __DIR__ . '/../../config/mapper.global.php';
         $this->mapper_settings = $settings[$api_type];
     }
 

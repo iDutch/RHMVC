@@ -18,7 +18,7 @@ class Helper {
 
     public static function appendCSSFile($file)
     {
-        self::$stylesheets[]['file'] = $file;
+        array_push(self::$stylesheets, array('file' => $file));
     }
 
     public static function appendJSInline($content)
@@ -28,7 +28,7 @@ class Helper {
 
     public static function appendCSSInline($content)
     {
-        self::$stylesheets[]['inline'] = $content;
+        array_push(self::$stylesheets, array('inline' => $content));
     }
 
     public static function getJS()
@@ -44,6 +44,21 @@ class Helper {
             }
         }
         return $js;
+    }
+
+    public static function getCSS()
+    {
+        $css = null;
+        foreach (self::$stylesheets as $types) {
+            foreach ($types as $type => $value) {
+                if($type === 'file'){
+                    $css .= "<link rel=\"stylesheet\" href=\"" . $value . "\">\n\t";
+                } else {
+                    $css .= "<style>" . $value . "</style>\n\t";
+                }
+            }
+        }
+        return $css;
     }
 
 } 

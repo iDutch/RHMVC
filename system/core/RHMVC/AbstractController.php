@@ -16,4 +16,9 @@ abstract class AbstractController
         $controller = new $controller($this->layout);
         return call_user_func_array(array($controller, $action), $params);
     }
+
+    protected function loadModel($model)
+    {
+        require_once __DIR__ . '/../../../application/models/' . $model . '.php';
+    }
 } 

@@ -1,0 +1,119 @@
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:400,300,700">
+<link rel="stylesheet" href="http://spelen.ric/RHMVC/docs/static/notification/css/ns-style-<?= $this->effect ?>.css">
+
+<style>
+.ns-type-<?= $this->type ?> {background: rgba(<?= $this->background[0] ?>, <?= $this->background[1] ?>, <?= $this->background[2] ?>, 0.95); color: rgba(<?= $this->foreground[0] ?>, <?= $this->foreground[1] ?>, <?= $this->foreground[2] ?>, 0.95);}
+.ns-type-<?= $this->type ?> .ns-close::before, .ns-type-<?= $this->type ?> .ns-close::after {background: rgb(<?= $this->foreground[0] ?>, <?= $this->foreground[1] ?>, <?= $this->foreground[2] ?>);}
+</style>
+
+<script type="text/javascript" src="http://spelen.ric/RHMVC/docs/static/notification/js/modernizr.custom.js"></script>
+<script type="text/javascript" src="http://spelen.ric/RHMVC/docs/static/notification/js/classie.js"></script>
+<script type="text/javascript" src="http://spelen.ric/RHMVC/docs/static/notification/js/notificationFx.js"></script>
+
+<?= $this->tracker ?>
+
+<script>
+    document[ document.addEventListener ? "addEventListener" : "attachEvent" ]("DOMContentLoaded", function() {
+
+        function getProfile(index) {
+            var profiles    = <?= $this->profiles ?>;
+            if (typeof profiles[index] === "undefined") return null;
+
+            return {
+                image    : profiles[index].profileimage,
+                name     : profiles[index].profilename,
+                age      : profiles[index].age,
+                location : profiles[index].city
+            };
+        }
+
+        function showNotification(profileIndex) {
+
+            var profile     = getProfile(profileIndex);
+            var example     = '<?= $this->example ?>';
+
+            if (profile === null) {
+                if (example === 'true' && profileIndex === 0){
+                    var html = '<div class="ns-content"><p>Er zijn geen profielen gevonden binnen het huidige filter!</p></div>';
+                } else {
+                    return;
+                }
+            } else {
+                var linktext    = '<?= $this->link ?>';
+                var message     = '<?= $this->message ?>';
+                var hideImage   = <?= $this->hideImage ?>;
+
+                var whitelabel_raw_data = {
+                    performer   : profile.name
+                };
+                var whitelabel_raw  = '<?= $this->whitelabel ?>';
+                var whitelabel_parsed = whitelabel_raw.replace(/%\s*(\w+)\s*%/g, function(match, $1) {
+                    return typeof whitelabel_raw_data[$1] === 'undefined' ? '' : whitelabel_raw_data[$1];
+                });
+
+                var whitelabel_data = {
+                    whitelabel  : whitelabel_parsed,
+                    p           : "<?= $this->p ?>",
+                    pi          : "<?= $this->pi ?>",
+                    name        : profile.name
+                };
+                var whitelabel_format = '<?= $this->platform_settings['whitelabel_format'] ?>';
+                var whitelabel = whitelabel_format.replace(/%\s*(\w+)\s*%/g, function(match, $1) {
+                    return typeof whitelabel_data[$1] === 'undefined' ? '' : whitelabel_data[$1];
+                });
+
+                var compiled_message = message.replace(/%\s*(\w+)\s*%/g, function(match, $1) {
+                    return typeof profile[$1] === 'undefined' ? '' : profile[$1];
+                });
+
+                if(linktext == ''){
+                    if  (hideImage == 1) {
+                        var html = '<div class="ns-content"><p><a class="vps-ns-link" target="_blank" href="' + whitelabel + '">' + compiled_message + '</a></p></div>';
+                    } else {
+                        var html = '<div class="ns-thumb"><a class="vps-ns-link" target="_blank" href="' + whitelabel + '"><img src="' + profile.image + '"></a></div><div class="ns-content"><p><a class="vps-ns-link" target="_blank" href="' + whitelabel + '">' + compiled_message + '</a></p></div>';
+                    }
+                } else {
+                    var compiled_linktext = linktext.replace(/%\s*(\w+)\s*%/g, function(match, $1) {
+                        return typeof profile[$1] === "undefined" ? "" : profile[$1];
+                    });
+                    if  (hideImage == 1) {
+                        var html = '<div class="ns-content"><p>' + compiled_message + ' <a class="vps-ns-link" target="_blank" href="" + whitelabel + "">' + compiled_linktext + '</a></p></div>';
+                    } else {
+                        var html = '<div class="ns-thumb"><a class="vps-ns-link" target="_blank" href="' + whitelabel + '"><img src="' + profile.image + '"></a></div><div class="ns-content"><p>' + compiled_message + ' <a class="vps-ns-link" target="_blank" href="' + whitelabel + '">' + compiled_linktext + '</a></p></div>';
+                    }
+                }
+            }
+            setTimeout( function() {
+                var notification = new NotificationFx({
+                    message : html,
+                    layout : '<?= $this->layout ?>',
+                    effect : '<?= $this->effect ?>',
+                    ttl : <?= $this->ttl ?>,
+                    type : '<?= $this->type ?>',
+                    position : '<?= $this->position ?>',
+                    wrapper: document.body,
+                    onClose : function(){if (profile !== null) {showNotification(profileIndex + 1)}}
+                });
+
+                notification.ntf.setAttribute('data-track-content', '');
+                notification.ntf.setAttribute('data-content-ignoreinteraction', '');
+                notification.ntf.setAttribute('data-content-name', 'Notification-tool');
+                notification.ntf.setAttribute('data-content-piece', '<?= $this->platform ?>-' + profile.name);
+                notification.ntf.setAttribute('data-content-target', document.location + ' | ' + whitelabel);
+
+                notification.show();
+                _paq.push(['trackContentImpressionsWithinNode', notification.ntf]);
+
+                var atags = document.getElementsByClassName('vps-ns-link');
+                for (var i = 0; i < atags.length; i++) {
+                    var listener = atags[i].addEventListener ? 'addEventListener' : 'attachEvent';
+                    atags[i][listener]('click', function() {
+                        _paq.push(['trackContentInteractionNode', notification.ntf,'click']);
+                    });
+                }
+
+            }, <?= $this->delay ?> );
+        }
+        showNotification(0);
+    });
+</script>

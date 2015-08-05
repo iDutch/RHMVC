@@ -2,15 +2,16 @@
 return array(
     'basepath' => '/RHMVC/docs', //Strip off subdirectories when needed.
     'routes' => array(
-        '^/(?<platform>dating|webcams)/notification/(?<ext>php|js)' => array(
-            'layout' => 'tool.phtml',
+        '^/(?<product>dating|webcams)/notification/(?<platform>flirtplek|neukoproepjes|hobbysletten|relatie|islive)/(?<ext>php|js)' => array(
+            'layout' => 'empty.phtml',
             'content'   => array(
                 array(
                     'controller'    => 'ToolController',
                     'action'        => 'notificationAction',
                     'params' => array(
-                        'platform' => 'dating',
-                        'ext' => 'php',
+                        'product'   => null,
+                        'platform'  => null,
+                        'ext'       => 'php',
                     ),
                 ),
             ),
