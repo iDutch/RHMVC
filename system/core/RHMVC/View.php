@@ -31,7 +31,7 @@ class View
         return ob_get_flush();
     }
 
-    public function renderJS()
+    public function parseJS()
     {
         ob_start();
         require $this->view;

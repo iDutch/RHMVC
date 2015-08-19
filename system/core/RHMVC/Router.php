@@ -31,7 +31,7 @@ class Router
                 return $routeinfo;
             }
         }
-        return $this->routerconfig['routes']['/404'];
+        return $this->routerconfig['routes']['^/404'];
     }
 
 } 

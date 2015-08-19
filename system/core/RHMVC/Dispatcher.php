@@ -12,12 +12,15 @@ class Dispatcher
 
     private function loadLayout($layout)
     {
-        $this->layout = new View(__DIR__ . '/../../../application/layout/' .$layout);
+        if (file_exists(__DIR__ . '/../../../application/layout/' .$layout)) {
+            $this->layout = new View(__DIR__ . '/../../../application/layout/' .$layout);
+        } else {
+            throw new Exception('File: \'' . __DIR__ . '/../../../application/layout/' . $layout .'\' does not exists!');
+        }
     }
 
     public function dispatch($route)
     {
-        //var_dump($route); exit;
         $this->loadLayout($route['layout']);
         $template_vars = array();
         foreach ($route as $segment => $controllers) {
