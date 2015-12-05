@@ -9,8 +9,6 @@
  * @version 1.1.3
  */
 
-if (!defined('IS_DEVEL')) define('IS_DEVEL',  isset($_SERVER['IS_DEVEL']));
-
 class DBAdapter {
 
 	private static $instance    = null;
@@ -21,12 +19,12 @@ class DBAdapter {
 	/**
 	 * Return instance or create one first if there is none...
 	 */
-	public static function getInstance($product) {
+	public static function getInstance() {
         self::$dbsettings = require __DIR__ . '/../../../config/database.global.php';
-        $dsn = 'mysql:host=' . self::$dbsettings[$product]['hostname'] . ';dbname=' . self::$dbsettings[$product]['database'];
+        $dsn = 'mysql:host=' . self::$dbsettings['hostname'] . ';dbname=' . self::$dbsettings['database'];
 
 		if (!isset(self::$instance[$dsn])) {
-			self::$instance[$dsn] = new self($dsn, self::$dbsettings[$product]['username'], self::$dbsettings[$product]['password']);
+			self::$instance[$dsn] = new self($dsn, self::$dbsettings['username'], self::$dbsettings['password']);
 		}
 		return self::$instance[$dsn];
 	}
