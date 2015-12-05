@@ -1,0 +1,6 @@
+{
+    "require": {
+        "sobstel/metaphore": "1.2.*",
+        "oyejorge/less.php": "~1.5"
+    }
+}

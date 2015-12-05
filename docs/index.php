@@ -1,5 +1,13 @@
 <?php
-ini_set('display_errors', 1);
+if (isset($_SERVER['IS_DEVEL'])) {
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
+}
+
+if (!file_exists(__DIR__ . '/../composer.lock')) {
+    throw new Exception('RHMVC initialisation error: No \'composer.lock\' file found! Did you run: \'php composer.phar install\'?');
+}
+require __DIR__ . '/../vendor/autoload.php';
 
 require __DIR__ . '/../system/core/RHMVC/Router.php';
 require __DIR__ . '/../system/core/RHMVC/Dispatcher.php';
