@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: richard
- * Date: 7/28/15
- * Time: 9:59 AM
- */
 
 class Dispatcher
 {
@@ -12,10 +6,11 @@ class Dispatcher
 
     private function loadLayout($layout)
     {
-        if (file_exists(__DIR__ . '/../../../application/layout/' .$layout)) {
-            $this->layout = new View(__DIR__ . '/../../../application/layout/' .$layout);
+        $layout_file = __DIR__ . '/../../../application/layout/' . $layout;
+        if (file_exists($layout_file)) {
+            $this->layout = new View($layout_file);
         } else {
-            throw new Exception('File: \'' . __DIR__ . '/../../../application/layout/' . $layout .'\' does not exists!');
+            throw new Exception('Dispatcher error: File: \'' . $layout_file . '\' does not exists!');
         }
     }
 
@@ -23,10 +18,13 @@ class Dispatcher
     {
         $this->loadLayout($route['layout']);
         $template_vars = array();
+        //Loop through route info
         foreach ($route as $segment => $controllers) {
             if (is_array($controllers)) {
                 $template_vars[$segment] = null;
+                //Loop through controllers for each segment
                 foreach ($controllers as $k => $controller) {
+                    //Append content returned from controller to segment
                     $template_vars[$segment] .= $this->invokeController($controller);
                 }
             }
@@ -38,11 +36,25 @@ class Dispatcher
 
     private function invokeController(array $controller_info)
     {
-        require_once __DIR__ . '/../../../application/controllers/' . $controller_info['controller'] . '.php';
+        $controller_file = __DIR__ . '/../../../application/controllers/' . $controller_info['controller'] . '.php';
+
+        //Does the controller exists?
+        if (!file_exists($controller_file)) {
+            throw new Exception('Dispatcher error: Cannot invoke controller: \'' . $controller_file . '\'');
+        }
+        require_once $controller_file;
         $controller = new $controller_info['controller']($this->layout);
-        return call_user_func_array(array($controller, $controller_info['action']), $controller_info['params']);
+
+        //Does the action exists?
+        if (!method_exists($controller, $controller_info['action'])) {
+            throw new Exception('Dispatcher error: ' . $controller_info['controller'] . '::' . $controller_info['action'] . ' not found!');
+        }
+
+        //Does it returns a string? If not, it can't be appended to a layout segment so we throw an Exception
+        $string = call_user_func_array(array($controller, $controller_info['action']), $controller_info['params']);
+        if (!is_string($string)) {
+            throw new Exception('Dispatcher error: ' . $controller_info['controller'] . '::' . $controller_info['action'] . ' does not return a string! ' . ucfirst(gettype($string)) . ' returned instead!');
+        }
+        return $string;
     }
-
-
-
 }
