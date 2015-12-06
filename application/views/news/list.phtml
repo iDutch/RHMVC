@@ -1,0 +1,11 @@
+<div>
+<?php foreach ($this->news_items as $news_item): ?>
+    <ul>
+        <li><?= $news_item->id ?></li>
+        <li><?= $news_item->publish_date ?></li>
+        <li><?= $news_item->name ?></li>
+        <li><?= $news_item->title ?></li>
+        <li><?= $news_item->content ?></li>
+    </ul>
+<?php endforeach; ?>
+</div>

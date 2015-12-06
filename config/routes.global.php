@@ -13,5 +13,15 @@ return array(
                 ),
             ),
         ),
+        '^/test' => array(
+            'layout'    => 'empty.phtml',
+            'content'   => array(
+                array(
+                    'controller'    => 'NewsController',
+                    'action'        => 'indexAction',
+                    'params' => array(),
+                ),
+            ),
+        ),
     ),
 );

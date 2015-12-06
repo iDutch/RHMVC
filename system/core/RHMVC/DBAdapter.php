@@ -20,7 +20,21 @@ class DBAdapter {
 	 * Return instance or create one first if there is none...
 	 */
 	public static function getInstance() {
-        self::$dbsettings = require __DIR__ . '/../../../config/database.global.php';
+        $local  = array();
+
+        $db_global_config_file  = __DIR__ . '/../../../config/database.global.php';
+        $db_local_config_file   = __DIR__ . '/../../../config/database.local.php';
+
+        if (file_exists($db_global_config_file)) {
+            $global = require $db_global_config_file;
+            if (file_exists($db_local_config_file)) {
+                $local = require $db_local_config_file;
+            }
+            self::$dbsettings = array_merge($global, $local);
+        } else {
+            throw new Exception('DBAdapter error: Cannot load config file: ' . $db_global_config_file);
+        }
+
         $dsn = 'mysql:host=' . self::$dbsettings['hostname'] . ';dbname=' . self::$dbsettings['database'];
 
 		if (!isset(self::$instance[$dsn])) {
