@@ -18,6 +18,7 @@ class View
             throw new Exception('View error: Cannot load view: \'' . $view . '\'');
         }
         $this->view = $view;
+        $this->vars['helper'] = Helper::getInstance(); //Register view helper
     }
 
     public function setVars(array $vars = array())

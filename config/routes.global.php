@@ -14,7 +14,14 @@ return array(
             ),
         ),
         '^/test' => array(
-            'layout'    => 'empty.phtml',
+            'layout'    => 'main.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'indexAction',
+                    'params' => array(),
+                ),
+            ),
             'content'   => array(
                 array(
                     'controller'    => 'NewsController',

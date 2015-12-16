@@ -1,11 +1,67 @@
-<div>
-<?php foreach ($this->news_items as $news_item): ?>
-    <ul>
-        <li><?= $news_item->id ?></li>
-        <li><?= $news_item->publish_date ?></li>
-        <li><?= $news_item->name ?></li>
-        <li><?= $news_item->title ?></li>
-        <li><?= $news_item->content ?></li>
-    </ul>
-<?php endforeach; ?>
-</div>
+<?php
+$this->helper->appendJSInline('
+    $(document).ready(function() {
+        $("#example").DataTable({
+            "order": [[ 3, "desc" ]],
+            "columnDefs": [{
+                "orderable": false, "targets": 0,
+            }],
+            "columns": [
+              { "width": "20px" },
+              { "width": "220px" },
+              { "width": "120px" },
+              null
+            ]
+        });
+    });
+');
+?>
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>#ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Publish date</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>#ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Publish date</th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="btn-toolbar" role="toolbar" aria-label="...">
+                    <div class="btn-group pull-left" role="group" aria-label="...">
+                        <button type="button" class="btn btn-success">Add</button>
+                    </div>
+                    <div class="btn-group pull-right" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            With selected <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <?php foreach ($this->news_items as $news_item): ?>
+        <tr>
+            <td><input type="checkbox" value="<?= $news_item->id ?>"></td>
+            <td><?= $news_item->title ?></td>
+            <td><?= $news_item->name ?></td>
+            <td><?= $news_item->publish_date ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

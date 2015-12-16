@@ -8,33 +8,48 @@
 
 class Helper {
 
-    private static $javascripts = array();
-    private static $stylesheets = array();
+    private static $instance    = null;
 
-    public static function appendJSFile($file)
+    private $javascripts = array();
+    private $stylesheets = array();
+
+    public static function getInstance()
     {
-        array_push(self::$javascripts, array('file' => $file));
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
-    public static function appendCSSFile($file)
+    public function __construct()
     {
-        array_push(self::$stylesheets, array('file' => $file));
+
     }
 
-    public static function appendJSInline($content)
+    public function appendJSFile($file)
     {
-        array_push(self::$javascripts, array('inline' => $content));
+        array_push($this->javascripts, array('file' => $file));
     }
 
-    public static function appendCSSInline($content)
+    public function appendCSSFile($file)
     {
-        array_push(self::$stylesheets, array('inline' => $content));
+        array_push($this->stylesheets, array('file' => $file));
     }
 
-    public static function getJS()
+    public function appendJSInline($content)
+    {
+        array_push($this->javascripts, array('inline' => $content));
+    }
+
+    public function appendCSSInline($content)
+    {
+        array_push($this->stylesheets, array('inline' => $content));
+    }
+
+    public function getJS()
     {
         $js = null;
-        foreach (self::$javascripts as $types) {
+        foreach ($this->javascripts as $types) {
             foreach ($types as $type => $value) {
                 if($type === 'file'){
                     $js .= "<script type=\"text/javascript\" src=\"" . $value . "\"></script>\n\t";
@@ -46,10 +61,10 @@ class Helper {
         return $js;
     }
 
-    public static function getCSS()
+    public function getCSS()
     {
         $css = null;
-        foreach (self::$stylesheets as $types) {
+        foreach ($this->stylesheets as $types) {
             foreach ($types as $type => $value) {
                 if($type === 'file'){
                     $css .= "<link rel=\"stylesheet\" href=\"" . $value . "\">\n\t";
@@ -59,6 +74,14 @@ class Helper {
             }
         }
         return $css;
+    }
+
+    public function translate($key)
+    {
+        $langdir = __DIR__ . '/../../../application/languages';
+        foreach () {
+
+        }
     }
 
 } 
