@@ -4,13 +4,16 @@ if (isset($_SERVER['IS_DEVEL'])) {
     error_reporting(E_ALL);
 }
 
-if (!file_exists(__DIR__ . '/../composer.lock')) {
-    throw new Exception('RHMVC initialisation error: No \'composer.lock\' file found! Did you run: \'php composer.phar install\'?');
+
+
+if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    throw new Exception('RHMVC initialisation error: No composer autoload file found! Did you run: \'php composer.phar install\'?');
 }
 require __DIR__ . '/../vendor/autoload.php';
 
 require __DIR__ . '/../system/core/RHMVC/Router.php';
 require __DIR__ . '/../system/core/RHMVC/Dispatcher.php';
+require __DIR__ . '/../system/core/RHMVC/Translator.php';
 require __DIR__ . '/../system/core/RHMVC/AbstractController.php';
 require __DIR__ . '/../system/core/RHMVC/AbstractModel.php';
 require __DIR__ . '/../system/core/RHMVC/Helper.php';
@@ -24,3 +27,4 @@ $route = $router->getRoute($uri);
 
 $dispatcher = new Dispatcher();
 $dispatcher->dispatch($route);
+

@@ -1,17 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: richard
- * Date: 7/31/15
- * Time: 1:16 PM
- */
+
+use MatthiasMullie\Minify;
 
 class Helper {
 
     private static $instance    = null;
 
-    private $javascripts = array();
-    private $stylesheets = array();
+    private $javascripts    = array();
+    private $stylesheets    = array();
 
     public static function getInstance()
     {
@@ -36,6 +32,11 @@ class Helper {
         array_push($this->stylesheets, array('file' => $file));
     }
 
+    public function appendJSUrl($url)
+    {
+        array_push($this->javascripts, array('url' => $url));
+    }
+
     public function appendJSInline($content)
     {
         array_push($this->javascripts, array('inline' => $content));
@@ -53,12 +54,37 @@ class Helper {
             foreach ($types as $type => $value) {
                 if($type === 'file'){
                     $js .= "<script type=\"text/javascript\" src=\"" . $value . "\"></script>\n\t";
+                } else if ($type === 'url') {
+                    $js .= "<script type=\"text/javascript\" src=\"" . $value . "\"></script>\n\t";
                 } else {
                     $js .= "<script type=\"text/javascript\">" . $value . "</script>\n\t";
                 }
             }
         }
         return $js;
+    }
+
+    public function getJSMinified()
+    {
+        if (!file_exists(__DIR__ . '/../../../docs/static/cache/js/minified.js') || isset($_GET['debug'])) {
+            $js = null;
+            foreach ($this->javascripts as $types) {
+                foreach ($types as $type => $value) {
+                    if($type === 'file'){
+                        $js .= file_get_contents(__DIR__ . '/../../../docs' . $value);
+                    } else if ($type === 'url') {
+                        $js .= file_get_contents($value);
+                    } else {
+                        $js .= $value;
+                    }
+                }
+            }
+
+            $minify = new Minify\JS($js);
+            $minify->minify(__DIR__ . '/../../../docs/static/cache/js/minified.js');
+        }
+
+        return '<script src="/static/cache/js/minified.js"></script>';
     }
 
     public function getCSS()
@@ -76,12 +102,27 @@ class Helper {
         return $css;
     }
 
-    public function translate($key)
+    public function getCSSMinified()
     {
-        $langdir = __DIR__ . '/../../../application/languages';
-        foreach () {
+        if (!file_exists(__DIR__ . '/../../../docs/static/cache/js/minified.css') || isset($_GET['debug'])) {
+            $css = null;
+            foreach ($this->stylesheets as $types) {
+                foreach ($types as $type => $value) {
+                    if($type === 'file'){
+                        $css .= file_get_contents(__DIR__ . '/../../../docs' . $value);
+                    } else if ($type === 'url') {
+                        $css .= file_get_contents($value);
+                    } else {
+                        $css .= $value;
+                    }
+                }
+            }
 
+            $minify = new Minify\CSS($js);
+            $minify->minify(__DIR__ . '/../../../docs/static/cache/css/minified.css');
         }
+
+        return '<link rel="stylesheet" href="/static/cache/js/minified.css">';
     }
 
 } 

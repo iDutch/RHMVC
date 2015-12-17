@@ -1,4 +1,6 @@
 <?php
+$this->helper->appendJSFile('/static/js/dataTables.min.js');
+$this->helper->appendJSFile('/static/js/dataTables.bootstrap.min.js');
 $this->helper->appendJSInline('
     $(document).ready(function() {
         $("#example").DataTable({
