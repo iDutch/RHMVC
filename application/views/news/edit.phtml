@@ -3,6 +3,8 @@ $this->helper()->appendCSSFile('/static/css/datepicker/bootstrap-datetimepicker.
 
 $this->helper()->appendJSFile('/static/js/moment/moment.min.js');
 $this->helper()->appendJSFile('/static/js/datepicker/bootstrap-datetimepicker.min.js');
+$this->helper()->appendJSFile('/static/js/ckeditor/ckeditor.js');
+$this->helper()->appendJSFile('/static/js/ckeditor/adapters/jquery.js');
 $this->helper()->appendJSInline('
     $(".datetime").datetimepicker({
         format: "YYYY-MM-DD HH:mm:ss"
@@ -13,10 +15,9 @@ $this->helper()->appendJSInline('
     $(".archive_date").on("dp.change", function (e) {
         $(".publish_date").data("DateTimePicker").maxDate(e.date);
     });
+    $(".ckeditor").ckeditor();
 ');
 ?>
-
-<?php var_dump($this->news_item) ?>
 
 <form class="form-horizontal" method="post">
     <div>
@@ -52,7 +53,7 @@ $this->helper()->appendJSInline('
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('content') ?></label>
                         <div class="col-sm-10">
-                            <textarea name="language[<?= $language->id ?>][content]" class="form-control"><?= isset($this->news_item->language[$language->id]['title']) ? $this->news_item->language[$language->id]['title'] : '' ?></textarea>
+                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"><?= isset($this->news_item->language[$language->id]['title']) ? $this->news_item->language[$language->id]['title'] : '' ?></textarea>
                         </div>
                     </div>
                 </div>
