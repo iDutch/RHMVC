@@ -71,15 +71,15 @@ class DBAdapter {
 	 * Delete statement builder
 	 * 
 	 * @param	string	$table	Database table
-	 * @param	array	$params	Custom field => value pairs as deletion criteria
+	 * @param	array	$params	Custom field => array(value => value, type => type) as deletion criteria
 	 */
 	public function delete($table, array $params = array()) {
 		$sql = "DELETE FROM " . $table . " ";
         $where = "WHERE ";
-		foreach ($params as $field => $value) {
-			if (is_array($value)) {
-                   $query_params = null;
-				foreach ($value as $k => $v) {
+		foreach ($params as $field => $array) {
+			if (is_array($array['value'])) {
+                $query_params = null;
+				foreach ($array['value'] as $k => $v) {
                     $query_params .= ":p" . $k . ",";
 				}
 				$where .= "`" . $field . "` IN (" . substr($query_params, 0, -1) . ") AND ";
@@ -91,13 +91,13 @@ class DBAdapter {
 		$where = substr($where, 0, -5);
 		$query = $this->connection->prepare($sql . $where);
 
-		foreach ($params as $field => &$value) {
-			if (is_array($value)) {
-				foreach ($value as $key => &$val) {
+		foreach ($params as $field => &$array) {
+			if (is_array($array['value'])) {
+				foreach ($array['value'] as $key => &$val) {
 					$query->bindParam(':p' . $key, $val);
 				}
 			} else {
-				$query->bindParam(':' . $field, $value);
+				$query->bindParam(':' . $field, $array['value'], isset($array['type']) ? $array['type'] : PDO::PARAM_STR);
 			}
 		}
 
@@ -116,8 +116,8 @@ class DBAdapter {
 	public function query($statement, array $params = array()) {
 		$query = $this->connection->prepare($statement);
 		if (count($params)) {
-			foreach ($params as $field => &$value) {
-				$query->bindParam(':' . $field, $value);
+			foreach ($params as $field => &$array) {
+				$query->bindParam(':' . $field, $array['value'], isset($array['type']) ? $array['type'] : PDO::PARAM_STR);
 			}
 		}
 		if (!$query->execute()) {
@@ -152,7 +152,7 @@ class DBAdapter {
 	 * 
 	 * @param	string	$table  Database table
 	 * @param	array	$data   field => value pairs to update
-	 * @param	array	$params	field => value pairs as update criteria
+	 * @param	array	$params	field => array(value => value, type => type) as update criteria
 	 */
 	public function update($table, array $data = array(), array $params = array()) {
 		$qry = null;
@@ -164,10 +164,10 @@ class DBAdapter {
 		$sql = "UPDATE " . $table . " SET " . $qry . " ";
 
 		$where = "WHERE ";
-		foreach ($params as $field => $value) {
-			if (is_array($value)) {
+		foreach ($params as $field => $array) {
+			if (is_array($array['value'])) {
                 $query_params = null;
-				foreach ($value as $k => $v) {
+				foreach ($array['value'] as $k => $v) {
                     $query_params .= ":p" . $k . ",";
 				}
 				$where .= "`" . $field . "` IN (" . substr($query_params, 0, -1) . ") AND ";
@@ -184,13 +184,13 @@ class DBAdapter {
 				$query->bindParam(':' . $field, $value);
 			}
 		}
-		foreach ($params as $field => &$value) {
-			if (is_array($value)) {
-				foreach ($value as $key => &$val) {
+		foreach ($params as $field => &$array) {
+			if (is_array($array['value'])) {
+				foreach ($array['value'] as $key => &$val) {
 					$query->bindParam(':p' . $key, $val);
 				}
 			} else {
-				$query->bindParam(':' . $field, $value);
+				$query->bindParam(':' . $field, $array['value'], isset($array['type']) ? $array['type'] : PDO::PARAM_STR);
 			}
 		}
 		if (!$query->execute()) {

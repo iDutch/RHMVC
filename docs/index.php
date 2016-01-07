@@ -1,4 +1,8 @@
 <?php
+session_start();
+$_SESSION['language_iso_code'] = 'en';
+
+
 if (isset($_SERVER['IS_DEVEL'])) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);

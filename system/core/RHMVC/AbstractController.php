@@ -1,5 +1,8 @@
 <?php
 
+use Metaphore\Cache;
+use Metaphore\Store\MemcachedStore;
+
 abstract class AbstractController
 {
 
@@ -53,4 +56,19 @@ abstract class AbstractController
         }
         throw new Exception('Controller error: Cannot load config: \'' . __DIR__ . '/../../../config/' . $name . '.global.php\'');
     }
-} 
+
+    protected function getLanguages()
+    {
+        $memcached = new Memcached;
+        $memcached->addServer('127.0.0.1', 11211);
+
+        $cache = new Cache(new MemcachedStore($memcached));
+
+        return $cache->cache('languages', function() {
+            return DBAdapter::getInstance()->query('
+                SELECT id, iso_code, CAST(is_default AS UNSIGNED) AS is_default FROM languages
+            ');
+        }, 3600);
+    }
+
+}

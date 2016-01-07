@@ -7,14 +7,14 @@ abstract class AbstractModel
 
     public function __construct()
     {
-
+        $this->loadModelConfig(get_called_class());
     }
 
     protected function loadModelConfig($classname)
     {
         $classname = strtolower($classname);
-        $config_global_file = __DIR__ . '/../../config/' .$classname. '.global.php';
-        $config_local_file = __DIR__ . '/../../config/' .$classname. '.local.php';
+        $config_global_file = __DIR__ . '/../../../config/models/' .$classname. '.global.php';
+        $config_local_file = __DIR__ . '/../../../config/models/' .$classname. '.local.php';
 
         $global = array();
         $local = array();
