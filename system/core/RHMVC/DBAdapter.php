@@ -51,7 +51,7 @@ class DBAdapter {
 	}
 
 	/**
-	 * Error
+	 * Errorhandler
 	 * 
 	 * @param	object $query	PDO query object
 	 * 
