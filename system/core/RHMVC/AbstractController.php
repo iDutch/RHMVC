@@ -3,42 +3,12 @@
 use Metaphore\Cache;
 use Metaphore\Store\MemcachedStore;
 
-abstract class AbstractController
+abstract class AbstractController extends HMVC
 {
 
-    protected $layout;
-
-    public function __construct($layout)
+    public function __construct($layout = null)
     {
         $this->layout = $layout;
-    }
-
-    protected function invokeController($controller, $action, array $params = array())
-    {
-        $controller_file = __DIR__ . '/../../../application/controllers/' . $controller . '.php';
-
-        if (!file_exists($controller_file)) {
-            throw new Exception('Controller error: Cannot invoke controller: \'' . $controller_file . '\'');
-        }
-
-        require_once $controller_file;
-        $controller = new $controller($this->layout);
-
-        if (!method_exists($controller, $action)){
-            throw new Exception('Controller error: ' . $controller . ' :: ' . $action . ' does not exist!');
-        }
-
-        return call_user_func_array(array($controller, $action), $params);
-    }
-
-    protected function loadModel($model)
-    {
-        $model_file = __DIR__ . '/../../../application/models/' . $model . '.php';
-
-        if (!file_exists($model_file)) {
-            throw new Exception('Controller error: Cannot load model: \'' . $model_file . '\'');
-        }
-        require_once $model_file;
     }
 
     protected function getConfig($name)
@@ -66,7 +36,7 @@ abstract class AbstractController
 
         return $cache->cache('languages', function() {
             return DBAdapter::getInstance()->query('
-                SELECT id, iso_code, CAST(is_default AS UNSIGNED) AS is_default FROM languages
+                SELECT id, iso_code, is_default, is_online, is_enabled FROM languages
             ');
         }, 3600);
     }

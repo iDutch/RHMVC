@@ -18,6 +18,7 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../system/core/RHMVC/Router.php';
 require __DIR__ . '/../system/core/RHMVC/Dispatcher.php';
 require __DIR__ . '/../system/core/RHMVC/Translator.php';
+require __DIR__ . '/../system/core/RHMVC/HMVC.php';
 require __DIR__ . '/../system/core/RHMVC/AbstractController.php';
 require __DIR__ . '/../system/core/RHMVC/AbstractModel.php';
 require __DIR__ . '/../system/core/RHMVC/Helper.php';

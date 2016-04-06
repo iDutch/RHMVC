@@ -16,7 +16,6 @@ class Dispatcher
 
     public function dispatch($route)
     {
-        $this->loadLayout($route['layout']);
         $template_vars = array();
         //Loop through route info
         foreach ($route as $segment => $controllers) {
@@ -29,9 +28,14 @@ class Dispatcher
                 }
             }
         }
-        $this->layout->setVars($template_vars);
+        if (!is_null($route['layout'])) {
+            $this->loadLayout($route['layout']);
+            $this->layout->setVars($template_vars);
 
-        return $this->layout->render();
+            return $this->layout->render();
+        }
+
+        return $template_vars['content'];
     }
 
     private function invokeController(array $controller_info)

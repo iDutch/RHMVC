@@ -1,32 +1,32 @@
 <?php
 
 return array(
-    'basepath' => '', //Strip off subdirectories when needed.
-    'routes' => array(
+    'basepath'  => '', //Strip off subdirectories when needed.
+    'routes'    => array(
         '^/404' => array(
             'layout'    => 'errorpage.phtml',
             'content'   => array(
                 array(
                     'controller'    => 'ErrorController',
                     'action'        => 'error404Action',
-                    'params' => array(),
+                    'params'        => array(),
                 ),
             ),
         ),
-        '^/admin/news/list$' => array(
+        '^/admin/news/list$'    => array(
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
                     'controller'    => 'MenuController',
                     'action'        => 'indexAction',
-                    'params' => array(),
+                    'params'        => array(),
                 ),
             ),
             'content'   => array(
                 array(
                     'controller'    => 'NewsController',
                     'action'        => 'indexAction',
-                    'params' => array(),
+                    'params'        => array(),
                 ),
             ),
         ),
@@ -36,16 +36,26 @@ return array(
                 array(
                     'controller'    => 'MenuController',
                     'action'        => 'indexAction',
-                    'params' => array(),
+                    'params'        => array(),
                 ),
             ),
             'content'   => array(
                 array(
                     'controller'    => 'NewsController',
                     'action'        => 'editAction',
-                    'params' => array(
-                        'news_id' => null,
+                    'params'        => array(
+                        'news_id'   => null,
                     ),
+                ),
+            ),
+        ),
+        '^(?!admin).*$' => array(
+            'layout'    => null,
+            'content'   => array(
+                array(
+                    'controller'    => 'PageController',
+                    'action'        => 'getPage',
+                    'params'        => array(),
                 ),
             ),
         ),

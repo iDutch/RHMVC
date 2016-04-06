@@ -8,11 +8,11 @@ class NewsController extends AbstractController
         $this->loadModel('NewsModel');
     }
 
-    public function indexAction()
+    public function admin_indexAction()
     {
         $NewsModel = new NewsModel();
 
-        $view = new View(__DIR__ . '/../../application/views/news/list.phtml');
+        $view = new View(__DIR__ . '/../../application/views/news/admin_index.phtml');
         $view->setVars(array(
             'news_items' => $NewsModel->getAll(),
         ));

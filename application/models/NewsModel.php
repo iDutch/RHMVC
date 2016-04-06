@@ -6,7 +6,7 @@ class NewsModel extends AbstractModel
     public function getAll()
     {
         return DBAdapter::getInstance()->query('
-            SELECT n.id, n.publish_date, n.archive_date, CAST(n.allow_comments AS UNSIGNED) AS allow_comments, CAST(n.visible AS UNSIGNED) AS visible, ncac.name, nco.title
+            SELECT n.id, n.publish_date, n.archive_date, n.allow_comments, n.visible, ncac.name, nco.title
             FROM news n
             JOIN news_content nco ON (nco.news_id = n.id)
             JOIN news_categories_content ncac ON (ncac.news_category_id = n.news_category_id)
