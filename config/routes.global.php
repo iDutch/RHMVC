@@ -24,8 +24,8 @@ return array(
             ),
             'content'   => array(
                 array(
-                    'controller'    => 'NewsController',
-                    'action'        => 'indexAction',
+                    'controller'    => 'ArticleController',
+                    'action'        => 'admin_indexAction',
                     'params'        => array(),
                 ),
             ),
@@ -41,8 +41,8 @@ return array(
             ),
             'content'   => array(
                 array(
-                    'controller'    => 'NewsController',
-                    'action'        => 'editAction',
+                    'controller'    => 'ArticleController',
+                    'action'        => 'admin_editAction',
                     'params'        => array(
                         'news_id'   => null,
                     ),

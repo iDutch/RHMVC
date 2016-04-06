@@ -47,13 +47,14 @@ $this->helper()->appendJSInline('
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('title') ?></label>
                         <div class="col-sm-10">
-                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="<?= isset($this->news_item->language[$language->id]['title']) ? $this->news_item->language[$language->id]['title'] : '' ?>">
+                            <?= $this->article->language[$language->id]['title'] ?>
+                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="<?= isset($this->article->language[$language->id]['title']) ? $this->article->language[$language->id]['title'] : '' ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('content') ?></label>
                         <div class="col-sm-10">
-                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"><?= isset($this->news_item->language[$language->id]['title']) ? $this->news_item->language[$language->id]['title'] : '' ?></textarea>
+                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"><?= isset($this->article->language[$language->id]['title']) ? $this->article->language[$language->id]['title'] : '' ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -75,13 +76,13 @@ $this->helper()->appendJSInline('
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('publish_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="publish_date" class="form-control datetime publish_date" value="<?= $this->news_item->publish_date ?>">
+            <input type="text" name="publish_date" class="form-control datetime publish_date" value="<?= $this->article->publish_date ?>">
         </div>
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('archive_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="archive_date" class="form-control datetime archive_date" value="<?= $this->news_item->archive_date ?>">
+            <input type="text" name="archive_date" class="form-control datetime archive_date" value="<?= $this->article->archive_date ?>">
         </div>
     </div>
     <div class="form-group">

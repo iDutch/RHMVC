@@ -36,7 +36,7 @@ abstract class AbstractController extends HMVC
 
         return $cache->cache('languages', function() {
             return DBAdapter::getInstance()->query('
-                SELECT id, iso_code, is_default, is_online, is_enabled FROM languages
+                SELECT id, iso_code, is_default, is_online, is_enabled FROM language
             ');
         }, 3600);
     }
