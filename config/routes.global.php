@@ -13,12 +13,12 @@ return array(
                 ),
             ),
         ),
-        '^/admin/news/list$'    => array(
+        '^/admin/article/list$'    => array(
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
                     'controller'    => 'MenuController',
-                    'action'        => 'indexAction',
+                    'action'        => 'staticAction',
                     'params'        => array(),
                 ),
             ),
@@ -30,12 +30,12 @@ return array(
                 ),
             ),
         ),
-        '^/admin/news/edit/(?<news_id>[0-9]+)$' => array(
+        '^/admin/article/edit/(?<news_id>[0-9]+)$' => array(
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
                     'controller'    => 'MenuController',
-                    'action'        => 'indexAction',
+                    'action'        => 'staticAction',
                     'params'        => array(),
                 ),
             ),

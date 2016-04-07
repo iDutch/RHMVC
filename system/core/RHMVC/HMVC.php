@@ -35,4 +35,9 @@ abstract class HMVC
         return new $model();
     }
 
+    protected function flashMessage()
+    {
+        return new \Plasticbrain\FlashMessages\FlashMessages();
+    }
+
 }

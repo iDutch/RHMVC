@@ -37,9 +37,9 @@ class ArticleModel extends AbstractModel
         return $result[0];
     }
 
-    public function saveArticle($postdata)
+    public function saveArticle($postdata, $id)
     {
-        var_dump($postdata); exit;
+        $article = array();
         foreach ($postdata as $key => $value) {
             if ($key == 'save' || $key == 'language' || $key == 'languages') {
                 continue;
@@ -47,8 +47,14 @@ class ArticleModel extends AbstractModel
             $article[$key] = $value;
         }
 
-        DBAdapter::getInstance()->update('article');
-
+        DBAdapter::getInstance()->update('article', $article, array('id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
+        DBAdapter::getInstance()->delete('article_content', array('article_id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
+        foreach ($postdata['languages'] as $language_id) {
+            //Set foreign keys correctly
+            $postdata['language'][$language_id]['language_id'] = $language_id;
+            $postdata['language'][$language_id]['article_id'] = $id;
+            DBAdapter::getInstance()->insert('article_content', $postdata['language'][$language_id]);
+        }
 
     }
 

@@ -3,9 +3,9 @@
 class MenuController extends AbstractController
 {
 
-    public function indexAction()
+    public function staticAction()
     {
-        $view = new View(__DIR__ . '/../../application/views/menu/index.phtml');
+        $view = new View(__DIR__ . '/../../application/views/menu/static.phtml');
 
         return $view->parse();
     }
