@@ -9,7 +9,7 @@ return array(
     'use_language' => 'Use this language',
 
     //Global datatable controls
-    'add'           => '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add news item',
+    'add'           => '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add new',
     'with_selected' => '<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> With selected',
     'delete'        => '<span class="glyphicon glyphicon-trash" aria-hidden="true"> Delete</span>',
     'edit'          => '<span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>',

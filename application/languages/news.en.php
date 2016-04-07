@@ -8,6 +8,6 @@ return array(
     'archive_date'      => 'Archive date',
     'category'          => 'Category',
     'allow_comments'    => 'Allow comments',
-    'visible'           => 'Visible',
+    'is_online'         => 'Is Online',
     'choose_category'   => 'Choose category',
 );

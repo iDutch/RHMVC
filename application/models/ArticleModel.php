@@ -34,9 +34,22 @@ class ArticleModel extends AbstractModel
             $result[0]->language[$language->language_id] = array('title' => $language->title, 'content' => $language->content);
         }
 
-        echo '<pre>'; var_dump($result[0]); echo '</pre>';
-
         return $result[0];
+    }
+
+    public function saveArticle($postdata)
+    {
+        var_dump($postdata); exit;
+        foreach ($postdata as $key => $value) {
+            if ($key == 'save' || $key == 'language' || $key == 'languages') {
+                continue;
+            }
+            $article[$key] = $value;
+        }
+
+        DBAdapter::getInstance()->update('article');
+
+
     }
 
     public function getLatest()

@@ -47,7 +47,6 @@ $this->helper()->appendJSInline('
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('title') ?></label>
                         <div class="col-sm-10">
-                            <?= $this->article->language[$language->id]['title'] ?>
                             <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="<?= isset($this->article->language[$language->id]['title']) ? $this->article->language[$language->id]['title'] : '' ?>">
                         </div>
                     </div>
@@ -89,7 +88,7 @@ $this->helper()->appendJSInline('
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox"> <?= $this->translate('allow_comments') ?>
+                    <input <?= $this->article->allow_comments ? 'checked' : '' ?> value="1" type="checkbox"> <?= $this->translate('allow_comments') ?>
                 </label>
             </div>
         </div>
@@ -98,7 +97,7 @@ $this->helper()->appendJSInline('
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox"> <?= $this->translate('visible') ?>
+                    <input <?= $this->article->is_online ? 'checked' : '' ?> value="1" type="checkbox"> <?= $this->translate('is_online') ?>
                 </label>
             </div>
         </div>

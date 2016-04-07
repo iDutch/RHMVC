@@ -17,10 +17,13 @@ class ArticleController extends AbstractController
 
     public function admin_editAction($id)
     {
-        $this->loadModel('CategoryModel');
-
         $ArticleModel = $this->loadModel('ArticleModel');
-        $CategoryModel  = new CategoryModel();
+        $CategoryModel = $this->loadModel('CategoryModel');
+
+        if (count($_POST) > 0) {
+            $ArticleModel->saveArticle($_POST);
+        }
+
         $view = new View(__DIR__ . '/../../application/views/news/admin_edit.phtml');
         $view->setVars(array(
             'languages'     => $this->getLanguages(),
