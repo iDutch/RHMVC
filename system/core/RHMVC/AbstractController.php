@@ -1,24 +1,44 @@
 <?php
 
-abstract class AbstractController
+use Metaphore\Cache;
+use Metaphore\Store\MemcachedStore;
+
+abstract class AbstractController extends HMVC
 {
 
-    protected $layout;
-
-    public function __construct($layout)
+    public function __construct($layout = null)
     {
         $this->layout = $layout;
     }
 
-    protected function invokeController($controller, $action, array $params = array())
+    protected function getConfig($name)
     {
-        require_once __DIR__ . '/../../../application/controllers/' . $controller . '.php';
-        $controller = new $controller($this->layout);
-        return call_user_func_array(array($controller, $action), $params);
+        $global_config_file = __DIR__ . '/../../../config/' . $name . '.global.php';
+        $local_config_file  = __DIR__ . '/../../../config/' . $name . '.local.php';
+
+        if (file_exists($global_config_file)) {
+            $global = require $global_config_file;
+            if (file_exists($local_config_file)) {
+                $local = require $local_config_file;
+                return array_merge($global, $local);
+            }
+            return $global;
+        }
+        throw new Exception('Controller error: Cannot load config: \'' . __DIR__ . '/../../../config/' . $name . '.global.php\'');
     }
 
-    protected function loadModel($model)
+    protected function getLanguages()
     {
-        require_once __DIR__ . '/../../../application/models/' . $model . '.php';
+        $memcached = new Memcached;
+        $memcached->addServer('127.0.0.1', 11211);
+
+        $cache = new Cache(new MemcachedStore($memcached));
+
+        return $cache->cache('languages', function() {
+            return DBAdapter::getInstance()->query('
+                SELECT id, iso_code, is_default, is_online, is_enabled FROM language
+            ');
+        }, 3600);
     }
-} 
+
+}

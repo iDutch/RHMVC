@@ -1,42 +1,60 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: richard
- * Date: 7/31/15
- * Time: 1:16 PM
- */
+
+use MatthiasMullie\Minify;
 
 class Helper {
 
-    private static $javascripts = array();
-    private static $stylesheets = array();
+    private static $instance    = null;
 
-    public static function appendJSFile($file)
+    private $javascripts    = array();
+    private $stylesheets    = array();
+
+    public static function getInstance()
     {
-        array_push(self::$javascripts, array('file' => $file));
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
-    public static function appendCSSFile($file)
+    public function __construct()
     {
-        array_push(self::$stylesheets, array('file' => $file));
+
     }
 
-    public static function appendJSInline($content)
+    public function appendJSFile($file)
     {
-        array_push(self::$javascripts, array('inline' => $content));
+        array_push($this->javascripts, array('file' => $file));
     }
 
-    public static function appendCSSInline($content)
+    public function appendCSSFile($file)
     {
-        array_push(self::$stylesheets, array('inline' => $content));
+        array_push($this->stylesheets, array('file' => $file));
     }
 
-    public static function getJS()
+    public function appendJSUrl($url)
+    {
+        array_push($this->javascripts, array('url' => $url));
+    }
+
+    public function appendJSInline($content)
+    {
+        array_push($this->javascripts, array('inline' => $content));
+    }
+
+    public function appendCSSInline($content)
+    {
+        array_push($this->stylesheets, array('inline' => $content));
+    }
+
+    public function getJS()
     {
         $js = null;
-        foreach (self::$javascripts as $types) {
+        foreach ($this->javascripts as $types) {
             foreach ($types as $type => $value) {
                 if($type === 'file'){
+                    $js .= "<script type=\"text/javascript\" src=\"" . $value . "\"></script>\n\t";
+                } else if ($type === 'url') {
                     $js .= "<script type=\"text/javascript\" src=\"" . $value . "\"></script>\n\t";
                 } else {
                     $js .= "<script type=\"text/javascript\">" . $value . "</script>\n\t";
@@ -46,10 +64,33 @@ class Helper {
         return $js;
     }
 
-    public static function getCSS()
+    public function getJSMinified()
+    {
+        if (!file_exists(__DIR__ . '/../../../docs/static/cache/js/minified.js') || isset($_GET['debug'])) {
+            $js = null;
+            foreach ($this->javascripts as $types) {
+                foreach ($types as $type => $value) {
+                    if($type === 'file'){
+                        $js .= file_get_contents(__DIR__ . '/../../../docs' . $value);
+                    } else if ($type === 'url') {
+                        $js .= file_get_contents($value);
+                    } else {
+                        $js .= $value;
+                    }
+                }
+            }
+
+            $minify = new Minify\JS($js);
+            $minify->minify(__DIR__ . '/../../../docs/static/cache/js/minified.js');
+        }
+
+        return '<script src="/static/cache/js/minified.js"></script>';
+    }
+
+    public function getCSS()
     {
         $css = null;
-        foreach (self::$stylesheets as $types) {
+        foreach ($this->stylesheets as $types) {
             foreach ($types as $type => $value) {
                 if($type === 'file'){
                     $css .= "<link rel=\"stylesheet\" href=\"" . $value . "\">\n\t";
@@ -60,5 +101,30 @@ class Helper {
         }
         return $css;
     }
+
+    public function getCSSMinified()
+    {
+        if (!file_exists(__DIR__ . '/../../../docs/static/cache/js/minified.css') || isset($_GET['debug'])) {
+            $css = null;
+            foreach ($this->stylesheets as $types) {
+                foreach ($types as $type => $value) {
+                    if($type === 'file'){
+                        $css .= file_get_contents(__DIR__ . '/../../../docs' . $value);
+                    } else if ($type === 'url') {
+                        $css .= file_get_contents($value);
+                    } else {
+                        $css .= $value;
+                    }
+                }
+            }
+
+            $minify = new Minify\CSS($js);
+            $minify->minify(__DIR__ . '/../../../docs/static/cache/css/minified.css');
+        }
+
+        return '<link rel="stylesheet" href="/static/cache/js/minified.css">';
+    }
+
+
 
 } 

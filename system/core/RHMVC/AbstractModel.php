@@ -3,19 +3,30 @@
 abstract class AbstractModel
 {
 
+    protected $model_config = array();
+
     public function __construct()
     {
-
+        $this->loadModelConfig(get_called_class());
     }
 
-    /*protected function loadLibrary($libdir)
+    protected function loadModelConfig($classname)
     {
-       if (is_dir(__DIR__ . '/../../library/' . $libdir . '/classes')) {
-            foreach (scandir(__DIR__ . '/../../library/' . $libdir . '/classes') as $item) {
-                if ($item !== '.' && $item !== '..') {
-                    require_once __DIR__ . '/../../library/' . $libdir . '/classes/'. $item;
-                }
+        $classname = strtolower($classname);
+        $config_global_file = __DIR__ . '/../../../config/models/' .$classname. '.global.php';
+        $config_local_file = __DIR__ . '/../../../config/models/' .$classname. '.local.php';
+
+        $global = array();
+        $local = array();
+
+        if (file_exists($config_global_file)) {
+            $global = require $config_global_file;
+            if (file_exists($config_local_file)) {
+                $local = require $config_local_file;
             }
         }
-    }*/
-} 
+
+        $this->model_config = array_merge($global, $local);
+    }
+
+}

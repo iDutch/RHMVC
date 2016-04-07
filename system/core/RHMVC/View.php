@@ -14,6 +14,9 @@ class View
 
     public function __construct($view)
     {
+        if (!file_exists($view)) {
+            throw new Exception('View error: Cannot load view: \'' . $view . '\'');
+        }
         $this->view = $view;
     }
 
@@ -37,10 +40,13 @@ class View
         require $this->view;
         $html = ob_get_clean();
 
-        header("Content-Type: text/x-javascript; charset=utf-8");
+        $js = '';
+        //header("Content-Type: text/x-javascript; charset=utf-8");
         foreach (preg_split("/[\r\n]+/", $html) as $line) {
-            printf("document.write('%s');\n", addslashes(trim($line)));
+            if (substr(trim($line), 0, 2) !== "//") //We cannot document.write comments!!! This only strips out line starting with comments
+            $js .= "document.write('" . addslashes(trim($line)) . "');\n";
         }
+        return $js;
     }
 
 
@@ -57,6 +63,16 @@ class View
 
     function __get($key){
         return $this->vars[$key];
+    }
+
+    public function helper()
+    {
+        return Helper::getInstance();
+    }
+
+    public function translate($key)
+    {
+        return Translator::getInstance($_SESSION['language_iso_code'])->translate($key);
     }
 
 } 

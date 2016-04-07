@@ -1,0 +1,90 @@
+<?php
+$this->helper()->appendCSSFile('/static/css/datatables/dataTables.bootstrap.min.css');
+$this->helper()->appendCSSFile('/static/css/datepicker/bootstrap-datetimepicker.min.css');
+
+$this->helper()->appendJSFile('/static/js/moment/moment.min.js');
+$this->helper()->appendJSFile('/static/js/datatables/dataTables.min.js');
+$this->helper()->appendJSFile('/static/js/datatables/dataTables.bootstrap.min.js');
+$this->helper()->appendJSFile('/static/js/datepicker/bootstrap-datetimepicker.min.js');
+$this->helper()->appendJSInline('
+    $(document).ready(function() {
+        $(".table").DataTable({
+            "order": [[ 3, "desc" ]],
+            "columnDefs": [{
+                "orderable": false, "targets": [0, 7],
+            }],
+            "columns": [
+              { "width": "20px" },
+              null,
+              { "width": "100px" },
+              { "width": "120px" },
+              { "width": "120px" },
+              { "width": "120px" },
+              { "width": "50px" },
+              { "width": "165px" }
+            ]
+        });
+    });
+');
+?>
+<table class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>#ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Publish date</th>
+            <th>Archive date</th>
+            <th>Allow comments</th>
+            <th>Visible</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>#ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Publish date</th>
+            <th>Archive date</th>
+            <th>Allow comments</th>
+            <th>Visible</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <div class="btn-toolbar" role="toolbar" aria-label="...">
+                    <div class="btn-group pull-left" role="group" aria-label="...">
+                        <button type="button" class="btn btn-success"><?= $this->translate('add') ?></button>
+                    </div>
+                    <div class="btn-group pull-right" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <?= $this->translate('with_selected') ?> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <?php foreach ($this->news_items as $news_item): ?>
+        <tr>
+            <td><input type="checkbox" value="<?= $news_item->id ?>"></td>
+            <td><?= $news_item->title ?></td>
+            <td><?= $news_item->name ?></td>
+            <td><?= $news_item->publish_date ?></td>
+            <td><?= strlen($news_item->archive_date) ? $news_item->archive_date : '<span class="label label-default">' . $this->translate('no archive date') . '</span>' ?></td>
+            <td><?= $news_item->allow_comments ? '<span class="label label-success">' . $this->translate('yes') . '</span>' : '<span class="label label-danger">' . $this->translate('no') . '</span>' ?></td>
+            <td><?= $news_item->visible ? '<span class="label label-success">' . $this->translate('yes') . '</span>' : '<span class="label label-danger">' . $this->translate('no') . '</span>' ?></td>
+            <td><button type="button" class="btn btn-sm btn-default"><?= $this->translate('edit') ?></button> <button type="button" class="btn btn-sm btn-danger"><?= $this->translate('delete') ?></button></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

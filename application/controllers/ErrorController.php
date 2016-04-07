@@ -14,4 +14,4 @@ class ErrorController extends AbstractController
         return $view->parse();
     }
 
-} 
+}

@@ -1,9 +1,0 @@
-.ns-type-notice {background: rgba(91, 192, 222, 0.95); color: rgba(255,255,255,0.95);}
-.ns-type-warning {background: rgba(240, 173, 78, 0.95); color: rgba(255,255,255,0.95);}
-.ns-type-error {background: rgba(217, 83, 79, 0.95); color: rgba(255,255,255,0.95);}
-.ns-type-success {background: rgba(92, 184, 92, 0.95); color: rgba(255,255,255,0.95);}
-
-.ns-type-notice .ns-close::before, .ns-type-notice .ns-close::after {background: #fff;}
-.ns-type-warning .ns-close::before, .ns-type-warning .ns-close::after {background: #fff;}
-.ns-type-error .ns-close::before, .ns-type-error .ns-close::after {background: #fff;}
-.ns-type-success .ns-close::before, .ns-type-success .ns-close::after {background: #fff;}
