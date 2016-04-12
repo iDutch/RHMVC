@@ -1,0 +1,112 @@
+<?php
+$this->helper()->appendCSSFile('/static/css/datepicker/bootstrap-datetimepicker.min.css');
+
+$this->helper()->appendJSFile('/static/js/moment/moment.min.js');
+$this->helper()->appendJSFile('/static/js/datepicker/bootstrap-datetimepicker.min.js');
+$this->helper()->appendJSFile('/static/js/ckeditor/ckeditor.js');
+$this->helper()->appendJSFile('/static/js/ckeditor/adapters/jquery.js');
+$this->helper()->appendJSInline('
+    $(".datetime").datetimepicker({
+        format: "YYYY-MM-DD HH:mm:ss"
+    });
+    $(".publish_date").on("dp.change", function (e) {
+        $(".archive_date").data("DateTimePicker").minDate(e.date);
+    });
+    $(".archive_date").on("dp.change", function (e) {
+        $(".publish_date").data("DateTimePicker").maxDate(e.date);
+    });
+    $(".ckeditor").ckeditor();
+');
+?>
+
+<form class="form-horizontal" method="post">
+    <div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <?php foreach ($this->languages as $language): ?>
+                <li role="presentation" <?= $language->is_default ? 'class="active"' : ''?>><a href="#<?= $language->iso_code ?>" aria-controls="<?= $language->iso_code ?>" role="tab" data-toggle="tab"><?= $this->translate($language->iso_code) ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+        <hr>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <?php foreach ($this->languages as $language): ?>
+                <div role="tabpanel" class="tab-pane <?= $language->is_default ? 'active' : ''?>" id="<?= $language->iso_code ?>">
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <?php if ($language->is_default): ?>
+                                        <input type="hidden" name="language[<?= $language->id ?>][is_online]" value="1">
+                                        <?php else: ?>
+                                        <input type="hidden" name="language[<?= $language->id ?>][is_online]" value="0">
+                                    <?php endif; ?>
+                                    <input type="checkbox" name="language[<?= $language->id ?>][is_online]" value="1" <?= $language->is_default ? 'checked disabled' : ($this->article->language[$language->id]['is_online'] ? 'checked' : '') ?>> <?= $this->translate('is_online_language') ?>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label"><?= $this->translate('title') ?></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="<?= isset($this->article->language[$language->id]['title']) ? $this->article->language[$language->id]['title'] : '' ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label"><?= $this->translate('content') ?></label>
+                        <div class="col-sm-10">
+                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"><?= isset($this->article->language[$language->id]['content']) ? $this->article->language[$language->id]['title'] : '' ?></textarea>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <hr>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label"><?= $this->translate('category') ?></label>
+        <div class="col-sm-10">
+            <select name="category_id" class="form-control">
+                <option value="0"><?= $this->translate('choose_category') ?></option>
+                <?php foreach($this->categories as $category): ?>
+                    <option <?= $this->article->category_id == $category->id ? 'selected' : '' ?> value="<?= $category->id ?>"><?= $category->name ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label"><?= $this->translate('publish_date') ?></label>
+        <div class="col-sm-10">
+            <input type="text" name="publish_date" class="form-control datetime publish_date" value="<?= $this->article->publish_date ?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label"><?= $this->translate('archive_date') ?></label>
+        <div class="col-sm-10">
+            <input type="text" name="archive_date" class="form-control datetime archive_date" value="<?= $this->article->archive_date ?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input name="allow_comments" <?= $this->article->allow_comments ? 'checked' : '' ?> value="1" type="checkbox"> <?= $this->translate('allow_comments') ?>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input name="allow_comments" <?= $this->article->is_online ? 'checked' : '' ?> value="1" type="checkbox"> <?= $this->translate('is_online') ?>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-xl btn-primary"><?= $this->translate('save') ?></button>
+        </div>
+    </div>
+</form>

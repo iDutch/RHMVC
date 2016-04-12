@@ -1,6 +1,7 @@
 <?php
 session_start();
 $_SESSION['language_iso_code'] = 'en';
+$_SESSION['language_id'] = 2;
 
 
 if (isset($_SERVER['IS_DEVEL'])) {

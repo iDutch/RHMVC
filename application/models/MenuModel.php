@@ -9,10 +9,12 @@ class MenuModel
             SELECT p.id, p.url, p.parent_id, pm.link, pm.title
             FROM page p
             JOIN page_metadata pm ON (pm.page_id = p.id)
-            WHERE pm.language_id = 1
+            WHERE pm.language_id = :language_id
             AND p.in_menu = 1
             ORDER BY p.position ASC
-        ');
+        ', array(
+            'language_id' => array('value' => $_SESSION['language_id'], 'type' => PDO::PARAM_INT)
+        ));
 
         return $this->buildMenuArray($menu);
     }

@@ -9,6 +9,7 @@ $this->helper()->appendJSFile('/static/js/datepicker/bootstrap-datetimepicker.mi
 $this->helper()->appendJSInline('
     $(document).ready(function() {
         $(".table").DataTable({
+            "language": '. $this->translate('datatable_language') .',
             "order": [[ 3, "desc" ]],
             "columnDefs": [{
                 "orderable": false, "targets": [0, 7],
@@ -16,17 +17,72 @@ $this->helper()->appendJSInline('
             "columns": [
               { "width": "20px" },
               null,
-              { "width": "100px" },
-              { "width": "120px" },
-              { "width": "120px" },
-              { "width": "120px" },
-              { "width": "50px" },
-              { "width": "165px" }
+              { "width": "80px" },
+              { "width": "115px" },
+              { "width": "115px" },
+              { "width": "130px" },
+              { "width": "90px" },
+              { "width": "195px" }
             ]
+        });
+        $(".delete-single").on("click", function() {
+            $("#singleModal").modal({backdrop: "static"});
         });
     });
 ');
 ?>
+<?= $this->partial('admin_index_table.phtml', array(
+    'modulename' => 'article',
+    'fields' => array(
+        'id' => array(
+            'label' => 'ID',
+            'type' => 'primary_key',
+        ),
+        'title' => array(
+            'label' => 'title',
+            'type' => 'string',
+        ),
+        'name' => array(
+            'label' => 'category',
+            'type' => 'string',
+        ),
+        'publish_date' => array(
+            'label' => 'publish_date',
+            'type' => 'string',
+        ),
+        'archive_date' => array(
+            'label' => 'archive_date',
+            'type' => 'string',
+        ),
+        'allow_comments' => array(
+            'label' => 'allow_comments',
+            'type' => 'boolean',
+        ),
+        'is_online' => array(
+            'label' => 'is_online',
+            'type' => 'boolean',
+        ),
+    ),
+    'items' => $this->articles,
+    'messages' => $this->messages,
+)) ?>
+<!--<div class="modal fade" id="singleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><?= $this->translate('delete article') ?></h4>
+            </div>
+            <div class="modal-body">
+                <?= $this->translate('delete article confirmation') ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?= $this->translate('Cancel') ?></button>
+                <button type="button" class="btn btn-danger"><?= $this->translate('delete') ?></button>
+            </div>
+        </div>
+    </div>
+</div>
 <?= $this->messages ?>
 <table class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
@@ -56,7 +112,7 @@ $this->helper()->appendJSInline('
             <td colspan="8">
                 <div class="btn-toolbar" role="toolbar" aria-label="...">
                     <div class="btn-group pull-left" role="group" aria-label="...">
-                        <button type="button" class="btn btn-success"><?= $this->translate('add') ?></button>
+                        <a href="/admin/article/add" class="btn btn-success"><?= $this->translate('add') ?></a>
                     </div>
                     <div class="btn-group pull-right" role="group" aria-label="...">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -84,8 +140,8 @@ $this->helper()->appendJSInline('
             <td><?= strlen($article->archive_date) ? $article->archive_date : '<span class="label label-default">' . $this->translate('no archive date') . '</span>' ?></td>
             <td><?= $article->allow_comments ? '<span class="label label-success">' . $this->translate('yes') . '</span>' : '<span class="label label-danger">' . $this->translate('no') . '</span>' ?></td>
             <td><?= $article->is_online ? '<span class="label label-success">' . $this->translate('yes') . '</span>' : '<span class="label label-danger">' . $this->translate('no') . '</span>' ?></td>
-            <td><a href="/admin/article/edit/<?= $article->id ?>" class="btn btn-sm btn-default"><?= $this->translate('edit') ?></a> <a href="/admin/article/delete/<?= $this->article_id ?>" class="btn btn-sm btn-danger"><?= $this->translate('delete') ?></a></td>
+            <td><a href="/admin/article/edit/<?= $article->id ?>" class="btn btn-sm btn-default"><?= $this->translate('edit') ?></a> <button type="button" class="btn btn-sm btn-danger delete-single"><?= $this->translate('delete') ?></button></td>
         </tr>
     <?php endforeach; ?>
     </tbody>
-</table>
+</table>-->

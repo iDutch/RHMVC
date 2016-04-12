@@ -2,6 +2,7 @@
 
 return array(
     //Form labels and default
+    'ID'                => 'ID',
     'title'             => 'Titel',
     'content'           => 'Inhoud',
     'publish_date'      => 'Publicatie datum',
