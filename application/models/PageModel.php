@@ -3,9 +3,9 @@
 class PageModel extends AbstractModel
 {
 
-    public function getPage()
+    public function getPage($uri)
     {
-        $uri = $_SERVER['REQUEST_URI'];
+        $uri = strlen($uri) < 1 ? '/' : $uri;
 
         //TODO: Get language_id from session
         $page = DBAdapter::getInstance()->query('

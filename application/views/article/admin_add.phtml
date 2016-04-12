@@ -15,7 +15,7 @@ $this->helper()->appendJSInline('
     $(".archive_date").on("dp.change", function (e) {
         $(".publish_date").data("DateTimePicker").maxDate(e.date);
     });
-    $(".ckeditor").ckeditor();
+    $(".ckeditor").ckeditor({language: "' . $_SESSION['language_iso_code'] . '"});
 ');
 ?>
 
@@ -27,9 +27,8 @@ $this->helper()->appendJSInline('
                 <li role="presentation" <?= $language->is_default ? 'class="active"' : ''?>><a href="#<?= $language->iso_code ?>" aria-controls="<?= $language->iso_code ?>" role="tab" data-toggle="tab"><?= $this->translate($language->iso_code) ?></a></li>
             <?php endforeach; ?>
         </ul>
-        <hr>
         <!-- Tab panes -->
-        <div class="tab-content">
+        <div class="tab-content well">
             <?php foreach ($this->languages as $language): ?>
                 <div role="tabpanel" class="tab-pane <?= $language->is_default ? 'active' : ''?>" id="<?= $language->iso_code ?>">
                     <div class="form-group">
@@ -37,9 +36,11 @@ $this->helper()->appendJSInline('
                             <div class="checkbox">
                                 <label>
                                     <?php if ($language->is_default): ?>
-                                        <input type="hidden" name="languages[]" value="<?= $language->id ?>">
+                                        <input type="hidden" name="language[<?= $language->id ?>][is_online]" value="1">
+                                    <?php else: ?>
+                                        <input type="hidden" name="language[<?= $language->id ?>][is_online]" value="0">
                                     <?php endif; ?>
-                                    <input type="checkbox" name="languages[]" value="<?= $language->id ?>" <?= $language->is_default ? 'checked disabled' : '' ?>> <?= $this->translate('use_language') ?>
+                                    <input type="checkbox" name="language[<?= $language->id ?>][is_online]" value="1" <?= $language->is_default ? 'checked disabled' : '' ?>> <?= $this->translate('is_online_language') ?>
                                 </label>
                             </div>
                         </div>
@@ -47,13 +48,13 @@ $this->helper()->appendJSInline('
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('title') ?></label>
                         <div class="col-sm-10">
-                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="<?= isset($this->article->language[$language->id]['title']) ? $this->article->language[$language->id]['title'] : '' ?>">
+                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('content') ?></label>
                         <div class="col-sm-10">
-                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"><?= isset($this->article->language[$language->id]['title']) ? $this->article->language[$language->id]['title'] : '' ?></textarea>
+                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"></textarea>
                         </div>
                     </div>
                 </div>
@@ -75,20 +76,20 @@ $this->helper()->appendJSInline('
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('publish_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="publish_date" class="form-control datetime publish_date" value="<?= $this->article->publish_date ?>">
+            <input type="text" name="publish_date" class="form-control datetime publish_date" value="">
         </div>
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('archive_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="archive_date" class="form-control datetime archive_date" value="<?= $this->article->archive_date ?>">
+            <input type="text" name="archive_date" class="form-control datetime archive_date" value="">
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
                 <label>
-                    <input <?= $this->article->allow_comments ? 'checked' : '' ?> value="1" type="checkbox"> <?= $this->translate('allow_comments') ?>
+                    <input name="allow_comments" value="1" type="checkbox"> <?= $this->translate('allow_comments') ?>
                 </label>
             </div>
         </div>
@@ -97,7 +98,7 @@ $this->helper()->appendJSInline('
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
                 <label>
-                    <input <?= $this->article->is_online ? 'checked' : '' ?> value="1" type="checkbox"> <?= $this->translate('is_online') ?>
+                    <input name="is_online" value="1" type="checkbox"> <?= $this->translate('is_online') ?>
                 </label>
             </div>
         </div>

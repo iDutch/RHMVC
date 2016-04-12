@@ -6,7 +6,7 @@ return array(
     'NL' => 'Nederlands',
 
     //Enable language
-    'use_language' => 'Gebruik deze taal',
+    'is_online_language' => 'Content in deze taal online?',
 
     //Global datatable controls
     'add'           => '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Voeg nieuwe toe',
@@ -16,4 +16,24 @@ return array(
 
     //Global form controls
     'save' => 'Opslaan',
+
+    'datatable_language' => '{
+        "sProcessing": "Bezig...",
+        "sLengthMenu": "_MENU_ resultaten weergeven",
+        "sZeroRecords": "Geen resultaten gevonden",
+        "sInfo": "_START_ tot _END_ van _TOTAL_ resultaten",
+        "sInfoEmpty": "Geen resultaten om weer te geven",
+        "sInfoFiltered": " (gefilterd uit _MAX_ resultaten)",
+        "sInfoPostFix": "",
+        "sSearch": "Zoeken:",
+        "sEmptyTable": "Geen resultaten aanwezig in de tabel",
+        "sInfoThousands": ".",
+        "sLoadingRecords": "Een moment geduld aub - bezig met laden...",
+        "oPaginate": {
+            "sFirst": "Eerste",
+            "sLast": "Laatste",
+            "sNext": "Volgende",
+            "sPrevious": "Vorige"
+        }
+    }',
 );

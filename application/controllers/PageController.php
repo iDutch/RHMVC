@@ -3,12 +3,13 @@
 class PageController extends AbstractController
 {
 
-    public function getPage() {
+    public function getPage($uri) {
         /**
          * @var $PageModel PageModel
          */
+
         $PageModel = $this->loadModel('PageModel');
-        if ($page = $PageModel->getPage()) {
+        if ($page = $PageModel->getPage($uri)) {
             return $this->dispatch($page);
         } else {
             header('Location: /404');

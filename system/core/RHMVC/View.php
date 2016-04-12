@@ -57,6 +57,14 @@ class View
         return ob_get_clean();
     }
 
+    public function partial($partial, array $vars = array())
+    {
+        $this->setVars($vars);
+        ob_start();
+        require __DIR__ . '/../../../application/views/partials/' . $partial;
+        return ob_get_clean();
+    }
+
     function __set($key, $value){
         $this->vars[$key] = $value; //create new set data[key] = value without setters;
     }
