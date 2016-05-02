@@ -10,14 +10,14 @@ abstract class HMVC
         $controller_file = __DIR__ . '/../../../application/controllers/' . $controller . '.php';
 
         if (!file_exists($controller_file)) {
-            throw new Exception('Controller error: Cannot invoke controller: \'' . $controller_file . '\'');
+            throw new Exception('HMVC error: Cannot invoke controller: \'' . $controller_file . '\'');
         }
 
         require_once $controller_file;
         $controller = new $controller($this->layout);
 
         if (!method_exists($controller, $action)){
-            throw new Exception('Controller error: ' . $controller . ' :: ' . $action . ' does not exist!');
+            throw new Exception('HMVC error: ' . $controller . ' :: ' . $action . ' does not exist!');
         }
 
         return call_user_func_array(array($controller, $action), $params);
@@ -28,7 +28,7 @@ abstract class HMVC
         $model_file = __DIR__ . '/../../../application/models/' . $model . '.php';
 
         if (!file_exists($model_file)) {
-            throw new Exception('Controller error: Cannot load model: \'' . $model_file . '\'');
+            throw new Exception('HMVC error: Cannot load model: \'' . $model_file . '\'');
         }
         require_once $model_file;
 

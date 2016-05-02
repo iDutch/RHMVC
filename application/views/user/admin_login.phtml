@@ -1,0 +1,14 @@
+<?= $this->messages ?>
+<form class="form-signin" method="post">
+    <h2 class="form-signin-heading"><?= $this->translate('sign in header'); ?></h2>
+    <label for="inputEmail" class="sr-only"><?= $this->translate('username or email'); ?></label>
+    <input type="text" name="username" id="inputEmail" class="form-control" value="<?= $this->postdata['username'] ?>" placeholder="<?= $this->translate('username or email'); ?>" required autofocus>
+    <label for="inputPassword" class="sr-only"><?= $this->translate('password'); ?></label>
+    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="<?= $this->translate('password'); ?>" required>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="remember-me"> <?= $this->translate('remember me'); ?>
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit"><?= $this->translate('sign in'); ?></button>
+</form>

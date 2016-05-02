@@ -11,10 +11,11 @@
 
 class DBAdapter {
 
-	private static $instance    = null;
-    private static $dbsettings  = array();
-	private $connection         = null;
-    const SHOW_ERROR            = true;
+	private static $instance    	= null;
+    private static $dbsettings  	= array();
+	private $connection         	= null;
+    const SHOW_ERROR            	= true;
+	private $hasActiveTransaction 	= false;
 
 	/**
 	 * Return instance or create one first if there is none...
@@ -58,6 +59,9 @@ class DBAdapter {
 	 * TODO: Build error handler instead of dumping DB errors on screen
 	 */
 	private function handleError($query) {
+		if ($this->hasActiveTransaction) {
+			$this->rollback();
+		}
         if (self::SHOW_ERROR) {
 		    var_dump($query->errorInfo());
 		    echo '<pre>';
@@ -74,7 +78,7 @@ class DBAdapter {
 	 * @param	array	$params	Custom field => array(value => value, type => type) as deletion criteria
 	 */
 	public function delete($table, array $params = array()) {
-		$sql = "DELETE FROM " . $table . " ";
+		$sql = "DELETE FROM `" . $table . "` ";
         $where = "WHERE ";
 		foreach ($params as $field => $array) {
 			if (is_array($array['value'])) {
@@ -134,7 +138,7 @@ class DBAdapter {
      * @return  int     Last insert ID
 	 */
 	public function insert($table, array $params = array()) {
-		$sql = "INSERT INTO " . $table . " (`" . implode('`, `', array_keys($params)) . "`) VALUES (:" . implode(", :", array_keys($params)) . ")";
+		$sql = "INSERT INTO `" . $table . "` (`" . implode('`, `', array_keys($params)) . "`) VALUES (:" . implode(", :", array_keys($params)) . ")";
 		$query = $this->connection->prepare($sql);
 		if (count($params)) {
 			foreach ($params as $field => &$value) {
@@ -161,7 +165,7 @@ class DBAdapter {
 			    $qry.= ($qry != '' ? ',' : '') . "`" . $field . "` = :" . $field . "";
 		    }
         }
-		$sql = "UPDATE " . $table . " SET " . $qry . " ";
+		$sql = "UPDATE `" . $table . "` SET " . $qry . " ";
 
 		$where = "WHERE ";
 		foreach ($params as $field => $array) {
@@ -196,6 +200,25 @@ class DBAdapter {
 		if (!$query->execute()) {
 			$this->handleError($query);
 		}
+	}
+
+	public function beginTransaction() {
+		if ($this->hasActiveTransaction) {
+			return false;
+		} else {
+			$this->hasActiveTransaction = $this->connection->beginTransaction();
+			return $this->hasActiveTransaction;
+		}
+	}
+
+	public function commit() {
+		$this->connection->commit();
+		$this->hasActiveTransaction = false;
+	}
+
+	public function rollback() {
+		$this->connection->rollback();
+		$this->hasActiveTransaction = false;
 	}
 
 }

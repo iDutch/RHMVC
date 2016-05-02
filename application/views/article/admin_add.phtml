@@ -27,8 +27,9 @@ $this->helper()->appendJSInline('
                 <li role="presentation" <?= $language->is_default ? 'class="active"' : ''?>><a href="#<?= $language->iso_code ?>" aria-controls="<?= $language->iso_code ?>" role="tab" data-toggle="tab"><?= $this->translate($language->iso_code) ?></a></li>
             <?php endforeach; ?>
         </ul>
+        <hr>
         <!-- Tab panes -->
-        <div class="tab-content well">
+        <div class="tab-content">
             <?php foreach ($this->languages as $language): ?>
                 <div role="tabpanel" class="tab-pane <?= $language->is_default ? 'active' : ''?>" id="<?= $language->iso_code ?>">
                     <div class="form-group">
@@ -76,7 +77,7 @@ $this->helper()->appendJSInline('
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('publish_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="publish_date" class="form-control datetime publish_date" value="">
+            <input type="text" required name="publish_date" class="form-control datetime publish_date" value="">
         </div>
     </div>
     <div class="form-group">

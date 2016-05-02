@@ -1,6 +1,6 @@
 <?php
 
-abstract class AbstractModel
+abstract class AbstractModel extends HMVC
 {
 
     protected $model_config = array();

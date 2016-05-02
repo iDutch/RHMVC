@@ -2,8 +2,10 @@
 
 return array(
     //Admin forms language tabs
-    'EN' => 'English',
-    'NL' => 'Dutch',
+    'en' => 'English',
+    'nl' => 'Dutch',
+    'de' => 'German',
+    'fr' => 'French',
 
     //Enable language
     'is_online_language' => 'Content online in this language?',
@@ -40,4 +42,12 @@ return array(
             "sSortDescending": ": activate to sort column descending"
         }
     }',
+
+    //Admin menu
+    'admin_link_users'      => 'Users',
+    'admin_link_groups'     => 'Groups',
+    'admin_link_pages'      => 'Pages',
+    'admin_link_articles'   => 'Articles',
+    'admin_link_categories' => 'Categories',
+    'admin_link_paragraph'  => 'Paragraphs',
 );

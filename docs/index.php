@@ -26,6 +26,9 @@ require __DIR__ . '/../system/core/RHMVC/Helper.php';
 require __DIR__ . '/../system/core/RHMVC/View.php';
 require __DIR__ . '/../system/core/RHMVC/DBAdapter.php';
 
+require __DIR__ . '/../application/controllers/ACLTrait.php';
+require __DIR__ . '/../system/libs/Logger/Logger.php';
+
 $router = new Router();
 
 $uri = $_SERVER['REQUEST_URI'];

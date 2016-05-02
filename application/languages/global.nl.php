@@ -2,8 +2,10 @@
 
 return array(
     //Admin forms language tabs
-    'EN' => 'Engels',
-    'NL' => 'Nederlands',
+    'en' => 'Engels',
+    'nl' => 'Nederlands',
+    'de' => 'Duits',
+    'fr' => 'Frans',
 
     //Enable language
     'is_online_language' => 'Content in deze taal online?',
@@ -36,4 +38,12 @@ return array(
             "sPrevious": "Vorige"
         }
     }',
+
+    //Admin menu
+    'admin_link_users'      => 'Gebruikers',
+    'admin_link_groups'     => 'Groepen',
+    'admin_link_pages'      => 'Pagina\'s',
+    'admin_link_articles'   => 'Artikelen',
+    'admin_link_categories' => 'Categorie&euml;n',
+    'admin_link_paragraphs'  => 'Paragrafen',
 );

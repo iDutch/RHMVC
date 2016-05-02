@@ -10,18 +10,14 @@ $this->helper()->appendJSInline('
     $(document).ready(function() {
         $(".table").DataTable({
             "language": '. $this->translate('datatable_language') .',
-            "order": [[ 3, "desc" ]],
+            "order": [[ 1, "desc" ]],
             "columnDefs": [{
-                "orderable": false, "targets": [0, 7],
+                "orderable": false, "targets": [0, 3],
             }],
             "columns": [
               { "width": "20px" },
               null,
-              { "width": "80px" },
-              { "width": "115px" },
-              { "width": "115px" },
-              { "width": "130px" },
-              { "width": "90px" },
+              { "width": "90px"},
               { "width": "195px" }
             ]
         });
@@ -32,37 +28,21 @@ $this->helper()->appendJSInline('
 ');
 ?>
 <?= $this->partial('admin_index_table.phtml', array(
-    'modulename' => 'article',
+    'modulename' => 'group',
     'fields' => array(
         'id' => array(
             'label' => 'ID',
             'type' => 'primary_key',
         ),
-        'title' => array(
-            'label' => 'title',
-            'type' => 'string',
-        ),
         'name' => array(
-            'label' => 'category',
+            'label' => 'name',
             'type' => 'string',
         ),
-        'publish_date' => array(
-            'label' => 'publish_date',
-            'type' => 'string',
-        ),
-        'archive_date' => array(
-            'label' => 'archive_date',
-            'type' => 'string',
-        ),
-        'allow_comments' => array(
-            'label' => 'allow_comments',
-            'type' => 'boolean',
-        ),
-        'is_online' => array(
-            'label' => 'is_online',
+        'is_enabled' => array(
+            'label' => 'is_enabled',
             'type' => 'boolean',
         ),
     ),
-    'items' => $this->articles,
+    'items' => $this->groups,
     'messages' => $this->messages,
 )) ?>

@@ -6,11 +6,11 @@ class ArticleModel extends AbstractModel
     public function getAll()
     {
         return DBAdapter::getInstance()->query('
-            SELECT a.id, a.publish_date, a.archive_date, a.allow_comments, a.is_online, cc.name, ac.title
+            SELECT a.id, a.publish_date, a.archive_date, a.allow_comments, a.is_online, cl.name, al.title
             FROM article a
-            JOIN article_content ac ON (ac.article_id = a.id)
-            JOIN category_content cc ON (cc.category_id = a.category_id)
-            WHERE ac.language_id = :language_id AND cc.language_id = :language_id
+            JOIN article_language al ON (al.article_id = a.id)
+            JOIN category_language cl ON (cl.category_id = a.category_id)
+            WHERE al.language_id = :language_id AND cl.language_id = :language_id
             ORDER BY a.publish_date
         ', array('language_id' => array('value' => $_SESSION['language_id'], 'type' => PDO::PARAM_INT)));
     }
@@ -25,9 +25,9 @@ class ArticleModel extends AbstractModel
         ', array('id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
 
         $languages = DBAdapter::getInstance()->query('
-            SELECT ac.language_id, ac.title, ac.content, ac.is_online
-            FROM article_content ac
-            WHERE ac.article_id = :id
+            SELECT al.language_id, al.title, al.content, al.is_online
+            FROM article_language al
+            WHERE al.article_id = :id
         ', array('id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
 
         foreach ($languages as $language) {
@@ -48,11 +48,19 @@ class ArticleModel extends AbstractModel
             $article[$key] = $value;
         }
 
+        if (!isset($article['allow_comments'])) {
+            $article['allow_comments'] = 0;
+        }
+        if (!isset($article['is_online'])) {
+            $article['is_online'] = 0;
+        }
+
+        DBAdapter::getInstance()->beginTransaction();
         if ($id === null) {
             $id = DBAdapter::getInstance()->insert('article', $article);
         } else {
             DBAdapter::getInstance()->update('article', $article, array('id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
-            DBAdapter::getInstance()->delete('article_content', array('article_id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
+            DBAdapter::getInstance()->delete('article_language', array('article_id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
         }
 
         foreach ($postdata['language'] as $language_id => $language) {
@@ -60,8 +68,9 @@ class ArticleModel extends AbstractModel
             $postdata['language'][$language_id]['language_id'] = $language_id;
             $postdata['language'][$language_id]['article_id'] = $id;
 
-            DBAdapter::getInstance()->insert('article_content', $postdata['language'][$language_id]);
+            DBAdapter::getInstance()->insert('article_language', $postdata['language'][$language_id]);
         }
+        DBAdapter::getInstance()->commit();
 
     }
 
