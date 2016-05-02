@@ -3,6 +3,8 @@
 class CategoryController extends AbstractController
 {
 
+    use ACLTrait;
+
     public function admin_indexAction()
     {
         $CategoryModel = $this->loadModel('CategoryModel');
@@ -11,6 +13,11 @@ class CategoryController extends AbstractController
         $view->setVars(array(
             'categories' => $CategoryModel->getAll(),
             'messages' => $this->flashMessage()->display(null, false),
+            'permissions' => array(
+                'create' => $this->hasAccess('create'),
+                'update' => $this->hasAccess('update'),
+                'delete' => $this->hasAccess('delete'),
+            ),
         ));
 
         return $view->parse();
@@ -22,7 +29,7 @@ class CategoryController extends AbstractController
 
         if (count($_POST) > 0) {
             $CategoryModel->saveCategory($_POST);
-            $this->flashMessage()->success('category added', '/admin/category/list');
+            $this->flashMessage()->success('category added', null, '/admin/category/list');
         }
 
         $view = new View(__DIR__ . '/../../application/views/category/admin_add.phtml');
@@ -39,7 +46,7 @@ class CategoryController extends AbstractController
 
         if (count($_POST) > 0) {
             $CategoryModel->saveCategory($_POST, $id);
-            $this->flashMessage()->success('category updated', '/admin/category/list');
+            $this->flashMessage()->success('category updated', null, '/admin/category/list');
         }
 
         $view = new View(__DIR__ . '/../../application/views/category/admin_edit.phtml');

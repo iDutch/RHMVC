@@ -3,6 +3,7 @@
 return array(
     'basepath'  => '', //Strip off subdirectories when needed.
     'routes'    => array(
+        //404 route
         '/404' => array(
             'layout'    => 'errorpage.phtml',
             'content'   => array(
@@ -13,6 +14,61 @@ return array(
                 ),
             ),
         ),
+
+        //Index
+        '/admin/index'    => array(
+            'layout'    => 'main.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'IndexController',
+                    'action'        => 'admin_indexAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+        '/admin/login' => array(
+            'layout'    => 'login.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'UserController',
+                    'action'        => 'admin_loginAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+        '/admin/logout' => array(
+            'layout'    => 'login.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'UserController',
+                    'action'        => 'admin_logoutAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+
+        //Article
         '/admin/article/list'    => array(
             'layout'    => 'main.phtml',
             'header'    => array(
@@ -66,6 +122,8 @@ return array(
                 ),
             ),
         ),
+
+        //Category
         '/admin/category/list'    => array(
             'layout'    => 'main.phtml',
             'header'    => array(
@@ -119,6 +177,117 @@ return array(
                 ),
             ),
         ),
+        //User
+        '/admin/user/list'    => array(
+            'layout'    => 'main.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'UserController',
+                    'action'        => 'admin_readAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+        '/admin/user/add'    => array(
+            'layout'    => 'main.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'UserController',
+                    'action'        => 'admin_createAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+        '/admin/user/edit/(?<user_id>[0-9]+)'    => array(
+            'layout'    => 'main.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'UserController',
+                    'action'        => 'admin_updateAction',
+                    'params'        => array(
+                        'user_id' => null,
+                    ),
+                ),
+            ),
+        ),
+
+        //Group
+        '/admin/group/list'    => array(
+            'layout'    => 'main.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'GroupController',
+                    'action'        => 'admin_indexAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+        '/admin/group/add'    => array(
+            'layout'    => 'main.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'GroupController',
+                    'action'        => 'admin_addAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+        '/admin/group/edit/(?<user_id>[0-9]+)'    => array(
+            'layout'    => 'main.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'GroupController',
+                    'action'        => 'admin_editAction',
+                    'params'        => array(
+                        'user_id' => null,
+                    ),
+                ),
+            ),
+        ),
+
+        //Non admin, to pagecontroller
         '(?<uri>.*$)?' => array(
             'layout'    => null,
             'content'   => array(

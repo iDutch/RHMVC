@@ -10,7 +10,7 @@ $this->helper()->appendJSInline('
     $(document).ready(function() {
         $(".table").DataTable({
             "language": '. $this->translate('datatable_language') .',
-            "order": [[ 3, "desc" ]],
+            "order": [[ 1, "desc" ]],
             "columnDefs": [{
                 "orderable": false, "targets": [0, 4],
             }],

@@ -60,7 +60,9 @@
             <td colspan="8">
                 <div class="btn-toolbar" role="toolbar" aria-label="...">
                     <div class="btn-group pull-left" role="group" aria-label="...">
-                        <a href="/admin/<?= $this->modulename ?>/add" class="btn btn-success"><?= $this->translate('add') ?></a>
+                        <?php if ($this->permissions['create']): ?>
+                            <a href="/admin/<?= $this->modulename ?>/add" class="btn btn-success"><?= $this->translate('add') ?></a>
+                        <?php endif; ?>
                     </div>
                     <div class="btn-group pull-right" role="group" aria-label="...">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

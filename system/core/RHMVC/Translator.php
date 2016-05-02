@@ -30,10 +30,15 @@ class Translator {
         }
     }
 
-    public function translate($key)
+    private function sprintf_array($format, array $array)
+    {
+        return call_user_func_array('sprintf', array_merge((array)$format, $array));
+    }
+
+    public function translate($key, array $array = array())
     {
         if (array_key_exists($key, $this->translations)) {
-            return $this->translations[$key];
+            return $this->sprintf_array($this->translations[$key], $array);
         }
         return '[' . $key . ']';
     }

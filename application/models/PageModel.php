@@ -9,10 +9,10 @@ class PageModel extends AbstractModel
 
         //TODO: Get language_id from session
         $page = DBAdapter::getInstance()->query('
-            SELECT p.id, pm.title, pm.description, pm.keywords, l.path FROM page p
-            JOIN page_metadata pm ON (pm.page_id = p.id)
+            SELECT p.id, pl.title, pl.description, pl.keywords, l.file FROM page p
+            JOIN page_language pl ON (pl.page_id = p.id)
             JOIN layout l ON (l.id = p.layout_id)
-            WHERE language_id = :language_id
+            WHERE pl.language_id = :language_id
             AND p.url = :url
             AND p.is_online = 1
             LIMIT 1

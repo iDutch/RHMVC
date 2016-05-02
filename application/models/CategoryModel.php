@@ -6,11 +6,11 @@ class CategoryModel extends AbstractModel
     public function getAll()
     {
         return DBAdapter::getInstance()->query('
-            SELECT c.id, c.is_enabled, c.is_online, cc.name
+            SELECT c.id, c.is_enabled, c.is_online, cl.name
             FROM category c
-            JOIN category_content cc ON (cc.category_id = c.id)
-            WHERE cc.language_id = :language_id
-            ORDER BY cc.name
+            JOIN category_language cl ON (cl.category_id = c.id)
+            WHERE cl.language_id = :language_id
+            ORDER BY cl.name
         ', array('language_id' => array('value' => $_SESSION['language_id'], 'type' => PDO::PARAM_INT)));
     }
 
@@ -24,9 +24,9 @@ class CategoryModel extends AbstractModel
         ', array('id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
 
         $languages = DBAdapter::getInstance()->query('
-            SELECT cc.language_id, cc.name, cc.is_online
-            FROM category_content cc
-            WHERE cc.category_id = :id
+            SELECT cl.language_id, cl.name, cl.is_online
+            FROM category_language cl
+            WHERE cl.category_id = :id
         ', array('id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
 
         foreach ($languages as $language) {
@@ -38,7 +38,7 @@ class CategoryModel extends AbstractModel
 
     public function saveCategory($postdata, $id = null)
     {
-        $article = array();
+        $category = array();
         foreach ($postdata as $key => $value) {
             if ($key == 'save' || $key == 'language' || $key == 'languages') {
                 continue;
@@ -46,11 +46,19 @@ class CategoryModel extends AbstractModel
             $category[$key] = $value;
         }
 
+        if (!isset($category['is_enabled'])) {
+            $category['is_enabled'] = 0;
+        }
+        if (!isset($category['is_online'])) {
+            $category['is_online'] = 0;
+        }
+
+        DBAdapter::getInstance()->beginTransaction();
         if ($id === null) {
             $id = DBAdapter::getInstance()->insert('category', $category);
         } else {
             DBAdapter::getInstance()->update('category', $category, array('id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
-            DBAdapter::getInstance()->delete('category_content', array('category_id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
+            DBAdapter::getInstance()->delete('category_language', array('category_id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
         }
 
         foreach ($postdata['language'] as $language_id => $language) {
@@ -58,19 +66,20 @@ class CategoryModel extends AbstractModel
             $postdata['language'][$language_id]['language_id'] = $language_id;
             $postdata['language'][$language_id]['category_id'] = $id;
 
-            DBAdapter::getInstance()->insert('category_content', $postdata['language'][$language_id]);
+            DBAdapter::getInstance()->insert('category_language', $postdata['language'][$language_id]);
         }
+        DBAdapter::getInstance()->commit();
 
     }
 
     public function getList()
     {
         return DBAdapter::getInstance()->query('
-            SELECT c.id, cc.name
+            SELECT c.id, cl.name
             FROM category c
-            JOIN category_content cc ON (cc.category_id = c.id)
-            WHERE cc.language_id = :language_id AND c.is_enabled = 1
-            ORDER BY cc.name
+            JOIN category_language cl ON (cl.category_id = c.id)
+            WHERE cl.language_id = :language_id AND c.is_enabled = 1
+            ORDER BY cl.name
         ', array('language_id' => array('value' => 1, 'type' => PDO::PARAM_INT)));
     }
 
