@@ -15,9 +15,20 @@ return array(
             ),
         ),
 
+        '/sig.png'    => array(
+            'layout'    => null,
+            'content'   => array(
+                array(
+                    'controller'    => 'DashboardController',
+                    'action'        => 'signatureAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+
         //Index
-        '/admin/index'    => array(
-            'layout'    => 'main.phtml',
+        '/admin(/(index)?)?'    => array(
+            'layout'    => 'index.phtml',
             'header'    => array(
                 array(
                     'controller'    => 'MenuController',
@@ -27,7 +38,7 @@ return array(
             ),
             'content'   => array(
                 array(
-                    'controller'    => 'IndexController',
+                    'controller'    => 'DashboardController',
                     'action'        => 'admin_indexAction',
                     'params'        => array(),
                 ),

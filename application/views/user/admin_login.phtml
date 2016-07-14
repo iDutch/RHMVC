@@ -1,14 +1,44 @@
 <?= $this->messages ?>
-<form class="form-signin" method="post">
-    <h2 class="form-signin-heading"><?= $this->translate('sign in header'); ?></h2>
-    <label for="inputEmail" class="sr-only"><?= $this->translate('username or email'); ?></label>
-    <input type="text" name="username" id="inputEmail" class="form-control" value="<?= $this->postdata['username'] ?>" placeholder="<?= $this->translate('username or email'); ?>" required autofocus>
-    <label for="inputPassword" class="sr-only"><?= $this->translate('password'); ?></label>
-    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="<?= $this->translate('password'); ?>" required>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" value="remember-me"> <?= $this->translate('remember me'); ?>
-        </label>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="well no-padding">
+            <form action="" method="post" id="login-form" class="smart-form client-form">
+                <header>
+                    <?= $this->translate('sign in header'); ?>
+                </header>
+
+                <fieldset>
+
+                    <section>
+                        <label class="label"><?= $this->translate('username or email address'); ?></label>
+                        <label class="input"> <i class="icon-append fa fa-user"></i>
+                            <input type="text" name="username" value="<?= isset($this->postdata['username']) ? $this->postdata['username'] : '' ?>" placeholder="<?= $this->translate('username or email address'); ?>">
+                            <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> <?= $this->translate('enter email address/username'); ?></b></label>
+                    </section>
+
+                    <section>
+                        <label class="label"><?= $this->translate('password'); ?></label>
+                        <label class="input"> <i class="icon-append fa fa-lock"></i>
+                            <input type="password" name="password">
+                            <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> <?= $this->translate('enter your password'); ?></b></label>
+                        <div class="note">
+                            <a href="forgotpassword.html"><?= $this->translate('forgot your password'); ?></a>
+                        </div>
+                    </section>
+
+                    <section>
+                        <label class="checkbox">
+                            <input type="checkbox" name="remember" checked="">
+                            <i></i><?= $this->translate('remember me'); ?></label>
+                    </section>
+                </fieldset>
+                <footer>
+                    <button type="submit" class="btn btn-primary">
+                        <?= $this->translate('sign in'); ?>
+                    </button>
+                </footer>
+            </form>
+
+        </div>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit"><?= $this->translate('sign in'); ?></button>
-</form>
+</div>

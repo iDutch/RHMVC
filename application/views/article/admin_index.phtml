@@ -1,11 +1,9 @@
 <?php
 $this->helper()->appendCSSFile('/static/css/datatables/dataTables.bootstrap.min.css');
-$this->helper()->appendCSSFile('/static/css/datepicker/bootstrap-datetimepicker.min.css');
 
 $this->helper()->appendJSFile('/static/js/moment/moment.min.js');
 $this->helper()->appendJSFile('/static/js/datatables/dataTables.min.js');
 $this->helper()->appendJSFile('/static/js/datatables/dataTables.bootstrap.min.js');
-$this->helper()->appendJSFile('/static/js/datepicker/bootstrap-datetimepicker.min.js');
 $this->helper()->appendJSInline('
     $(document).ready(function() {
         $(".table").DataTable({

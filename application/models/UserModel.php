@@ -114,7 +114,7 @@ class UserModel extends AbstractModel
                 AND u.id <> :id
             ', array(
                 'username'  => array('value' => strtolower($username), 'type' => PDO::PARAM_STR),
-                'id'            => array('value' => $exclude_id, 'type' => PDO::PARAM_INT),
+                'id'        => array('value' => $exclude_id, 'type' => PDO::PARAM_INT),
             ));
         }
 
