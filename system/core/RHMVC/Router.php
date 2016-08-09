@@ -28,6 +28,9 @@ class Router
         $this->detectLanguage($uri);
         foreach ($this->routerconfig['routes'] as $route => $routeinfo) {
             if(preg_match('#^(/([a-z]{2}))?'.$route.'$#', $uri, $matches)) {
+                if(!in_array($_SERVER['REQUEST_METHOD'], explode('|', $routeinfo['methods']))) {
+                    return $this->routerconfig['routes']['/405'];
+                }
                 foreach ($routeinfo as $section => $controllers) {
                     if (is_array($controllers)) {
                         foreach($controllers as $k => $options) {
@@ -44,7 +47,7 @@ class Router
                 return $routeinfo;
             }
         }
-        return $this->routerconfig['routes']['^/404'];
+        return $this->routerconfig['routes']['/404'];
     }
 
     private function detectLanguage($uri)

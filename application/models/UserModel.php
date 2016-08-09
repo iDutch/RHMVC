@@ -49,11 +49,11 @@ class UserModel extends AbstractModel
             $user[$key] = $value;
         }
 
-        if (!$this->isUniqueEmail($user['emailaddress']) || !$this->isUniqueUsername($user['username'])) {
-            if (!$this->isUniqueEmail($user['emailaddress'])) {
+        if (!$this->isUniqueEmail($user['emailaddress'], $id) || !$this->isUniqueUsername($user['username'], $id)) {
+            if (!$this->isUniqueEmail($user['emailaddress'], $id)) {
                 $this->flashMessage()->error('email address already exists', null, null);
             }
-            if (!$this->isUniqueUsername($user['username'])) {
+            if (!$this->isUniqueUsername($user['username'], $id)) {
                 $this->flashMessage()->error('username already exists', null, null);
             }
             return false;
@@ -98,24 +98,48 @@ class UserModel extends AbstractModel
         ');
     }
 
-    private function isUniqueUsername($username)
+    private function isUniqueUsername($username, $exclude_id = null)
     {
-        $users =  DBAdapter::getInstance()->query('
-            SELECT u.id
-            FROM `user` u
-            WHERE LOWER(u.username) = :username
-        ', array('username' => array('value' => strtolower($username), 'type' => PDO::PARAM_STR)));
+        if (is_null($exclude_id)) {
+            $users = DBAdapter::getInstance()->query('
+                SELECT u.id
+                FROM `user` u
+                WHERE LOWER(u.username) = :username
+            ', array('username' => array('value' => strtolower($username), 'type' => PDO::PARAM_STR)));
+        } else {
+            $users = DBAdapter::getInstance()->query('
+                SELECT u.id
+                FROM `user` u
+                WHERE LOWER(u.username) = :username
+                AND u.id <> :id
+            ', array(
+                'username'  => array('value' => strtolower($username), 'type' => PDO::PARAM_STR),
+                'id'        => array('value' => $exclude_id, 'type' => PDO::PARAM_INT),
+            ));
+        }
 
         return count($users) < 1;
     }
 
-    private function isUniqueEmail($emailaddress)
+    private function isUniqueEmail($emailaddress, $exclude_id = null)
     {
-        $users =  DBAdapter::getInstance()->query('
-            SELECT u.id
-            FROM `user` u
-            WHERE LOWER(u.emailaddress) = :emailaddress
-        ', array('emailaddress' => array('value' => strtolower($emailaddress), 'type' => PDO::PARAM_STR)));
+        if (is_null($exclude_id)) {
+            $users = DBAdapter::getInstance()->query('
+                SELECT u.id
+                FROM `user` u
+                WHERE LOWER(u.emailaddress) = :emailaddress
+            ', array('emailaddress' => array('value' => strtolower($emailaddress), 'type' => PDO::PARAM_STR)));
+        } else {
+            $users = DBAdapter::getInstance()->query('
+                SELECT u.id
+                FROM `user` u
+                WHERE LOWER(u.emailaddress) = :emailaddress
+                AND u.id <> :id
+            ', array(
+                'emailaddress'  => array('value' => strtolower($emailaddress), 'type' => PDO::PARAM_STR),
+                'id'            => array('value' => $exclude_id, 'type' => PDO::PARAM_INT),
+            ));
+        }
 
         return count($users) < 1;
     }

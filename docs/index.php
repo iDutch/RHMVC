@@ -28,10 +28,11 @@ require __DIR__ . '/../system/core/RHMVC/DBAdapter.php';
 
 require __DIR__ . '/../application/controllers/ACLTrait.php';
 require __DIR__ . '/../system/libs/Logger/Logger.php';
+require __DIR__ . '/../system/libs/QuinChart/QuinChart.php';
 
 $router = new Router();
 
-$uri = $_SERVER['REQUEST_URI'];
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $route = $router->getRoute($uri);
 
 $dispatcher = new Dispatcher();

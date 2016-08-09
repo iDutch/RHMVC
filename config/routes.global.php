@@ -5,6 +5,7 @@ return array(
     'routes'    => array(
         //404 route
         '/404' => array(
+            'methods'   => 'GET',
             'layout'    => 'errorpage.phtml',
             'content'   => array(
                 array(
@@ -14,10 +15,46 @@ return array(
                 ),
             ),
         ),
+        '/405' => array(
+            'methods'   => 'GET',
+            'layout'    => 'errorpage.phtml',
+            'content'   => array(
+                array(
+                    'controller'    => 'ErrorController',
+                    'action'        => 'error405Action',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+
+        '/sig.png'    => array(
+            'methods'   => 'GET',
+            'layout'    => null,
+            'content'   => array(
+                array(
+                    'controller'    => 'DashboardController',
+                    'action'        => 'signatureAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
+
+        '/quin.png'    => array(
+            'methods'   => 'GET',
+            'layout'    => null,
+            'content'   => array(
+                array(
+                    'controller'    => 'DashboardController',
+                    'action'        => 'quinAction',
+                    'params'        => array(),
+                ),
+            ),
+        ),
 
         //Index
-        '/admin/index'    => array(
-            'layout'    => 'main.phtml',
+        '/admin(/(index)?)?'    => array(
+            'methods'   => 'GET',
+            'layout'    => 'index.phtml',
             'header'    => array(
                 array(
                     'controller'    => 'MenuController',
@@ -27,13 +64,14 @@ return array(
             ),
             'content'   => array(
                 array(
-                    'controller'    => 'IndexController',
+                    'controller'    => 'DashboardController',
                     'action'        => 'admin_indexAction',
                     'params'        => array(),
                 ),
             ),
         ),
         '/admin/login' => array(
+            'methods'   => 'GET|POST',
             'layout'    => 'login.phtml',
             'header'    => array(
                 array(
@@ -51,6 +89,7 @@ return array(
             ),
         ),
         '/admin/logout' => array(
+            'methods'   => 'GET',
             'layout'    => 'login.phtml',
             'header'    => array(
                 array(
@@ -70,6 +109,7 @@ return array(
 
         //Article
         '/admin/article/list'    => array(
+            'methods'   => 'GET',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -87,6 +127,7 @@ return array(
             ),
         ),
         '/admin/article/add' => array(
+            'methods'   => 'GET|POST',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -104,6 +145,7 @@ return array(
             ),
         ),
         '/admin/article/edit/(?<article_id>[0-9]+)' => array(
+            'methods'   => 'GET|POST',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -125,6 +167,7 @@ return array(
 
         //Category
         '/admin/category/list'    => array(
+            'methods'   => 'GET',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -159,6 +202,7 @@ return array(
             ),
         ),
         '/admin/category/edit/(?<category_id>[0-9]+)'    => array(
+            'methods'   => 'GET|POST',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -179,6 +223,7 @@ return array(
         ),
         //User
         '/admin/user/list'    => array(
+            'methods'   => 'GET',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -196,6 +241,7 @@ return array(
             ),
         ),
         '/admin/user/add'    => array(
+            'methods'   => 'GET|POST',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -213,6 +259,7 @@ return array(
             ),
         ),
         '/admin/user/edit/(?<user_id>[0-9]+)'    => array(
+            'methods'   => 'GET|POST',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -234,6 +281,7 @@ return array(
 
         //Group
         '/admin/group/list'    => array(
+            'methods'   => 'GET',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -251,6 +299,7 @@ return array(
             ),
         ),
         '/admin/group/add'    => array(
+            'methods'   => 'GET|POST',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -267,7 +316,8 @@ return array(
                 ),
             ),
         ),
-        '/admin/group/edit/(?<user_id>[0-9]+)'    => array(
+        '/admin/group/edit/(?<group_id>[0-9]+)'    => array(
+            'methods'   => 'GET|POST',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -281,7 +331,7 @@ return array(
                     'controller'    => 'GroupController',
                     'action'        => 'admin_editAction',
                     'params'        => array(
-                        'user_id' => null,
+                        'group_id' => null,
                     ),
                 ),
             ),
@@ -289,6 +339,7 @@ return array(
 
         //Non admin, to pagecontroller
         '(?<uri>.*$)?' => array(
+            'methods'   => 'GET|POST',
             'layout'    => null,
             'content'   => array(
                 array(

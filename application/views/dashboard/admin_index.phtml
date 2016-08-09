@@ -1,3 +1,62 @@
-<div class="well">
-    <textarea name="admin_notes" class="form-control" rows="15"></textarea>
+<!-- new widget -->
+<div class="jarviswidget jarviswidget-color-blue" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false">
+
+    <!-- widget options:
+    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+    data-widget-colorbutton="false"
+    data-widget-editbutton="false"
+    data-widget-togglebutton="false"
+    data-widget-deletebutton="false"
+    data-widget-fullscreenbutton="false"
+    data-widget-custombutton="false"
+    data-widget-collapsed="true"
+    data-widget-sortable="false"
+
+    -->
+
+    <header>
+        <span class="widget-icon"> <i class="fa fa-check txt-color-white"></i> </span>
+        <h2> Notes </h2>
+        <!-- <div class="widget-toolbar">
+        add: non-hidden - to disable auto hide
+        </div>-->
+    </header>
+
+    <!-- widget div-->
+    <div>
+        <!-- widget edit box -->
+        <div class="jarviswidget-editbox">
+            <div>
+                <label>Title:</label>
+                <input type="text" />
+            </div>
+        </div>
+        <!-- end widget edit box -->
+
+        <div class="widget-body no-padding">
+            <!-- content goes here -->
+            <form class="smart-form" action="/admin" method="post">
+                <fieldset>
+                    <section>
+                        <label class="textarea">
+                            <textarea rows="5" class="custom-scroll"></textarea>
+                        </label>
+                    </section>
+                </fieldset>
+                <footer>
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="window.history.back();">
+                        Back
+                    </button>
+                </footer>
+            </form>
+            <!-- end content -->
+        </div>
+
+    </div>
+    <!-- end widget div -->
 </div>
+<!-- end widget -->
