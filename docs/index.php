@@ -28,6 +28,7 @@ require __DIR__ . '/../system/core/RHMVC/DBAdapter.php';
 
 require __DIR__ . '/../application/controllers/ACLTrait.php';
 require __DIR__ . '/../system/libs/Logger/Logger.php';
+require __DIR__ . '/../system/libs/QuinChart/QuinChart.php';
 
 $router = new Router();
 

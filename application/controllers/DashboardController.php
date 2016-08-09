@@ -50,4 +50,24 @@ class DashboardController extends AbstractController
         exit;
     }
 
+    public function quinAction() {
+        $QuinChart = new QuinChart(array(
+            rand(0, 0),
+            rand(100, 100),
+            rand(200, 200),
+            rand(300, 300),
+            rand(400, 400),
+            rand(500, 500),
+            rand(600, 600),
+            rand(700, 700),
+            rand(800, 800),
+            rand(900, 900),
+            rand(1000, 1000),
+        ), 1000, 10, 600, 10, 2);
+
+        header('Content-Type: image/png');
+        echo $QuinChart->drawGraph();
+        exit;
+    }
+
 }
