@@ -5,6 +5,7 @@ return array(
     'routes'    => array(
         //404 route
         '/404' => array(
+            'methods'   => 'GET',
             'layout'    => 'errorpage.phtml',
             'content'   => array(
                 array(
@@ -15,6 +16,7 @@ return array(
             ),
         ),
         '/405' => array(
+            'methods'   => 'GET',
             'layout'    => 'errorpage.phtml',
             'content'   => array(
                 array(
