@@ -46,4 +46,13 @@ return array(
     'admin_link_articles'   => 'Artikelen',
     'admin_link_categories' => 'Categorie&euml;n',
     'admin_link_paragraphs'  => 'Paragrafen',
+
+    'read_action'   => 'Lezen',
+    'create_action' => 'Cre&euml;ren',
+    'update_action' => 'Wijzigen',
+    'delete_action' => 'Verwijderen',
+
+    'ID' => 'ID',
+
+
 );

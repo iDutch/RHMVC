@@ -6,10 +6,7 @@ return array(
     'is_enabled'    => 'Actief?',
 
     'user_role'     => 'Gebruikers rechten',
-    'read_action'   => 'Lezen',
-    'create_action' => 'Cre&euml;ren',
-    'update_action' => 'Wijzigen',
-    'delete_action' => 'Verwijderen',
+
 
     'group' => 'Groep',
 
@@ -17,7 +14,7 @@ return array(
     'Group_module'      => 'Groepen',
     'Page_module'       => 'Pagina\'s',
     'Article_module'    => 'Artikelen',
-    'Category_module'   => 'Categorie&euml;',
+    'Category_module'   => 'Categorie&euml;n',
     'Paragraph_module'  => 'Paragrafen',
     'Form_module'       => 'Formulieren',
 

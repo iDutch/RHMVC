@@ -6,10 +6,7 @@ return array(
     'is_enabled'    => 'Enabled?',
 
     'user_role'     => 'User role',
-    'read_action'   => 'Read',
-    'create_action' => 'Create',
-    'update_action' => 'Update',
-    'delete_action' => 'Delete',
+
 
     'group' => 'Group',
 

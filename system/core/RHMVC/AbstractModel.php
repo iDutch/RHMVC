@@ -29,4 +29,12 @@ abstract class AbstractModel extends HMVC
         $this->model_config = array_merge($global, $local);
     }
 
+    protected function getLanguages()
+    {
+        return DBAdapter::getInstance()->query('
+            SELECT id, iso_code, is_default, is_online, is_enabled FROM language
+            WHERE is_enabled = 1
+        ');
+    }
+
 }

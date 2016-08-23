@@ -1,0 +1,43 @@
+<?php
+//$this->helper()->appendCSSFile('/static/css/datatables/dataTables.bootstrap.min.css');
+
+//$this->helper()->appendJSFile('/static/js/moment/moment.min.js');
+//$this->helper()->appendJSFile('/static/js/datatables/dataTables.min.js');
+//$this->helper()->appendJSFile('/static/js/datatables/dataTables.bootstrap.min.js');
+//$this->helper()->appendJSInline('
+//    $(document).ready(function() {
+//        $(".table").DataTable({
+//            "language": '. $this->translate('datatable_language') .',
+//            "order": [[ 1, "desc" ]],
+//            "columnDefs": [{
+//                "orderable": false, "targets": [0],
+//            }],
+//            "columns": [
+//              { "width": "20px" },
+//              null,
+//              null
+//            ]
+//        });
+//    });
+//');
+?>
+<?= $this->partial('admin_translations_table.phtml', array(
+    'modulename' => 'translation',
+    'fields' => array(
+        'id' => array(
+            'label' => 'ID',
+            'type' => 'primary_key',
+        ),
+        'keyword' => array(
+            'label' => 'keyword',
+            'type' => 'string',
+        ),
+        'translation' => array(
+            'label' => 'translation',
+            'type' => 'string',
+        ),
+    ),
+    'items' => $this->translations,
+    'messages' => $this->messages,
+    'languages' => $this->languages,
+)) ?>

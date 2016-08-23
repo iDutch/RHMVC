@@ -2,7 +2,6 @@
 
 return array(
     //Form labels and default
-    'ID'                => 'ID',
     'title'             => 'Title',
     'content'           => 'Content',
     'publish_date'      => 'Publish date',

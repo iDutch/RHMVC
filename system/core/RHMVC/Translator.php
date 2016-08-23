@@ -21,13 +21,8 @@ class Translator {
 
     private function loadTranslations($language_iso_code)
     {
-        $langdir = __DIR__ . '/../../../application/languages';
-        foreach (scandir($langdir) as $file) {
-            if (preg_match('/.' . $language_iso_code . '.php$/', $file)) {
-                $module_translations = require $langdir . '/' . $file;
-                $this->translations = array_merge($this->translations, $module_translations);
-            }
-        }
+        $translationfile = __DIR__ . '/../../../application/languages/translations.' . $language_iso_code . '.php';
+        $this->translations = require $translationfile;
     }
 
     private function sprintf_array($format, array $array)
@@ -40,6 +35,13 @@ class Translator {
         if (array_key_exists($key, $this->translations)) {
             return $this->sprintf_array($this->translations[$key], $array);
         }
+
+        DBAdapter::getInstance()->query('
+            INSERT INTO translation (keyword)
+            VALUES (\'' . $key . '\')
+            ON DUPLICATE KEY UPDATE keyword=keyword;
+        ');
+        //INSERT INTO table_tags (tag) VALUES ('tag_a'),('tab_b'),('tag_c') ON DUPLICATE KEY UPDATE tag=tag;
         return '[' . $key . ']';
     }
 

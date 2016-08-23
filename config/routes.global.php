@@ -1,4 +1,30 @@
 <?php
+// EXAMPLE route
+//
+//return array(
+//    'basepath'  => '',                                        - Strip off subdirectories when site is not on domain root
+//    'routes'    => array(
+//        '/page/subpage' => array(                             - Get parsed in preg_match so regular expressions can be used
+//            'methods'   => 'GET|POST',                        - Set allowed HTTP methods. If not set all methods are allowed
+//            'layout'    => 'errorpage.phtml',                 - Which layout to be used
+//            'content'   => array(                             - Array of controllers which fill this layout variable (content)
+//                array(
+//                    'controller'    => 'ErrorController',
+//                    'action'        => 'error404Action',
+//                    'params'        => array(),
+//                ),
+//            ),
+//            'footer' => array(                                - Array of controllers fill fill this layout variable (footer)
+//                array(
+//                    'controller'    => 'ContentController',
+//                    'action'        => 'footerAction',
+//                    'params'        => array(),
+//                ),
+//            ),
+//        ),
+//    ),
+//);
+
 
 return array(
     'basepath'  => '', //Strip off subdirectories when needed.
@@ -334,6 +360,25 @@ return array(
                     'params'        => array(
                         'group_id' => null,
                     ),
+                ),
+            ),
+        ),
+
+        '/admin/translations/list'    => array(
+            'methods'   => 'GET|POST',
+            'layout'    => 'main.phtml',
+            'header'    => array(
+                array(
+                    'controller'    => 'MenuController',
+                    'action'        => 'staticAction',
+                    'params'        => array(),
+                ),
+            ),
+            'content'   => array(
+                array(
+                    'controller'    => 'TranslationController',
+                    'action'        => 'admin_readAction',
+                    'params'        => array(),
                 ),
             ),
         ),

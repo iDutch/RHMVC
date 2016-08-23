@@ -50,4 +50,11 @@ return array(
     'admin_link_articles'   => 'Articles',
     'admin_link_categories' => 'Categories',
     'admin_link_paragraph'  => 'Paragraphs',
+
+    'read_action'   => 'Read',
+    'create_action' => 'Create',
+    'update_action' => 'Update',
+    'delete_action' => 'Delete',
+
+    'ID' => 'ID',
 );
