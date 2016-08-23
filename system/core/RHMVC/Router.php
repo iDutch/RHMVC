@@ -28,7 +28,7 @@ class Router
         $this->detectLanguage($uri);
         foreach ($this->routerconfig['routes'] as $route => $routeinfo) {
             if(preg_match('#^(/([a-z]{2}))?'.$route.'$#', $uri, $matches)) {
-                if(!in_array($_SERVER['REQUEST_METHOD'], explode('|', $routeinfo['methods']))) {
+                if(!empty($routeinfo['methods']) && !in_array($_SERVER['REQUEST_METHOD'], explode('|', $routeinfo['methods']))) {
                     return $this->routerconfig['routes']['/405'];
                 }
                 foreach ($routeinfo as $section => $controllers) {
@@ -56,7 +56,7 @@ class Router
             $language = DBAdapter::getInstance()->query('SELECT id, iso_code FROM language WHERE LOWER(iso_code) = :iso_code', array(
                'iso_code' => array('value' => $matches['language_iso_code'])
             ));
-            if(count($language) == 1){
+            if (count($language) == 1) {
                 $_SESSION['language_iso_code'] = strtolower($language[0]->iso_code);
                 $_SESSION['language_id'] = $language[0]->id;
             } else {
@@ -64,7 +64,7 @@ class Router
                 $_SESSION['language_iso_code'] = strtolower($language[0]->iso_code);
                 $_SESSION['language_id'] = $language[0]->id;
             }
-        } else {
+        } else if (!isset($_SESSION['language_iso_code']) || !isset($_SESSION['language_id'])) {
             $language = DBAdapter::getInstance()->query('SELECT id, iso_code FROM language WHERE is_default = 1');
             $_SESSION['language_iso_code'] = strtolower($language[0]->iso_code);
             $_SESSION['language_id'] = $language[0]->id;

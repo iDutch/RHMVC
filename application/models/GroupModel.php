@@ -112,4 +112,20 @@ class GroupModel extends AbstractModel
         ');
     }
 
+    public function getGroupName($id)
+    {
+        $group = DBAdapter::getInstance()->query('
+            SELECT `name`
+            FROM `group_language`
+            WHERE group_id = :id
+            AND language_id = :language_id
+            LIMIT 1
+        ', array(
+            'id' => array('value' => $id, 'type' => PDO::PARAM_INT),
+            'language_id' => array('value' => $_SESSION['language_id'], 'type' => PDO::PARAM_INT)
+        ));
+
+        return isset($group[0]->name) ? $group[0]->name : false;
+    }
+
 }

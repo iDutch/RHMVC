@@ -196,7 +196,19 @@ class UserModel extends AbstractModel
         }
         $_SESSION['user'] = $user[0];
 
-        return true;
+        return $user[0]->id;
+    }
+
+    public function getUsername($id)
+    {
+        $user = DBAdapter::getInstance()->query('
+            SELECT username
+            FROM user
+            WHERE id = :id
+            LIMIT 1
+        ', array('id' => array('value' => $id, 'type' => PDO::PARAM_INT)));
+
+        return isset($user[0]->username) ? $user[0]->username : false;
     }
 
 }

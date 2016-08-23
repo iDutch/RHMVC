@@ -29,16 +29,10 @@ abstract class AbstractController extends HMVC
 
     protected function getLanguages()
     {
-        $memcached = new Memcached;
-        $memcached->addServer('127.0.0.1', 11211);
-
-        $cache = new Cache(new MemcachedStore($memcached));
-
-        return $cache->cache('languages', function() {
-            return DBAdapter::getInstance()->query('
-                SELECT id, iso_code, is_default, is_online, is_enabled FROM language
-            ');
-        }, 3600);
+        return DBAdapter::getInstance()->query('
+            SELECT id, iso_code, is_default, is_online, is_enabled FROM language
+            WHERE is_enabled = 1
+        ');
     }
 
 }

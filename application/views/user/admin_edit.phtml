@@ -30,7 +30,7 @@
                         <td><?= $this->translate($module->name . '_module') ?></td>
                         <?php foreach($this->actions as $action): ?>
                             <td>
-                                <input <?= ((int) $this->user->user_roles[$module->id] & (int) $action->value) == (int) $action->value ? 'checked' : '' ?> name="user_role[<?= $module->id ?>][<?= $action->id ?>]" value="<?= $action->value ?>" type="checkbox">
+                                <input <?= isset($this->user->user_roles[$module->id]) && ((int) $this->user->user_roles[$module->id] & (int) $action->value) == (int) $action->value ? 'checked' : '' ?> name="user_role[<?= $module->id ?>][<?= $action->id ?>]" value="<?= $action->value ?>" type="checkbox">
                             </td>
                         <?php endforeach; ?>
                     </tr>

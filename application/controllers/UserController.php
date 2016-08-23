@@ -46,8 +46,8 @@ class UserController extends AbstractController
         $GroupModel = $this->loadModel('GroupModel');
 
         if (count($_POST) > 0) {
-            if ($UserModel->saveUser($_POST)) {
-                $this->flashMessage()->success('user created', null, '/admin/user/list');
+            if ($id = $UserModel->saveUser($_POST)) {
+                $this->flashMessage()->success('user created', array('<strong>' . $UserModel->getUsername($id) . '</strong>'), '/admin/user/list');
             }
         }
 
@@ -78,8 +78,8 @@ class UserController extends AbstractController
         $GroupModel = $this->loadModel('GroupModel');
 
         if (count($_POST) > 0) {
-            if ($UserModel->saveUser($_POST, $id)) {
-                $this->flashMessage()->success('user updated', null, '/admin/user/list');
+            if ($id = $UserModel->saveUser($_POST, $id)) {
+                $this->flashMessage()->success('user updated', array('<strong>' . $UserModel->getUsername($id) . '</strong>'), '/admin/user/list');
             }
         }
 
@@ -101,8 +101,8 @@ class UserController extends AbstractController
         $UserModel = $this->loadModel('UserModel');
 
         if (count($_POST) > 0) {
-            if($user = $UserModel->authenticateUser($_POST)){
-                $this->flashMessage()->success('welcome user', array($user->username), '/admin/user/list');
+            if($id = $UserModel->authenticateUser($_POST)){
+                $this->flashMessage()->success('welcome user', array('<strong>' . $UserModel->getUsername($id) . '</strong>'), '/admin/user/list');
             }
         }
 

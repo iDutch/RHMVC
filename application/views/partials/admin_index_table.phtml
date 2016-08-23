@@ -41,7 +41,14 @@
                     <td><?= $item->{$key} ?></td>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <td><a href="/admin/<?= $this->modulename ?>/edit/<?= $item->id ?>" class="btn btn-sm btn-default"><?= $this->translate('edit') ?></a> <button type="button" class="btn btn-sm btn-danger delete-single"><?= $this->translate('delete') ?></button></td>
+            <td>
+                <?php if ($this->permissions['update']): ?>
+                    <a href="/admin/<?= $this->modulename ?>/edit/<?= $item->id ?>" class="btn btn-sm btn-default"><?= $this->translate('edit') ?></a>
+                <?php endif; ?>
+                <?php if ($this->permissions['delete']): ?>
+                    <button type="button" class="btn btn-sm btn-danger delete-single"><?= $this->translate('delete') ?></button>
+                <?php endif; ?>
+            </td>
         </tr>
     <?php endforeach; ?>
     </tbody>

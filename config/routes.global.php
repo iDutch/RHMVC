@@ -52,7 +52,7 @@ return array(
         ),
 
         //Index
-        '/admin(/(index)?)?'    => array(
+        '/admin/dashboard(/(index)?)?'    => array(
             'methods'   => 'GET',
             'layout'    => 'index.phtml',
             'header'    => array(
@@ -121,7 +121,7 @@ return array(
             'content'   => array(
                 array(
                     'controller'    => 'ArticleController',
-                    'action'        => 'admin_indexAction',
+                    'action'        => 'admin_readAction',
                     'params'        => array(),
                 ),
             ),
@@ -179,12 +179,13 @@ return array(
             'content'   => array(
                 array(
                     'controller'    => 'CategoryController',
-                    'action'        => 'admin_indexAction',
+                    'action'        => 'admin_readAction',
                     'params'        => array(),
                 ),
             ),
         ),
         '/admin/category/add'    => array(
+            'methods'   => 'GET|POST',
             'layout'    => 'main.phtml',
             'header'    => array(
                 array(
@@ -293,7 +294,7 @@ return array(
             'content'   => array(
                 array(
                     'controller'    => 'GroupController',
-                    'action'        => 'admin_indexAction',
+                    'action'        => 'admin_readAction',
                     'params'        => array(),
                 ),
             ),

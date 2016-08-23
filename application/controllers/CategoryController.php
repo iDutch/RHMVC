@@ -5,8 +5,16 @@ class CategoryController extends AbstractController
 
     use ACLTrait;
 
-    public function admin_indexAction()
+    public function admin_readAction()
     {
+        /**
+         * @var $CategoryModel CategoryModel
+         */
+
+        if (!$this->hasAccess(__FUNCTION__)) {
+            header("Location: /admin/dashboard");
+        }
+
         $CategoryModel = $this->loadModel('CategoryModel');
 
         $view = new View(__DIR__ . '/../../application/views/category/admin_index.phtml');
@@ -25,6 +33,14 @@ class CategoryController extends AbstractController
 
     public function admin_addAction()
     {
+        /**
+         * @var $CategoryModel CategoryModel
+         */
+
+        if (!$this->hasAccess(__FUNCTION__)) {
+            header("Location: /admin/dashboard");
+        }
+
         $CategoryModel = $this->loadModel('CategoryModel');
 
         if (count($_POST) > 0) {
@@ -42,6 +58,14 @@ class CategoryController extends AbstractController
 
     public function admin_editAction($id)
     {
+        /**
+         * @var $CategoryModel CategoryModel
+         */
+
+        if (!$this->hasAccess(__FUNCTION__)) {
+            header("Location: /admin/dashboard");
+        }
+
         $CategoryModel = $this->loadModel('CategoryModel');
 
         if (count($_POST) > 0) {
