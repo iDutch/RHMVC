@@ -3,6 +3,7 @@
         "sobstel/metaphore": "1.2.*",
         "oyejorge/less.php": "~1.5",
         "matthiasmullie/minify": "^1.3",
-        "plasticbrain/php-flash-messages": "*"
+        "plasticbrain/php-flash-messages": "*",
+        "panique/pdo-debug": "0.2"
     }
 }
