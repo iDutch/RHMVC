@@ -1,10 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: richard
- * Date: 7/28/15
- * Time: 11:17 AM
- */
+
+namespace RHMVC;
+
+use RHMVC\Translator;
+use RHMVC\Helper;
 
 class View
 {
@@ -12,12 +11,19 @@ class View
     private $view;
     private $vars = array();
 
-    public function __construct($view)
+    public function __construct($view, $isLayout = false)
     {
-        if (!file_exists($view)) {
-            throw new Exception('View error: Cannot load view: \'' . $view . '\'');
+        if ($isLayout) {
+            if (!file_exists(LAYOUT_DIR . $view)) {
+                throw new \Exception('View error: Cannot load layout: \'' . LAYOUT_DIR . $view . '\'');
+            }
+            $this->view = LAYOUT_DIR . $view;
+        } else {
+            if (!file_exists(VIEW_DIR . $view)) {
+                throw new \Exception('View error: Cannot load view: \'' . VIEW_DIR . $view . '\'');
+            }
+            $this->view = VIEW_DIR . $view;
         }
-        $this->view = $view;
     }
 
     public function setVars(array $vars = array())
@@ -34,22 +40,6 @@ class View
         return ob_get_flush();
     }
 
-    public function parseJS()
-    {
-        ob_start();
-        require $this->view;
-        $html = ob_get_clean();
-
-        $js = '';
-        //header("Content-Type: text/x-javascript; charset=utf-8");
-        foreach (preg_split("/[\r\n]+/", $html) as $line) {
-            if (substr(trim($line), 0, 2) !== "//") //We cannot document.write comments!!! This only strips out line starting with comments
-            $js .= "document.write('" . addslashes(trim($line)) . "');\n";
-        }
-        return $js;
-    }
-
-
     public function parse()
     {
         ob_start();
@@ -61,7 +51,7 @@ class View
     {
         $this->setVars($vars);
         ob_start();
-        require __DIR__ . '/../../../application/views/partials/' . $partial;
+        require PARTIAL_DIR . $partial;
         return ob_get_clean();
     }
 

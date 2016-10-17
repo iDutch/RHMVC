@@ -9,6 +9,8 @@
  * @version 1.1.3
  */
 
+namespace RHMVC;
+
 class DBAdapter {
 
 	private static $instance    	= null;
@@ -48,7 +50,7 @@ class DBAdapter {
 	 * Constructor
 	 */
 	private function __construct($dsn, $user, $pass) {
-		$this->connection = new PDO($dsn, $user, $pass);
+		$this->connection = new \PDO($dsn, $user, $pass);
 	}
 
 	/**
