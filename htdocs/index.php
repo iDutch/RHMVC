@@ -3,12 +3,12 @@ session_start();
 $_SESSION['language_iso_code'] = 'en';
 $_SESSION['language_id'] = 2;
 
-use RHMVC\Router;
+use core\RHMVC\Router;
 
-//if (isset($_SERVER['IS_DEVEL'])) {
+if (isset($_SERVER['IS_DEVEL'])) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
-//}
+}
 
 require __DIR__ . '/../config/settings.global.php';
 
@@ -28,6 +28,7 @@ require __DIR__ . '/../system/core/RHMVC/Helper.php';
 require __DIR__ . '/../system/core/RHMVC/View.php';
 
 require __DIR__ . '/../system/libs/Logger/Logger.php';
+require __DIR__ . '/../system/libs/PDODebugger/PDODebugger.php';
 
 $router = new Router();
 

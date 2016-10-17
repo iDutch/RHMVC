@@ -1,9 +1,9 @@
 <?php
 
-namespace RHMVC;
+namespace core\RHMVC;
 
-use RHMVC\Translator;
-use RHMVC\Helper;
+use core\RHMVC\Translator;
+use core\RHMVC\Helper;
 
 class View
 {

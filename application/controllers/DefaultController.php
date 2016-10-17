@@ -1,7 +1,7 @@
 <?php
 
-use RHMVC\AbstractController;
-use RHMVC\View;
+use core\RHMVC\AbstractController;
+use core\RHMVC\View;
 
 class DefaultController extends AbstractController
 {

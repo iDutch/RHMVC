@@ -1,6 +1,6 @@
 <?php
 
-namespace RHMVC;
+namespace core\RHMVC;
 
 abstract class AbstractController extends HMVC
 {

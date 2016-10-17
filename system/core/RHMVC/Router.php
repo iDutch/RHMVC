@@ -1,8 +1,8 @@
 <?php
 
-namespace RHMVC;
+namespace core\RHMVC;
 
-use RHMVC\Route;
+use core\RHMVC\Route;
 
 class Router
 {

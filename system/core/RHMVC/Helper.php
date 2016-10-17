@@ -1,15 +1,15 @@
 <?php
 
-namespace RHMVC;
+namespace core\RHMVC;
 
 use MatthiasMullie\Minify;
 
-class Helper {
+class Helper
+{
 
-    private static $instance    = null;
-
-    private $javascripts    = array();
-    private $stylesheets    = array();
+    private static $instance = null;
+    private $javascripts = array();
+    private $stylesheets = array();
 
     public static function getInstance()
     {
@@ -34,6 +34,11 @@ class Helper {
         array_push($this->stylesheets, array('file' => $file));
     }
 
+    public function prependCSSFile($file)
+    {
+        array_unshift($this->stylesheets, array('file' => $file));
+    }
+
     public function appendJSUrl($url)
     {
         array_push($this->javascripts, array('url' => $url));
@@ -54,7 +59,7 @@ class Helper {
         $js = null;
         foreach ($this->javascripts as $types) {
             foreach ($types as $type => $value) {
-                if($type === 'file'){
+                if ($type === 'file') {
                     $js .= "<script type=\"text/javascript\" src=\"" . $value . "\"></script>\n\t";
                 } else if ($type === 'url') {
                     $js .= "<script type=\"text/javascript\" src=\"" . $value . "\"></script>\n\t";
@@ -68,26 +73,25 @@ class Helper {
 
     public function getJSMinified()
     {
-        $hash = md5(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-        if (!file_exists(__DIR__ . '/../../../docs/static/cache/js/minified-' . $hash . '.js') || isset($_GET['debug'])) {
-            $js = null;
-            foreach ($this->javascripts as $types) {
-                foreach ($types as $type => $value) {
-                    if($type === 'file'){
-                        $js .= file_get_contents(__DIR__ . '/../../../docs' . $value);
-                    } else if ($type === 'url') {
-                        $js .= file_get_contents($value);
-                    } else {
-                        $js .= $value;
-                    }
+        $js = null;
+        foreach ($this->javascripts as $types) {
+            foreach ($types as $type => $value) {
+                if ($type === 'file') {
+                    $js .= file_get_contents(__DIR__ . '/../../../docs' . $value);
+                } else if ($type === 'url') {
+                    $js .= file_get_contents($value);
+                } else {
+                    $js .= $value;
                 }
             }
-
+        }
+        $hash = md5($js);
+        if (!file_exists(__DIR__ . '/../../../htdocs/static/cache/js/minified-' . $hash . '.js') || isset($_GET['debug'])) {
             $minify = new Minify\JS($js);
-            $minify->minify(__DIR__ . '/../../../docs/static/cache/js/minified-' . $hash . '.js');
+            $minify->minify(__DIR__ . '/../../../htdocs/static/cache/js/minified-' . $hash . '.js');
         }
 
-        return '<script src="/static/cache/js/minified.js"></script>';
+        return '<script src="/static/cache/js/minified-' . $hash . '.js"></script>';
     }
 
     public function getCSS()
@@ -95,7 +99,7 @@ class Helper {
         $css = null;
         foreach ($this->stylesheets as $types) {
             foreach ($types as $type => $value) {
-                if($type === 'file'){
+                if ($type === 'file') {
                     $css .= "<link rel=\"stylesheet\" href=\"" . $value . "\">\n\t";
                 } else {
                     $css .= "<style>" . $value . "</style>\n\t";
@@ -107,28 +111,30 @@ class Helper {
 
     public function getCSSMinified()
     {
-        $hash = md5(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-        if (!file_exists(__DIR__ . '/../../../docs/static/cache/js/minified-' . $hash . '.css') || isset($_GET['debug'])) {
-            $css = null;
-            foreach ($this->stylesheets as $types) {
-                foreach ($types as $type => $value) {
-                    if($type === 'file'){
-                        $css .= file_get_contents(__DIR__ . '/../../../docs' . $value);
-                    } else if ($type === 'url') {
-                        $css .= file_get_contents($value);
-                    } else {
-                        $css .= $value;
-                    }
+        $css = null;
+        foreach ($this->stylesheets as $types) {
+            foreach ($types as $type => $value) {
+                if ($type === 'file') {
+                    $css .= file_get_contents(__DIR__ . '/../../../docs' . $value);
+                } else if ($type === 'url') {
+                    $css .= file_get_contents($value);
+                } else {
+                    $css .= $value;
                 }
             }
+        }
+        $hash = md5($css);
+        if (!file_exists(__DIR__ . '/../../../htdocs/static/cache/css/minified-' . $hash . '.css') || isset($_GET['debug'])) {
+            $options = array('compress' => true);
+            $parser = new \Less_Parser($options);
+            $parser->parse($css);
+            $css = $parser->getCss();
 
-            $minify = new Minify\CSS($js);
-            $minify->minify(__DIR__ . '/../../../docs/static/cache/css/-' . $hash . '.css');
+            $minify = new Minify\CSS($css);
+            $minify->minify(__DIR__ . '/../../../htdocs/static/cache/css/minified-' . $hash . '.css');
         }
 
-        return '<link rel="stylesheet" href="/static/cache/js/minified.css">';
+        return '<link rel="stylesheet" href="/static/cache/css/minified-' . $hash . '.css">';
     }
 
-
-
-} 
+}

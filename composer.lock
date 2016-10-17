@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "50f3af7822fd337ed96e5246e1036a6c",
-    "content-hash": "3c561ba44b2b6c1a4ef9cb5577dc81cb",
+    "hash": "9d424665999c6608260a0202fe5c34dd",
+    "content-hash": "c40542478602008346b98a14caaeb75d",
     "packages": [
         {
             "name": "matthiasmullie/minify",
-            "version": "1.3.34",
+            "version": "1.3.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasmullie/minify.git",
-                "reference": "272e46113404f66ced256659552a0cc074a7810f"
+                "reference": "de4bcf23b6a3291bd828ce800aab834304eb50c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/272e46113404f66ced256659552a0cc074a7810f",
-                "reference": "272e46113404f66ced256659552a0cc074a7810f",
+                "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/de4bcf23b6a3291bd828ce800aab834304eb50c5",
+                "reference": "de4bcf23b6a3291bd828ce800aab834304eb50c5",
                 "shasum": ""
             },
             "require": {
@@ -61,20 +61,20 @@
                 "minifier",
                 "minify"
             ],
-            "time": "2016-03-01 08:00:27"
+            "time": "2016-10-13 11:49:22"
         },
         {
             "name": "matthiasmullie/path-converter",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasmullie/path-converter.git",
-                "reference": "83609c1bb251b2540eba912615571a501a0a06a6"
+                "reference": "7c36e5cafa95dd20008d19b153b506cffa8c2848"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasmullie/path-converter/zipball/83609c1bb251b2540eba912615571a501a0a06a6",
-                "reference": "83609c1bb251b2540eba912615571a501a0a06a6",
+                "url": "https://api.github.com/repos/matthiasmullie/path-converter/zipball/7c36e5cafa95dd20008d19b153b506cffa8c2848",
+                "reference": "7c36e5cafa95dd20008d19b153b506cffa8c2848",
                 "shasum": ""
             },
             "require": {
@@ -82,8 +82,7 @@
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~1.0"
+                "phpunit/phpunit": "~4.8"
             },
             "type": "library",
             "autoload": {
@@ -111,7 +110,7 @@
                 "paths",
                 "relative"
             ],
-            "time": "2016-01-07 00:41:13"
+            "time": "2016-04-27 10:38:05"
         },
         {
             "name": "oyejorge/less.php",
@@ -174,6 +173,48 @@
                 "stylesheet"
             ],
             "time": "2015-12-30 05:47:36"
+        },
+        {
+            "name": "panique/pdo-debug",
+            "version": "0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/panique/pdo-debug.git",
+                "reference": "1a07fed45fab32d0b21364b92657faffdd72320f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/panique/pdo-debug/zipball/1a07fed45fab32d0b21364b92657faffdd72320f",
+                "reference": "1a07fed45fab32d0b21364b92657faffdd72320f",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "pdo-debug.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Panique",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A super-simple function that returns the full SQL query from your PDO statements",
+            "homepage": "https://github.com/panique/pdo-debug",
+            "keywords": [
+                "debug",
+                "debugger",
+                "log",
+                "logger",
+                "pdo",
+                "sql"
+            ],
+            "time": "2014-11-28 08:13:36"
         },
         {
             "name": "plasticbrain/php-flash-messages",

@@ -1,6 +1,6 @@
 <?php
 
-use RHMVC\AbstractModel;
+use core\RHMVC\AbstractModel;
 
 class DefaultModel extends AbstractModel
 {

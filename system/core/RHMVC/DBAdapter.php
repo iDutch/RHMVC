@@ -9,24 +9,32 @@
  * @version 1.1.3
  */
 
-namespace RHMVC;
+namespace core\RHMVC;
 
-class DBAdapter {
+use libs\PDODebugger\PDODebugger;
+use PDO;
+use PDOStatement;
 
-	private static $instance    	= null;
-    private static $dbsettings  	= array();
-	private $connection         	= null;
-    const SHOW_ERROR            	= true;
-	private $hasActiveTransaction 	= false;
+class DBAdapter
+{
 
-	/**
-	 * Return instance or create one first if there is none...
-	 */
-	public static function getInstance() {
-        $local  = array();
+    private static $instance = null;
+    private static $dbsettings = array();
+    private $connection = null;
 
-        $db_global_config_file  = __DIR__ . '/../../../config/database.global.php';
-        $db_local_config_file   = __DIR__ . '/../../../config/database.local.php';
+    const SHOW_ERROR = true;
+
+    private $hasActiveTransaction = false;
+
+    /**
+     * Return instance or create one first if there is none...
+     */
+    public static function getInstance()
+    {
+        $local = array();
+
+        $db_global_config_file = __DIR__ . '/../../../config/database.global.php';
+        $db_local_config_file = __DIR__ . '/../../../config/database.local.php';
 
         if (file_exists($db_global_config_file)) {
             $global = require $db_global_config_file;

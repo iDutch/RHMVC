@@ -1,5 +1,7 @@
 <?php
 
+namespace libs\Logger;
+
 class Logger
 {
 

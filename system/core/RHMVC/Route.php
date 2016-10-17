@@ -1,8 +1,8 @@
 <?php
 
-namespace RHMVC;
+namespace core\RHMVC;
 
-use RHMVC\View;
+use core\RHMVC\View;
 
 class Route {
 

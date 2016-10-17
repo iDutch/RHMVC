@@ -8,12 +8,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>...</title>
-    <?= $this->helper()->getCSS() ?>  
-</head>
-<body>
-    <div class="container">
-        <?= $this->content ?>
-    </div>
-    <?= $this->helper()->getJS() ?>
-</body>
+    <?= $this->helper()->getCSSMinified() ?>
+    <body>
+        <div class="container">
+            <?= $this->content ?>
+        </div>
+        <?= $this->helper()->getJSMinified() ?>
+    </body>
 </html>

@@ -1,9 +1,9 @@
 <?php
 
-namespace RHMVC;
+namespace core\RHMVC;
 
-use RHMVC\HMVC;
-use RHMVC\DBAdapter;
+use core\RHMVC\HMVC;
+use core\RHMVC\DBAdapter;
 
 abstract class AbstractModel extends HMVC
 {
