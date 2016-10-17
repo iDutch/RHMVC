@@ -1,5 +1,7 @@
 <?php
 
+namespace RHMVC;
+
 class Translator {
 
     private static $instance = array();

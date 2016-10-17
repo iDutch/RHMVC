@@ -1,5 +1,7 @@
 <?php
 
+namespace RHMVC;
+
 use MatthiasMullie\Minify;
 
 class Helper {

@@ -1,11 +1,9 @@
 <?php
 
-
 class Logger
 {
 
     private static $instance = null;
-
 
     public static function getInstance()
     {
@@ -15,20 +13,11 @@ class Logger
         return self::$instance;
     }
 
-    public function log($action, $module, $id = null, $viewurl = null)
+    public function log($message)
     {
-        switch($action) {
-            case 'create':
-                $action = 'added';
-                break;
-            case 'update':
-                $action = 'edited';
-                break;
-            case 'delete':
-                $action = 'deleted';
-        }
+        
         $date = new DateTime();
-        $logmessage = $date->format('Y-m-d H:i:s') . " " . $_SESSION['user']->username . " " . $action . " " . $module . ($id != null ? ' #'.$id : '') . "\n";
+        $logmessage = $date->format('Y-m-d H:i:s') . " " . $message ."\n";
 
         $logfile = __DIR__ . '/../../../application/logs/adminlog-' . $date->format('Y-m-d') . '.log';
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace RHMVC;
+
 abstract class HMVC
 {
 
@@ -17,6 +19,9 @@ abstract class HMVC
         $controller = new $controller($this->layout);
 
         if (!method_exists($controller, $action)){
+            if (!isset($_SERVER['IS_DEVEL'])) {
+                
+            }
             throw new Exception('HMVC error: ' . $controller . ' :: ' . $action . ' does not exist!');
         }
 
@@ -33,6 +38,22 @@ abstract class HMVC
         require_once $model_file;
 
         return new $model();
+    }
+    
+    protected function getConfig($name)
+    {
+        $global_config_file = CONFIG_DIR . $name . '.global.php';
+        $local_config_file  = CONFIG_DIR . $name . '.local.php';
+
+        if (file_exists($global_config_file)) {
+            $global = require $global_config_file;
+            if (file_exists($local_config_file)) {
+                $local = require $local_config_file;
+                return array_merge($global, $local);
+            }
+            return $global;
+        }
+        throw new Exception('Controller error: Cannot load config: \'' . __DIR__ . '/../../../config/' . $name . '.global.php\'');
     }
 
     protected function flashMessage()
