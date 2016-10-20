@@ -69,6 +69,7 @@ class Helper
             $minify = new Minify\JS($js);
             $minify->minify(JS_DIR . 'cache/minified-' . $hash . '.js');
         }
+
         if ($debug) {
             return "<script>\n" . $js . "</script>\n";
         }
@@ -100,7 +101,7 @@ class Helper
             $minify = new Minify\CSS($css);
             $minify->minify(CSS_DIR . 'cache/minified-' . $hash . '.css');
         }
-        
+
         if ($debug) {
             return "<style>\n" . $css . "</css>\n";
         }
