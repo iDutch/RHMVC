@@ -1,13 +1,4 @@
-<?php $this->helper()->appendCSSInline('
-    .container {
-        font-size: 16px;
-        ul {
-            list-style: none;
-        }
-    }
-')?>
-
-<ul>
+<ul class="list-unstyled">
     <?php foreach ($this->items as $item): ?>
         <li><?= $item['value'] ?></li>
     <?php endforeach; ?>

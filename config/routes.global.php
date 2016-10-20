@@ -30,7 +30,7 @@ return [
         //
         '((/)?(index)?)?' => [
             'methods'   => 'GET|POST',
-            'layout'    => 'default.phtml',
+            'layout'    => 'bootstrap.phtml',
             'content'   => [
                 [
                     'controller'    => 'DefaultController',
