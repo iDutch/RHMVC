@@ -2,11 +2,22 @@
 
 namespace core\RHMVC;
 
-abstract class HMVC
+use Plasticbrain\FlashMessages\FlashMessages;
+use ActiveRecord\Model;
+
+abstract class HMVC extends Model
 {
 
     protected $layout = null;
 
+    /**
+     * Call any conroller action with an array of params
+     * @param string $controller
+     * @param string $action
+     * @param array $params
+     * @return string
+     * @throws Exception
+     */
     protected function invokeController($controller, $action, array $params = array())
     {
         $controller_file = __DIR__ . '/../../../application/controllers/' . $controller . '.php';
@@ -28,6 +39,12 @@ abstract class HMVC
         return call_user_func_array(array($controller, $action), $params);
     }
 
+    /**
+     * Load a model
+     * @param string $model
+     * @return \core\RHMVC\model
+     * @throws Exception
+     */
     protected function loadModel($model)
     {
         $model_file = __DIR__ . '/../../../application/models/' . $model . '.php';
@@ -39,7 +56,13 @@ abstract class HMVC
 
         return new $model();
     }
-    
+
+    /**
+     * Grab config file
+     * @param string $name
+     * @return array
+     * @throws Exception
+     */
     protected function getConfig($name)
     {
         $global_config_file = CONFIG_DIR . $name . '.global.php';
@@ -53,12 +76,16 @@ abstract class HMVC
             }
             return $global;
         }
-        throw new Exception('Controller error: Cannot load config: \'' . __DIR__ . '/../../../config/' . $name . '.global.php\'');
+        throw new Exception('HMVC error: Cannot load config: \'' . CONFIG_DIR . $name . '.global.php\'');
     }
 
+    /**
+     * Function wrapper for FlashMessages object
+     * @return FlashMessages
+     */
     protected function flashMessage()
     {
-        return new \Plasticbrain\FlashMessages\FlashMessages();
+        return new FlashMessages();
     }
 
 }

@@ -8,12 +8,12 @@ class DefaultController extends AbstractController
     
     public function defaultAction()
     {
-        /* @var $DefaultModel DefaultModel */
-        $DefaultModel = $this->loadModel('DefaultModel');
-        
+        /* @var $User User */
+        $User = $this->loadModel('User');
+        var_dump($User::find('all'));
         $view = new View('default/index.phtml');
         $view->setVars([
-            'items' => $DefaultModel->getSampleData()
+            'items' => $User::find('all')
         ]);
         
         return $view->parse();

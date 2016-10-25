@@ -21,10 +21,9 @@ class DBAdapter
     private static $instance = null;
     private static $dbsettings = array();
     private $connection = null;
-
-    const SHOW_ERROR = true;
-
     private $hasActiveTransaction = false;
+    
+    const SHOW_ERROR = true;
 
     /**
      * Return instance or create one first if there is none...
@@ -67,7 +66,7 @@ class DBAdapter
      *
      * @param	object $query	PDO query object
      *
-     * TODO: Build error handler instead of dumping DB errors on screen
+     * TODO: Do something else instead of dumping DB errors on screen
      */
     private function handleError(PDOStatement $query, $sql, array $params = [], array $data = [])
     {
@@ -218,28 +217,56 @@ class DBAdapter
         }
     }
 
+    /**
+     * Start a SQL transaction if not been started yet.
+     * 
+     * @return boolean
+     */
     public function beginTransaction()
     {
-        if ($this->hasActiveTransaction) {
-            return false;
-        } else {
+        if (!$this->hasActiveTransaction) {
             $this->hasActiveTransaction = $this->connection->beginTransaction();
             return $this->hasActiveTransaction;
         }
+        return false;
     }
 
+    /**
+     * Commit changes to DB
+     * 
+     * @return boolean
+     */
     public function commit()
     {
-        $this->connection->commit();
-        $this->hasActiveTransaction = false;
+        if ($this->hasActiveTransaction) {
+            $this->connection->commit();
+            $this->hasActiveTransaction = false;
+            return true;
+        }
+        return false;
     }
 
+    /**
+     * Rollback changes
+     *
+     * @return boolean
+     */
     public function rollback()
     {
-        $this->connection->rollback();
-        $this->hasActiveTransaction = false;
+        if ($this->hasActiveTransaction) {
+            $this->connection->rollback();
+            $this->hasActiveTransaction = false;
+            return true;
+        }
+        return false;
     }
 
+    /**
+     * Get PDO param type
+     * 
+     * @param mixed $value
+     * @return PDO::PARAM
+     */
     private function getFieldType($value)
     {
         if (is_int($value)) {
