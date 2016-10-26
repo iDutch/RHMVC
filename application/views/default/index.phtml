@@ -1,5 +1,5 @@
 <ul class="list-unstyled">
     <?php foreach ($this->items as $user): ?>
-        <li><?= $user->firstname . ' - ' . $user->group->name ?></li>
+        <li><?= $user->firstname . ' ' . $user->lastname . ' - ' . $user->group->name ?></li>
     <?php endforeach; ?>
 </ul>

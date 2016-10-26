@@ -17,18 +17,14 @@ if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
 }
 require __DIR__ . '/../vendor/autoload.php';
 
-//require __DIR__ . '/../system/core/RHMVC/DBAdapter.php';
 require __DIR__ . '/../system/core/RHMVC/Router.php';
 require __DIR__ . '/../system/core/RHMVC/Route.php';
 require __DIR__ . '/../system/core/RHMVC/Translator.php';
-require __DIR__ . '/../system/core/RHMVC/HMVC.php';
 require __DIR__ . '/../system/core/RHMVC/AbstractController.php';
-require __DIR__ . '/../system/core/RHMVC/AbstractModel.php';
 require __DIR__ . '/../system/core/RHMVC/Helper.php';
 require __DIR__ . '/../system/core/RHMVC/View.php';
 
 require __DIR__ . '/../system/libs/Logger/Logger.php';
-//require __DIR__ . '/../system/libs/PDODebugger/PDODebugger.php';
 
 ActiveRecord\Config::initialize(function($cfg)
 {

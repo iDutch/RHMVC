@@ -10,7 +10,6 @@ class DefaultController extends AbstractController
     {
         /* @var $User User */
         $User = $this->loadModel('User');
-        var_dump($User::find('all'));
         $view = new View('default/index.phtml');
         $view->setVars([
             'items' => $User::find('all')

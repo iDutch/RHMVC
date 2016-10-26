@@ -1,10 +1,12 @@
 <?php
 
-use core\RHMVC\AbstractModel;
+use ActiveRecord\Model;
 
-class User extends AbstractModel
+class User extends Model
 {
+
     static $belongs_to = [
-        ['group']
+        ['group', 'foreign_key' => 'groups_id']
     ];
+
 }

@@ -2,11 +2,11 @@
 
 use ActiveRecord\Model;
 
-class Group extends Model
+class Action extends Model
 {
 
     static $has_many = [
-        ['users']
+        ['user_roles']
     ];
 
 }
