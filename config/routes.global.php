@@ -31,6 +31,13 @@ return [
         '((/)?(index)?)?' => [
             'methods'   => 'GET|POST',
             'layout'    => 'bootstrap.phtml',
+            'sidebar'   => [
+                [
+                    'controller'    => 'MenuController',
+                    'action'        => 'indexAction',
+                    'params'        => [],
+                ],
+            ],
             'content'   => [
                 [
                     'controller'    => 'DefaultController',
@@ -39,5 +46,43 @@ return [
                 ],
             ],
         ],
+        '/blog(/)?' => [
+            'methods'   => 'GET',
+            'layout'    => 'bootstrap.phtml',
+            'content'   => [
+                [
+                    'controller'    => 'BlogController',
+                    'action'        => 'indexAction',
+                    'params'        => [],
+                ],
+            ],
+            'sidebar'   => [
+                [
+                    'controller'    => 'BlogController',
+                    'action'        => 'categoryMenuAction',
+                    'params'        => [],
+                ]
+            ]
+        ],
+        '/blog/article/(?<article_id>[0-9]+)(/)?' => [
+            'methods'   => 'GET',
+            'layout'    => 'bootstrap.phtml',
+            'content'   => [
+                [
+                    'controller'    => 'BlogController',
+                    'action'        => 'articleAction',
+                    'params'        => [
+                        'article_id' => null
+                    ],
+                ],
+            ],
+            'sidebar'   => [
+                [
+                    'controller'    => 'BlogController',
+                    'action'        => 'categoryMenuAction',
+                    'params'        => [],
+                ]
+            ]
+        ]
     ],
 ];

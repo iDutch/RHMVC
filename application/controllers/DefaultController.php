@@ -10,9 +10,12 @@ class DefaultController extends AbstractController
     {
         /* @var $User User */
         $User = $this->loadModel('User');
+        $Article = $this->loadModel('Article');
+        
         $view = new View('default/index.phtml');
         $view->setVars([
-            'items' => $User::find('all')
+            'users'     => $User::find('all'),
+            'articles'  => $Article::find('all', ['limit' => 5])
         ]);
         
         return $view->parse();

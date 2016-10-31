@@ -27,7 +27,7 @@ abstract class AbstractController
         $controller_file = __DIR__ . '/../../../application/controllers/' . $controller . '.php';
 
         if (!file_exists($controller_file)) {
-            throw new Exception('HMVC error: Cannot invoke controller: \'' . $controller_file . '\'');
+            throw new \Exception('HMVC error: Cannot invoke controller: \'' . $controller_file . '\'');
         }
 
         require_once $controller_file;
@@ -35,9 +35,9 @@ abstract class AbstractController
 
         if (!method_exists($controller, $action)){
             if (!isset($_SERVER['IS_DEVEL'])) {
-                
+
             }
-            throw new Exception('HMVC error: ' . $controller . ' :: ' . $action . ' does not exist!');
+            throw new \Exception('HMVC error: ' . $controller . ' :: ' . $action . ' does not exist!');
         }
 
         return call_user_func_array(array($controller, $action), $params);
@@ -54,7 +54,7 @@ abstract class AbstractController
         $model_file = __DIR__ . '/../../../application/models/' . $model . '.php';
 
         if (!file_exists($model_file)) {
-            throw new Exception('HMVC error: Cannot load model: \'' . $model_file . '\'');
+            throw new \Exception('HMVC error: Cannot load model: \'' . $model_file . '\'');
         }
         require_once $model_file;
 
@@ -80,7 +80,7 @@ abstract class AbstractController
             }
             return $global;
         }
-        throw new Exception('HMVC error: Cannot load config: \'' . CONFIG_DIR . $name . '.global.php\'');
+        throw new \Exception('HMVC error: Cannot load config: \'' . CONFIG_DIR . $name . '.global.php\'');
     }
 
     /**

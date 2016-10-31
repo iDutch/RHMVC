@@ -22,7 +22,6 @@ class Route {
     public function dispatch() {
         $template_vars = array();
         //Loop through route info
-
         foreach ($this->routedata as $segment => $controllers) {
             if (is_array($controllers)) {
                 $template_vars[$segment] = null;
@@ -30,7 +29,7 @@ class Route {
                 foreach ($controllers as $k => $controller) {
                     foreach ($this->routeparams as $key => $value) {
                         if (array_key_exists($key, $this->routedata[$segment][$k]['params']) && !empty($value)) {
-                            $controller[$segment][$k]['params'][$key] = $value;
+                            $controller['params'][$key] = $value;
                         }
                     }
                     //Append content returned from controller to segment

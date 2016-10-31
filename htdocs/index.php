@@ -1,7 +1,7 @@
 <?php
 session_start();
-$_SESSION['language_iso_code'] = 'en';
-$_SESSION['language_id'] = 2;
+
+//setlocale(LC_TIME, 'nl_NL');
 
 use core\RHMVC\Router;
 

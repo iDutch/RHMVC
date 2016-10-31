@@ -105,7 +105,7 @@ class Helper
         if ($debug) {
             return "<style>\n" . $css . "</css>\n";
         }
-        return '<link rel="stylesheet" href="/static/css/cache/minified-' . $hash . '.css">';
+        return '<link type="text/css" rel="stylesheet" href="/static/css/cache/minified-' . $hash . '.css">';
     }
 
 }

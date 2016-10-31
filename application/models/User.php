@@ -6,7 +6,11 @@ class User extends Model
 {
 
     static $belongs_to = [
-        ['group', 'foreign_key' => 'groups_id']
+        ['group']
+    ];
+    
+    static $has_many = [
+        ['user_roles']
     ];
 
 }

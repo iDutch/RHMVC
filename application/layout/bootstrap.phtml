@@ -12,10 +12,10 @@
     <title>Starter Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="static/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link href="/static/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <?= $this->helper()->appendCSSFile('theme.less'); ?>
     <?= $this->helper()->getCSS(); ?>
@@ -51,7 +51,11 @@
     </nav>
 
     <div class="container">
-        <?= $this->content ?>
+        <div class="row">
+            <div id="sidebar" class="column col-md-2"><?= $this->sidebar ?></div>
+            <div id="content" class="column col-md-10"><?= $this->content ?></div>
+        </div>
+
     </div><!-- /.container -->
 
 

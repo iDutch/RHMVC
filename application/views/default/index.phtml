@@ -1,5 +1,6 @@
 <ul class="list-unstyled">
-    <?php foreach ($this->items as $user): ?>
-        <li><?= $user->firstname . ' ' . $user->lastname . ' - ' . $user->group->name ?></li>
+    <?php foreach ($this->articles as $article): ?>
+        <?= var_dump($article, $article->article_contents, $article->category, $article->category->category_contents); ?>
+        <li><?= $article->article_contents[0]->title . ' - ' . $article->publish_date ?></li>
     <?php endforeach; ?>
 </ul>
