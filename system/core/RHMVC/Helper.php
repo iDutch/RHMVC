@@ -49,17 +49,30 @@ class Helper
         array_push($this->stylesheets, array('inline' => $content));
     }
 
-    public function getJS($debug = false)
+    public function getJSFiles()
     {
         $js = null;
         $javascripts = array_reverse($this->javascripts);
         foreach ($javascripts as $types) {
             foreach ($types as $type => $value) {
                 if ($type === 'file') {
-                    $js .= file_get_contents(JS_DIR . $value);
-                } else if ($type === 'url') {
+                    $js .= '<script src="/static/js/' . $value . '"></script>' . "\n";
+                }
+            }
+        }
+
+        return $js;
+    }
+
+    public function getJS($debug = false)
+    {
+        $js = null;
+        $javascripts = array_reverse($this->javascripts);
+        foreach ($javascripts as $types) {
+            foreach ($types as $type => $value) {
+                if ($type === 'url') {
                     $js .= file_get_contents($value);
-                } else {
+                } else if ($type === 'inline') {
                     $js .= $value;
                 }
             }
@@ -73,7 +86,7 @@ class Helper
         if ($debug) {
             return "<script>\n" . $js . "</script>\n";
         }
-        return '<script src="/static/js/cache/minified-' . $hash . '.js"></script>';
+        return '<script src="/static/js/cache/minified-' . $hash . '.js"></script>' . "\n";
     }
 
     public function getCSS($debug = false)

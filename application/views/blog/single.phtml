@@ -5,3 +5,4 @@
     <span>Datum: <?= strftime('%A, %e %B %Y', $this->article->publish_date->getTimestamp()) ?></span> <span>Category: <?= $this->article->category->category_contents[0]->name ?></span>
 </article>
 <?= $this->comments ?>
+<?= $this->commentform ?>

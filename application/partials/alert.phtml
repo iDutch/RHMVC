@@ -1,0 +1,13 @@
+<div class="alert <?= $this->alert_type ?>" role="alert">
+    <?php if (is_array($this->message)): ?>
+        <ul class="list-unstyled">
+            <?php foreach ($this->message as $message): ?>
+                <li><?= $message ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <ul class="list-unstyled">
+            <li><?= $this->message ?></li>
+        </ul>
+    <?php endif; ?>
+</div>

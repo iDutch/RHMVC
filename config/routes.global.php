@@ -65,7 +65,7 @@ return [
             ]
         ],
         '/blog/article/(?<article_id>[0-9]+)(/)?' => [
-            'methods'   => 'GET',
+            'methods'   => 'GET|POST',
             'layout'    => 'bootstrap.phtml',
             'content'   => [
                 [

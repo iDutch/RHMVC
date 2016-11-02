@@ -29,7 +29,7 @@ class BlogController extends AbstractController
         $view->setVars([
             'article'  => $article,
             'comments' => $article->allow_comments ? $this->invokeController('CommentController', 'indexAction', [$article_id]) : null,
-            'commentform' => null
+            'commentform' => $article->allow_comments ? $this->invokeController('CommentController', 'showCommentFormAction', [$article_id]) : null,
         ]);
 
         return $view->parse();
