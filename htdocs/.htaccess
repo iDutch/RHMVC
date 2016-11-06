@@ -1,7 +1,5 @@
 SetEnv IS_DEVEL True
 
-AddType text/css .css
-
 RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME}   !-d
