@@ -33,9 +33,6 @@ abstract class AbstractController
         $controller = new $controller($this->layout);
 
         if (!method_exists($controller, $action)) {
-            if (!isset($_SERVER['IS_DEVEL'])) {
-
-            }
             throw new Exception('AbstractController error: ' . $controller . ' :: ' . $action . ' does not exist!');
         }
 
@@ -45,7 +42,7 @@ abstract class AbstractController
     /**
      * Load a model
      * @param string $model
-     * @return ActiveRecord\Mode
+     * @return ActiveRecord\Model
      */
     protected function loadModel($model)
     {
@@ -76,7 +73,7 @@ abstract class AbstractController
             }
             return $global;
         }
-        throw new \Exception('HMVC error: Cannot load config: \'' . CONFIG_DIR . $name . '.global.php\'');
+        throw new Exception('AbstractController error: Cannot load config: \'' . CONFIG_DIR . $name . '.global.php\'');
     }
 
     /**
