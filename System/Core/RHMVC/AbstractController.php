@@ -1,6 +1,6 @@
 <?php
 
-namespace core\RHMVC;
+namespace System\Core\RHMVC;
 
 use Plasticbrain\FlashMessages\FlashMessages;
 
@@ -30,7 +30,7 @@ abstract class AbstractController
             throw new \Exception('HMVC error: Cannot invoke controller: \'' . $controller_file . '\'');
         }
 
-        require_once $controller_file;
+        $controller = 'Application\\Controllers\\' . $controller;
         $controller = new $controller($this->layout);
 
         if (!method_exists($controller, $action)){
@@ -46,18 +46,11 @@ abstract class AbstractController
     /**
      * Load a model
      * @param string $model
-     * @return \core\RHMVC\model
-     * @throws Exception
+     * @return ActiveRecord\Mode
      */
     protected function loadModel($model)
     {
-        $model_file = __DIR__ . '/../../../application/models/' . $model . '.php';
-
-        if (!file_exists($model_file)) {
-            throw new \Exception('HMVC error: Cannot load model: \'' . $model_file . '\'');
-        }
-        require_once $model_file;
-
+        $model = 'Application\\Models\\' . $model;
         return new $model();
     }
 

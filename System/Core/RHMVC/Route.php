@@ -1,8 +1,8 @@
 <?php
 
-namespace core\RHMVC;
+namespace System\Core\RHMVC;
 
-use core\RHMVC\View;
+use System\Core\RHMVC\View;
 
 class Route {
 
@@ -49,13 +49,12 @@ class Route {
 
     private function invokeController(array $controller_info) {
         $controller_file = CONTROLLER_DIR . $controller_info['controller'] . '.php';
-
         //Does the controller exists?
         if (!file_exists($controller_file)) {
             throw new \Exception('Dispatcher error: Cannot invoke controller: \'' . $controller_file . '\'');
         }
-        require_once $controller_file;
-        $controller = new $controller_info['controller']($this->layout);
+        $controller = 'Application\\Controllers\\' . $controller_info['controller'];
+        $controller = new $controller($this->layout);
 
         //Does the action exists?
         if (!method_exists($controller, $controller_info['action'])) {

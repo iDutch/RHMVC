@@ -1,8 +1,8 @@
 <?php
 
-namespace core\RHMVC;
+namespace System\Core\RHMVC;
 
-use core\RHMVC\Route;
+use System\Core\RHMVC\Route;
 
 class Router
 {
@@ -39,7 +39,7 @@ class Router
         }
         return new Route($this->routerconfig['routes']['/404']);
     }
-    
+
     public static function loadRoute($uri)
     {
         $router =  new self();

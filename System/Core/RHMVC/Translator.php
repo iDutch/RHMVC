@@ -1,6 +1,6 @@
 <?php
 
-namespace core\RHMVC;
+namespace System\Core\RHMVC;
 
 class Translator {
 
@@ -45,4 +45,4 @@ class Translator {
         return '[' . $key . ']';
     }
 
-} 
+}

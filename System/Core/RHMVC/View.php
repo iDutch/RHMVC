@@ -1,9 +1,9 @@
 <?php
 
-namespace core\RHMVC;
+namespace System\Core\RHMVC;
 
-use core\RHMVC\Translator;
-use core\RHMVC\Helper;
+use System\Core\RHMVC\Translator;
+use System\Core\RHMVC\Helper;
 
 class View
 {
@@ -73,4 +73,4 @@ class View
         return Translator::getInstance($_SESSION['language_iso_code'])->translate($key);
     }
 
-} 
+}

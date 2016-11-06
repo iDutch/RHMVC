@@ -1,8 +1,10 @@
 <?php
 
+namespace Application\Models;
+
 use ActiveRecord\Model;
 
-class Action extends Model
+class Module extends Model
 {
 
     static $has_many = [

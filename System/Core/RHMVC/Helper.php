@@ -1,6 +1,6 @@
 <?php
 
-namespace core\RHMVC;
+namespace System\Core\RHMVC;
 
 use MatthiasMullie\Minify;
 

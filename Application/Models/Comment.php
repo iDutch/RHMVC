@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Models;
+
 use ActiveRecord\Model;
 
 class Comment extends Model
