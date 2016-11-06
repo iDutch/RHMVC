@@ -3,6 +3,7 @@
 namespace System\Core\RHMVC;
 
 use System\Core\RHMVC\Route;
+use Exception;
 
 class Router
 {
@@ -11,8 +12,8 @@ class Router
 
     public function __construct()
     {
-        $global_config_file = __DIR__ . '/../../../config/routes.global.php';
-        $local_config_file = __DIR__ . '/../../../config/routes.local.php';
+        $global_config_file = CONFIG_DIR . 'routes.global.php';
+        $local_config_file = CONFIG_DIR . 'routes.local.php';
 
         if (file_exists($global_config_file)) {
             $global = require $global_config_file;

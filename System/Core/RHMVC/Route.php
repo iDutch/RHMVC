@@ -3,23 +3,28 @@
 namespace System\Core\RHMVC;
 
 use System\Core\RHMVC\View;
+use Exception;
 
-class Route {
+class Route
+{
 
     private $layout;
     private $routedata;
     private $routeparams;
 
-    public function __construct($routedata, array $routeparams = []) {
+    public function __construct($routedata, array $routeparams = [])
+    {
         $this->routedata = $routedata;
         $this->routeparams = $routeparams;
     }
 
-    private function loadLayout($layout) {
+    private function loadLayout($layout)
+    {
         $this->layout = new View($layout, true);
     }
 
-    public function dispatch() {
+    public function dispatch()
+    {
         $template_vars = array();
         //Loop through route info
         foreach ($this->routedata as $segment => $controllers) {
@@ -47,24 +52,25 @@ class Route {
         return $template_vars['content']; //Return when layout is set to null. Recommended usage for AJAX calls and JSON reponses
     }
 
-    private function invokeController(array $controller_info) {
-        $controller_file = CONTROLLER_DIR . $controller_info['controller'] . '.php';
-        //Does the controller exists?
-        if (!file_exists($controller_file)) {
-            throw new \Exception('Dispatcher error: Cannot invoke controller: \'' . $controller_file . '\'');
-        }
+    private function invokeController(array $controller_info)
+    {
         $controller = 'Application\\Controllers\\' . $controller_info['controller'];
+
+        if (!class_exists($controller)) {
+            throw new Exception('Route error: Controller \'' . $controller . '\' not found!');
+        }
+
         $controller = new $controller($this->layout);
 
         //Does the action exists?
         if (!method_exists($controller, $controller_info['action'])) {
-            throw new \Exception('Dispatcher error: ' . $controller_info['controller'] . '::' . $controller_info['action'] . ' not found!');
+            throw new Exception('Route error: ' . $controller_info['controller'] . '::' . $controller_info['action'] . ' not found!');
         }
 
         //Does it returns a string? If not, it can't be appended to a layout segment so we throw an Exception
         $string = call_user_func_array(array($controller, $controller_info['action']), $controller_info['params']);
         if (!is_string($string)) {
-            throw new \Exception('Dispatcher error: ' . $controller_info['controller'] . '::' . $controller_info['action'] . ' does not return a string! ' . ucfirst(gettype($string)) . ' returned instead!');
+            throw new Exception('Route error: ' . $controller_info['controller'] . '::' . $controller_info['action'] . ' does not return a string! ' . ucfirst(gettype($string)) . ' returned instead!');
         }
         return $string;
     }

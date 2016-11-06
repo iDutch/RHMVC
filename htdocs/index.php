@@ -10,7 +10,7 @@ if (isset($_SERVER['IS_DEVEL'])) {
     error_reporting(E_ALL);
 }
 
-require __DIR__ . '/../config/settings.global.php';
+require __DIR__ . '/../Config/settings.global.php';
 
 if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
     throw new Exception('RHMVC initialisation error: No composer autoload file found! Did you run: \'php composer.phar install\'?');

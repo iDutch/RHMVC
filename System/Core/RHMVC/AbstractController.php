@@ -3,6 +3,7 @@
 namespace System\Core\RHMVC;
 
 use Plasticbrain\FlashMessages\FlashMessages;
+use Exception;
 
 abstract class AbstractController
 {
@@ -24,20 +25,18 @@ abstract class AbstractController
      */
     protected function invokeController($controller, $action, array $params = array())
     {
-        $controller_file = __DIR__ . '/../../../application/controllers/' . $controller . '.php';
-
-        if (!file_exists($controller_file)) {
-            throw new \Exception('HMVC error: Cannot invoke controller: \'' . $controller_file . '\'');
+        $controller = 'Application\\Controllers\\' . $controller;
+        if (!class_exists($controller)) {
+            throw new Exception('AbstractController error: Controller \'' . $controller . '\' not found!');
         }
 
-        $controller = 'Application\\Controllers\\' . $controller;
         $controller = new $controller($this->layout);
 
-        if (!method_exists($controller, $action)){
+        if (!method_exists($controller, $action)) {
             if (!isset($_SERVER['IS_DEVEL'])) {
 
             }
-            throw new \Exception('HMVC error: ' . $controller . ' :: ' . $action . ' does not exist!');
+            throw new Exception('AbstractController error: ' . $controller . ' :: ' . $action . ' does not exist!');
         }
 
         return call_user_func_array(array($controller, $action), $params);
@@ -51,6 +50,10 @@ abstract class AbstractController
     protected function loadModel($model)
     {
         $model = 'Application\\Models\\' . $model;
+        if (!class_exists($model)) {
+            throw new Exception('AbstractController error: Model \'' . $controller . '\' not found!');
+        }
+
         return new $model();
     }
 
@@ -63,7 +66,7 @@ abstract class AbstractController
     protected function getConfig($name)
     {
         $global_config_file = CONFIG_DIR . $name . '.global.php';
-        $local_config_file  = CONFIG_DIR . $name . '.local.php';
+        $local_config_file = CONFIG_DIR . $name . '.local.php';
 
         if (file_exists($global_config_file)) {
             $global = require $global_config_file;
