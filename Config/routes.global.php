@@ -26,26 +26,7 @@ return [
                 ],
             ],
         ],
-        //
         '((/)?(index)?)?' => [
-            'methods' => 'GET|POST',
-            'layout' => 'bootstrap.phtml',
-            'sidebar' => [
-                    [
-                    'controller' => 'MenuController',
-                    'action' => 'indexAction',
-                    'params' => [],
-                ],
-            ],
-            'content' => [
-                    [
-                    'controller' => 'DefaultController',
-                    'action' => 'defaultAction',
-                    'params' => [],
-                ],
-            ],
-        ],
-        '/blog(/)?' => [
             'methods' => 'GET',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -63,7 +44,7 @@ return [
                 ]
             ]
         ],
-        '/blog/article/(?<article_id>[0-9]+)(/)?' => [
+        '(/index)?/article/(?<article_id>[0-9]+)(/)?' => [
             'methods' => 'GET|POST',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -82,6 +63,37 @@ return [
                     'params' => [],
                 ]
             ]
+        ],
+        '/admin' => [
+            'methods' => 'GET',
+            'layout' => 'admin.phtml',
+            'content' => [
+                    [
+                    'controller' => 'DashboardController',
+                    'action' => 'indexAction',
+                    'params' => [],
+                ],
+            ]
+        ],
+        '/admin/blog((/)?(?<handler>.*))?' => [
+            'methods' => 'GET|POST',
+            'layout' => 'admin.phtml',
+            'content' => [
+                    [
+                    'controller' => 'BlogController',
+                    'action' => 'adminAction',
+                    'params' => [
+                        'handler' => 'articles'
+                    ],
+                ],
+            ],
+            'sidebar' => [
+                    [
+                    'controller' => 'BlogController',
+                    'action' => 'showAdminMenuAction',
+                    'params' => [],
+                ]
+            ]
         ]
-    ],
+    ]
 ];

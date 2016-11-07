@@ -2,10 +2,10 @@
 
 namespace System\Core\RHMVC;
 
-class Translator {
+class Translator
+{
 
     private static $instance = array();
-
     private $translations = array();
 
     public static function getInstance($language_iso_code)
@@ -23,7 +23,7 @@ class Translator {
 
     private function loadTranslations($language_iso_code)
     {
-        $langdir = __DIR__ . '/../../../application/languages';
+        $langdir = __DIR__ . '/../../../Application/Languages';
         foreach (scandir($langdir) as $file) {
             if (preg_match('/.' . $language_iso_code . '.php$/', $file)) {
                 $module_translations = require $langdir . '/' . $file;
@@ -34,7 +34,7 @@ class Translator {
 
     private function sprintf_array($format, array $array)
     {
-        return call_user_func_array('sprintf', array_merge((array)$format, $array));
+        return call_user_func_array('sprintf', array_merge((array) $format, $array));
     }
 
     public function translate($key, array $array = array())

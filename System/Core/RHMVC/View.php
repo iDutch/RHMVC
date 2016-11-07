@@ -55,11 +55,13 @@ class View
         return ob_get_clean();
     }
 
-    function __set($key, $value){
+    function __set($key, $value)
+    {
         $this->vars[$key] = $value; //create new set data[key] = value without setters;
     }
 
-    function __get($key){
+    function __get($key)
+    {
         return $this->vars[$key];
     }
 
@@ -70,7 +72,7 @@ class View
 
     public function translate($key)
     {
-        return Translator::getInstance($_SESSION['language_iso_code'])->translate($key);
+        return Translator::getInstance('en')->translate($key);
     }
 
 }
