@@ -10,7 +10,7 @@ class BlogController extends AbstractController
 
     public function indexAction()
     {
-        /* @var $Article Article */
+        /* @var $Article \Application\Models\Article */
         $Article = $this->loadModel('Article');
         $view = new View('blog/index.phtml');
         $view->setVars([
@@ -22,11 +22,10 @@ class BlogController extends AbstractController
 
     public function articleAction($article_id)
     {
-        /* @var $Article Article */
+        /* @var $Article \Application\Models\Article */
         $Article = $this->loadModel('Article');
         $view = new View('blog/single.phtml');
-
-        $article = $Article->find($article_id);
+        $article = $Article->first(['conditions' => ['id = ?', $article_id]]);
 
         $view->setVars([
             'article'  => $article,
