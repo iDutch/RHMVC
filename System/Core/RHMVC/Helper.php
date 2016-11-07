@@ -121,4 +121,19 @@ class Helper
         return '<link type="text/css" rel="stylesheet" href="/static/css/cache/minified-' . $hash . '.css">';
     }
 
+    function getClassProperty($object, $accessString)
+    {
+        $parts = explode('->', $accessString);
+
+        $tmp = $object;
+        foreach ($parts as $part) {
+            if (preg_match('/\[(?<index>[0-9]+)\]/i', $part, $matches)) { //Property is an array?
+                $tmp = $tmp->{preg_replace('/\[([0-9]+)\]/', '', $part)}[$matches['index']];
+            } else {
+                $tmp = $tmp->{$part};
+            }
+        }
+        return $tmp;
+    }
+
 }
