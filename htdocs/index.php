@@ -23,6 +23,7 @@ ActiveRecord\Config::initialize(function($cfg)
     $cfg->set_model_directory(MODEL_DIR);
     $cfg->set_connections($dbconfig);
 });
+ActiveRecord\Connection::$datetime_format = 'Y-m-d H:i:s';
 
 $router = new Router();
 

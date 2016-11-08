@@ -1,0 +1,62 @@
+<?php
+
+$this->helper()->appendJSInline('
+    $(document).ready(function() {
+        $(".table").DataTable({
+            "language": ' . $this->translate('datatable_language') . ',
+            "order": [[ 3, "desc" ]],
+            "columnDefs": [{
+                "orderable": false, "targets": [0, 4],
+            }],
+            "columns": [
+              { "width": "20px" },
+              null,
+              { "width": "80px" },
+              { "width": "80px" },
+              { "width": "160px" }
+            ]
+        });
+        $(".delete-single").on("click", function() {
+            $("#singleModal").modal({backdrop: "static"});
+        });
+    });
+');
+$this->helper()->appendJSFile('datatables.min.js');
+$this->helper()->appendCSSFile('datatables.min.css');
+?>
+<?=
+
+$this->partial('admin_index_table.phtml', [
+    'fields' => [
+            [
+            'field' => 'id',
+            'type' => 'primary_key',
+            'label' => 'ID'
+        ],
+            [
+            'field' => 'category_contents[0]->name',
+            'type' => '',
+            'label' => 'Title'
+        ],
+            [
+            'field' => 'is_online',
+            'type' => 'boolean',
+            'label' => 'Online'
+        ],
+            [
+            'field' => 'is_enabled',
+            'type' => 'boolean',
+            'label' => 'Enabled'
+        ]
+    ],
+    'messages' => null,
+    'items' => $this->categories,
+    'modulename' => 'blog',
+    'permissions' => [
+        'read' => true,
+        'create' => true,
+        'update' => true,
+        'delete' => true
+    ]
+]);
+?>

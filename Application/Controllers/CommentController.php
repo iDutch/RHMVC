@@ -25,7 +25,6 @@ class CommentController extends AbstractController {
         $Comment = $this->loadModel('Comment');
 
         if (isset($_POST['add_comment'])) {
-            $date = new \DateTime();
             if (empty($_SESSION['user']->id)) {
                 $Comment->author_name = $_POST['author_name'];
                 $Comment->user_id = null;

@@ -85,4 +85,9 @@ abstract class AbstractController
         return new FlashMessages();
     }
 
+    protected function redirect($url)
+    {
+        header('Location: ' . $url);
+    }
+
 }

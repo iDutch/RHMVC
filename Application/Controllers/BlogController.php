@@ -23,23 +23,35 @@ class BlogController extends AbstractController
     public function adminAction($handler)
     {
         if ($handler == 'articles') {
-            return $this->adminArticleAction();
+            return $this->adminArticleIndexAction();
         } else if ($handler == 'categories') {
-
+            return $this->adminCategoryIndexAction();
         } elseif ($handler == 'comments') {
-
+            $this->redirect('/404');
         } else {
-            return $this->adminArticleAction();
+            $this->redirect('/404');
         }
     }
 
-    private function adminArticleAction()
+    private function adminArticleIndexAction()
     {
-        /* @var $Article Article */
+        /* @var $Article \Application\Models\Article */
         $Article = $this->loadModel('Article');
-        $view = new View('blog/admin.phtml');
+        $view = new View('blog/admin_articles.phtml');
         $view->setVars([
             'articles' => $Article->find('all')
+        ]);
+
+        return $view->parse();
+    }
+
+    private function adminCategoryIndexAction()
+    {
+        /* @var $Category \Application\Models\Category */
+        $Category = $this->loadModel('Category');
+        $view = new View('blog/admin_categories.phtml');
+        $view->setVars([
+            'categories' => $Category->find('all')
         ]);
 
         return $view->parse();

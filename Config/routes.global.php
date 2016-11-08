@@ -39,7 +39,7 @@ return [
             'sidebar' => [
                     [
                     'controller' => 'BlogController',
-                    'action' => 'categoryMenuAction',
+                    'action' => 'showCategoryMenuAction',
                     'params' => [],
                 ]
             ]
@@ -50,7 +50,7 @@ return [
             'content' => [
                     [
                     'controller' => 'BlogController',
-                    'action' => 'articleAction',
+                    'action' => 'showArticleAction',
                     'params' => [
                         'article_id' => null
                     ],
@@ -59,7 +59,7 @@ return [
             'sidebar' => [
                     [
                     'controller' => 'BlogController',
-                    'action' => 'categoryMenuAction',
+                    'action' => 'showCategoryMenuAction',
                     'params' => [],
                 ]
             ]
