@@ -1,6 +1,9 @@
 <?php
-$this->helper->appendCSSFile('/static/css/datepicker/bootstrap-datetimepicker.min.css');
-
+$this->helper->appendJSInline('var CKEDITOR_BASEPATH = "/static/js/ckeditor/";');
+$this->helper->appendJSFile('ckeditor/ckeditor.js');
+$this->helper->appendJSFile('ckeditor/adapters/jquery.js');
+$this->helper->appendJSFile('moment-with-locales.js');
+$this->helper->appendJSFile('bootstrap-datetimepicker.min.js');
 $this->helper->appendJSInline('
     $(".datetime").datetimepicker({
         format: "YYYY-MM-DD HH:mm:ss"
@@ -11,13 +14,10 @@ $this->helper->appendJSInline('
     $(".archive_date").on("dp.change", function (e) {
         $(".publish_date").data("DateTimePicker").maxDate(e.date);
     });
-    $(".ckeditor").ckeditor({language: "' . $_SESSION['language_iso_code'] . '"});
+    $(".ckeditor").ckeditor({language: "en"});
 ');
 
-$this->helper->appendJSFile('datepicker/bootstrap-datetimepicker.min.js');
-$this->helper->appendJSFile('ckeditor/adapters/jquery.js');
-$this->helper->appendJSFile('ckeditor/ckeditor.js');
-
+$this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
 ?>
 
 <form class="form-horizontal" method="post">
@@ -25,13 +25,13 @@ $this->helper->appendJSFile('ckeditor/ckeditor.js');
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <?php foreach ($this->languages as $language): ?>
-                <li role="presentation" <?= $language->is_default ? 'class="active"' : ''?>><a href="#<?= $language->iso_code ?>" aria-controls="<?= $language->iso_code ?>" role="tab" data-toggle="tab"><?= $this->translate($language->iso_code) ?></a></li>
+                <li role="presentation" <?= $language->is_default ? 'class="active"' : '' ?>><a href="#<?= $language->iso_code ?>" aria-controls="<?= $language->iso_code ?>" role="tab" data-toggle="tab"><?= $this->translate($language->iso_code) ?></a></li>
             <?php endforeach; ?>
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
             <?php foreach ($this->languages as $language): ?>
-                <div role="tabpanel" class="tab-pane <?= $language->is_default ? 'active' : ''?>" id="<?= $language->iso_code ?>">
+                <div role="tabpanel" class="tab-pane <?= $language->is_default ? 'active' : '' ?>" id="<?= $language->iso_code ?>">
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
@@ -68,7 +68,7 @@ $this->helper->appendJSFile('ckeditor/ckeditor.js');
         <div class="col-sm-10">
             <select name="category_id" class="form-control">
                 <option value="0"><?= $this->translate('choose_category') ?></option>
-                <?php foreach($this->categories as $category): ?>
+                <?php foreach ($this->categories as $category): ?>
                     <option value="<?= $category->id ?>"><?= $category->name ?></option>
                 <?php endforeach; ?>
             </select>

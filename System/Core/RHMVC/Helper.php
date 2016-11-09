@@ -28,27 +28,42 @@ class Helper
 
     public function appendJSFile($file)
     {
-        array_push($this->javascripts, array('file' => $file));
+        if (!isset($this->javascripts[$this->view])) {
+            $this->javascripts[$this->view] = [];
+        }
+        array_push($this->javascripts[$this->view], array('file' => $file));
     }
 
     public function appendCSSFile($file)
     {
-        array_push($this->stylesheets, array('file' => $file));
+        if (!isset($this->stylesheets[$this->view])) {
+            $this->stylesheets[$this->view] = [];
+        }
+        array_push($this->stylesheets[$this->view], array('file' => $file));
     }
 
     public function appendJSUrl($url)
     {
-        array_push($this->javascripts, array('url' => $url));
+        if (!isset($this->javascripts[$this->view])) {
+            $this->javascripts[$this->view] = [];
+        }
+        array_push($this->javascripts[$this->view], array('url' => $url));
     }
 
     public function appendJSInline($content)
     {
-        array_push($this->javascripts, array('inline' => $content));
+        if (!isset($this->javascripts[$this->view])) {
+            $this->javascripts[$this->view] = [];
+        }
+        array_push($this->javascripts[$this->view], array('inline' => $content));
     }
 
     public function appendCSSInline($content)
     {
-        array_push($this->stylesheets, array('inline' => $content));
+        if (!isset($this->stylesheets[$this->view])) {
+            $this->stylesheets[$this->view] = [];
+        }
+        array_push($this->stylesheets[$this->view], array('inline' => $content));
     }
 
     public function getJSFiles()
@@ -70,12 +85,17 @@ class Helper
     {
         $js = null;
         $javascripts = array_reverse($this->javascripts);
-        foreach ($javascripts as $types) {
-            foreach ($types as $type => $value) {
-                if ($type === 'url') {
-                    $js .= file_get_contents($value);
-                } else if ($type === 'inline') {
-                    $js .= $value;
+
+        foreach ($javascripts as $views => $entries) {
+            foreach ($entries as $index => $jsfiles) {
+                foreach ($jsfiles as $type => $data) {
+                    if ($type === 'file') {
+                        $js .= file_get_contents(JS_DIR . $data);
+                    } else if ($type === 'url') {
+                        $js .= file_get_contents($data);
+                    } else if ($type === 'inline') {
+                        $js .= $data;
+                    }
                 }
             }
         }
@@ -95,14 +115,17 @@ class Helper
     {
         $css = null;
         $stylesheets = array_reverse($this->stylesheets);
-        foreach ($stylesheets as $types) {
-            foreach ($types as $type => $value) {
-                if ($type === 'file') {
-                    $css .= file_get_contents(CSS_DIR . $value);
-                } else if ($type === 'url') {
-                    $css .= file_get_contents($value);
-                } else {
-                    $css .= $value;
+
+        foreach ($stylesheets as $views => $entries) {
+            foreach ($entries as $index => $cssfiles) {
+                foreach ($cssfiles as $type => $data) {
+                    if ($type === 'file') {
+                        $css .= file_get_contents(CSS_DIR . $data);
+                    } else if ($type === 'url') {
+                        $css .= file_get_contents($data);
+                    } else {
+                        $css .= $data;
+                    }
                 }
             }
         }
