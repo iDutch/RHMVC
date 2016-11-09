@@ -44,7 +44,7 @@ return [
                 ]
             ]
         ],
-        '(/index)?/article/(?<article_id>[0-9]+)(/)?' => [
+        '(/index)?/article/(?<article_id>[0-9]+)' => [
             'methods' => 'GET|POST',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -52,7 +52,7 @@ return [
                     'controller' => 'BlogController',
                     'action' => 'showArticleAction',
                     'params' => [
-                        'article_id' => null
+                        'article_id' => null,
                     ],
                 ],
             ],
@@ -75,7 +75,7 @@ return [
                 ],
             ]
         ],
-        '/admin/blog((/)?(?<handler>.*))?' => [
+        '/admin/blog((/)?(?<handler>[a-z]+))?((/)?(?<action>.*))?' => [
             'methods' => 'GET|POST',
             'layout' => 'admin.phtml',
             'content' => [
@@ -83,7 +83,8 @@ return [
                     'controller' => 'BlogController',
                     'action' => 'adminAction',
                     'params' => [
-                        'handler' => 'articles'
+                        'handler' => 'articles',
+                        'action' => null
                     ],
                 ],
             ],

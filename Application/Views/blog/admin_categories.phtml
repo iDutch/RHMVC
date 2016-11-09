@@ -1,6 +1,6 @@
 <?php
 
-$this->helper()->appendJSInline('
+$this->helper->appendJSInline('
     $(document).ready(function() {
         $(".table").DataTable({
             "language": ' . $this->translate('datatable_language') . ',
@@ -21,8 +21,8 @@ $this->helper()->appendJSInline('
         });
     });
 ');
-$this->helper()->appendJSFile('datatables.min.js');
-$this->helper()->appendCSSFile('datatables.min.css');
+$this->helper->appendJSFile('datatables.min.js');
+$this->helper->appendCSSFile('datatables.min.css');
 ?>
 <?=
 

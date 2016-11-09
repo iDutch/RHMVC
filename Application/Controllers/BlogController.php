@@ -20,9 +20,12 @@ class BlogController extends AbstractController
         return $view->parse();
     }
 
-    public function adminAction($handler)
+    public function adminAction($handler, $action = null)
     {
         if ($handler == 'articles') {
+            if ($action == 'add') {
+                return $this->adminArticleAddAction();
+            }
             return $this->adminArticleIndexAction();
         } else if ($handler == 'categories') {
             return $this->adminCategoryIndexAction();
@@ -40,6 +43,22 @@ class BlogController extends AbstractController
         $view = new View('blog/admin_articles.phtml');
         $view->setVars([
             'articles' => $Article->find('all')
+        ]);
+
+        return $view->parse();
+    }
+
+    public function adminArticleAddAction()
+    {
+        /* @var $Article \Application\Models\Article */
+        $Article = $this->loadModel('Article');
+        /* @var $Language \Application\Models\Language */
+        $Language = $this->loadModel('Language');
+
+        $view = new View('blog/admin_articles_add.phtml');
+        $view->setVars([
+            'article' => $Article,
+            'languages' => $Language->find('all')
         ]);
 
         return $view->parse();

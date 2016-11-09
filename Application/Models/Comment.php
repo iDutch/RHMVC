@@ -17,4 +17,17 @@ class Comment extends Model
         ['content']
     ];
 
+    static $before_save = ['sanitize'];
+
+    public function sanitize()
+    {
+        $this->author_name = $this->cleanXSS($this->author_name);
+        $this->content = $this->cleanXSS($this->content);
+    }
+
+    private function cleanXSS($value)
+    {
+        return str_replace(['&','<','>','"','\''], ['&amp;','&lt;','&gt;','&quot;','&#x27;'], $value);
+    }
+
 }

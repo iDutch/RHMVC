@@ -1,8 +1,11 @@
 <?php
-    $this->helper()->appendJSFIle('ckeditor/ckeditor.js');
-    $this->helper()->appendJSInline('
-         CKEDITOR.replace("message");
+    $this->helper->appendJSFile('ckeditor/commentform-config.js');
+    $this->helper->appendJSFIle('ckeditor/adapters/jquery.js');
+    $this->helper->appendJSFIle('ckeditor/ckeditor.js');
+    $this->helper->appendJSInline('
+         $("#message").ckeditor(config);
     ');
+
 ?>
 <form class="form-horizontal" action="" method="post">
   <div class="form-group">

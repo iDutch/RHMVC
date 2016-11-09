@@ -7,15 +7,17 @@ use MatthiasMullie\Minify;
 class Helper
 {
 
-    private static $instance = null;
-    private $javascripts = array();
-    private $stylesheets = array();
+    private static $instance;
+    private $javascripts = [];
+    private $stylesheets = [];
+    public $view;
 
-    public static function getInstance()
+    public static function getInstance($view)
     {
         if (!isset(self::$instance)) {
             self::$instance = new self();
         }
+        self::$instance->view = $view;
         return self::$instance;
     }
 
@@ -121,16 +123,16 @@ class Helper
         return '<link type="text/css" rel="stylesheet" href="/static/css/cache/minified-' . $hash . '.css">';
     }
 
-    function getClassProperty($object, $accessString)
+    public function getClassProperty($obj, $propertystring)
     {
-        $parts = explode('->', $accessString);
-
-        $tmp = $object;
-        foreach ($parts as $part) {
-            if (preg_match('/\[(?<index>[0-9]+)\]/i', $part, $matches)) { //Property is an array?
-                $tmp = $tmp->{preg_replace('/\[([0-9]+)\]/', '', $part)}[$matches['index']];
+        $properties = explode('->', $propertystring);
+        $tmp = $obj;
+        foreach ($properties as $property) {
+            if (preg_match('/\[(?<index>[0-9]+)\]/', $property, $matches)) {
+                $property = preg_replace('/\[[0-9]+\]/', '', $property);
+                $tmp = $tmp->{$property}[$matches['index']];
             } else {
-                $tmp = $tmp->{$part};
+                $tmp = $tmp->{$property};
             }
         }
         return $tmp;

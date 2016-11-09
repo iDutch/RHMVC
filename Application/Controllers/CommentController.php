@@ -9,11 +9,11 @@ class CommentController extends AbstractController {
 
     public function indexAction($article_id)
     {
-        /* @var $Article Article */
+        /* @var $Comment /Application/Models/Comment */
         $Comment = $this->loadModel('Comment');
         $view = new View('comment/index.phtml');
         $view->setVars([
-            'comments' => $Comment->find('all', ['limit' => 10, 'conditions' => ['article_id = ?', $article_id]])
+            'comments' => $Comment->find('all', ['limit' => 10, 'conditions' => ['article_id = ?', $article_id], 'order' => 'post_date desc'])
         ]);
 
         return $view->parse();
@@ -25,6 +25,7 @@ class CommentController extends AbstractController {
         $Comment = $this->loadModel('Comment');
 
         if (isset($_POST['add_comment'])) {
+            //var_dump($_POST); exit;
             if (empty($_SESSION['user']->id)) {
                 $Comment->author_name = $_POST['author_name'];
                 $Comment->user_id = null;
@@ -36,7 +37,7 @@ class CommentController extends AbstractController {
             $Comment->article_id = $article_id;
 
             if ($Comment->save()) {
-                header('Location: /blog/article/' . $article_id);
+                $this->redirect('/article/' . $article_id);
             }
         }
 

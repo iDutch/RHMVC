@@ -10,9 +10,11 @@ class View
 
     private $view;
     private $vars = array();
+    private $helper;
 
     public function __construct($view, $isLayout = false)
     {
+        $this->helper = Helper::getInstance($view);
         if ($isLayout) {
             if (!file_exists(LAYOUT_DIR . $view)) {
                 throw new \Exception('View error: Cannot load layout: \'' . LAYOUT_DIR . $view . '\'');
@@ -55,19 +57,12 @@ class View
         return ob_get_clean();
     }
 
-    function __set($key, $value)
-    {
+    function __set($key, $value){
         $this->vars[$key] = $value; //create new set data[key] = value without setters;
     }
 
-    function __get($key)
-    {
+    function __get($key){
         return $this->vars[$key];
-    }
-
-    public function helper()
-    {
-        return Helper::getInstance();
     }
 
     public function translate($key)
