@@ -8,6 +8,9 @@ $this->helper->appendJSInline('
     $(".datetime").datetimepicker({
         format: "YYYY-MM-DD HH:mm:ss"
     });
+    $(".datetime2").datetimepicker({
+        useCurrent: false
+    });
     $(".publish_date").on("dp.change", function (e) {
         $(".archive_date").data("DateTimePicker").minDate(e.date);
     });
@@ -69,7 +72,7 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
             <select name="category_id" class="form-control">
                 <option value="0"><?= $this->translate('choose_category') ?></option>
                 <?php foreach ($this->categories as $category): ?>
-                    <option value="<?= $category->id ?>"><?= $category->name ?></option>
+                    <option value="<?= $category->id ?>"><?= $category->category_contents[0]->name ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -83,7 +86,7 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('archive_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="archive_date" class="form-control datetime archive_date" value="">
+            <input type="text" name="archive_date" class="form-control datetime2 archive_date" value="">
         </div>
     </div>
     <div class="form-group">
@@ -106,7 +109,7 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-xl btn-primary"><?= $this->translate('save') ?></button>
+            <button name="add_article" type="submit" class="btn btn-xl btn-primary"><?= $this->translate('save') ?></button>
         </div>
     </div>
 </form>

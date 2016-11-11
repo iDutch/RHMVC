@@ -1,5 +1,5 @@
 <?php
-
+$this->helper->appendJSFile('datatables.min.js');
 $this->helper->appendJSInline('
     $(document).ready(function() {
         $(".table").DataTable({
@@ -21,7 +21,6 @@ $this->helper->appendJSInline('
         });
     });
 ');
-$this->helper->appendJSFile('datatables.min.js');
 $this->helper->appendCSSFile('datatables.min.css');
 ?>
 <?=
