@@ -1,7 +1,8 @@
 <?php
+
 session_start();
 
-setlocale(LC_TIME, 'nl_NL');
+setlocale(LC_TIME, 'en_EN');
 
 use System\Core\RHMVC\Router;
 
@@ -17,8 +18,7 @@ if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
 }
 require __DIR__ . '/../vendor/autoload.php';
 
-ActiveRecord\Config::initialize(function($cfg)
-{
+ActiveRecord\Config::initialize(function($cfg) {
     $dbconfig = require CONFIG_DIR . '/database.local.php';
     $cfg->set_model_directory(MODEL_DIR);
     $cfg->set_connections($dbconfig);

@@ -68,7 +68,7 @@
                 <div class="btn-toolbar" role="toolbar" aria-label="...">
                     <div class="btn-group pull-left" role="group" aria-label="...">
                         <?php if ($this->permissions['create']): ?>
-                            <a href="/admin/<?= $this->modulename ?>/add" class="btn btn-success"><?= $this->translate('add') ?></a>
+                            <a href="/admin/<?= $this->modulename ?>/<?= $this->modulehandler ?>/add" class="btn btn-success"><?= $this->translate('add') ?></a>
                         <?php endif; ?>
                     </div>
                     <div class="btn-group pull-right" role="group" aria-label="...">

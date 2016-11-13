@@ -3,7 +3,7 @@ $this->helper->appendJSInline('var CKEDITOR_BASEPATH = "/static/js/ckeditor/";')
 $this->helper->appendJSFile('ckeditor/ckeditor.js');
 $this->helper->appendJSFile('ckeditor/adapters/jquery.js');
 $this->helper->appendJSFile('moment-with-locales.js');
-$this->helper->appendJSFile('bootstrap-datetimepicker.min.js');
+$this->helper->appendJSFile('datetimepicker/datetimepicker.min.js');
 $this->helper->appendJSInline('
     $(".datetime").datetimepicker({
         format: "YYYY-MM-DD HH:mm:ss"
@@ -20,7 +20,7 @@ $this->helper->appendJSInline('
     $(".ckeditor").ckeditor({language: "en"});
 ');
 
-$this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
+$this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
 ?>
 
 <form class="form-horizontal" method="post">
@@ -53,12 +53,14 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('title') ?></label>
                         <div class="col-sm-10">
                             <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="">
+                            <?= isset($this->article_content->errors) && null !== $this->article_content->errors->on('title') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article_content->errors->on('title')]) : '' ?>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('content') ?></label>
                         <div class="col-sm-10">
                             <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"></textarea>
+                            <?= isset($this->article_content->errors) && null !== $this->article_content->errors->on('content') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article_content->errors->on('content')]) : '' ?>
                         </div>
                     </div>
                 </div>
@@ -75,12 +77,14 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
                     <option value="<?= $category->id ?>"><?= $category->category_contents[0]->name ?></option>
                 <?php endforeach; ?>
             </select>
+            <?= isset($this->article->errors) && null !== $this->article->errors->on('category_id') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article->errors->on('category_id')]) : '' ?>
         </div>
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('publish_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" required name="publish_date" class="form-control datetime publish_date" value="">
+            <input type="text" name="publish_date" class="form-control datetime publish_date" value="">
+            <?= isset($this->article->errors) && null !== $this->article->errors->on('publish_date') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article->errors->on('publish_date')]) : '' ?>
         </div>
     </div>
     <div class="form-group">
