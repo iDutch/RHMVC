@@ -3,7 +3,7 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <?php foreach ($this->languages as $language): ?>
-                <li role="presentation" <?= $language->is_default ? 'class="active"' : '' ?>><a href="#<?= $language->iso_code ?>" aria-controls="<?= $language->iso_code ?>" role="tab" data-toggle="tab"><?= $this->translate($language->iso_code) ?></a></li>
+                <li role="presentation" <?= $language->is_default ? 'class="active"' : '' ?>><a <?= isset($this->category_content[$language->id]->errors) && $this->category_content[$language->id]->errors->size() > 0 ? 'class=alert-danger' : '' ?> href="#<?= $language->iso_code ?>" aria-controls="<?= $language->iso_code ?>" role="tab" data-toggle="tab"><?= $this->translate($language->iso_code) ?></a></li>
             <?php endforeach; ?>
         </ul>
         <!-- Tab panes -->
@@ -13,8 +13,8 @@
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('title') ?></label>
                         <div class="col-sm-10">
-                            <input type="text" name="language[<?= $language->id ?>][name]" class="form-control" value="<?= isset($this->postdata['language'][$language->id]['name']) ? $this->postdata['language'][$language->id]['name'] : '' ?>">
-                            <?= isset($this->category_content->errors) && null !== $this->category_content->errors->on('title') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->category_content->errors->on('title')]) : '' ?>
+                            <input type="text" name="language[<?= $language->id ?>][name]" class="form-control" value="<?= $this->category_content[$language->id]->name ?? '' ?>">
+                            <?= isset($this->category_content[$language->id]->errors) && null !== $this->category_content[$language->id]->errors->on('name') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->category_content[$language->id]->errors->on('name')]) : '' ?>
                         </div>
                     </div>
                 </div>

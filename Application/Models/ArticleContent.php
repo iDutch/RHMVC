@@ -13,7 +13,11 @@ class ArticleContent extends Model
     ];
     static $validates_presence_of = [
             ['title'],
-            ['content']
+            ['content'],
+            ['article_id']
+    ];
+    static $validates_numericality_of = [
+            ['article_id', 'only_integer' => true]
     ];
     static $before_save = ['sanitize'];
 

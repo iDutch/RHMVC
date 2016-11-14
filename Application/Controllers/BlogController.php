@@ -18,8 +18,9 @@ class BlogController extends AbstractController
         /* @var $Article \Application\Models\Article */
         $Article = $this->loadModel('Article');
         $view = new View('blog/index.phtml');
+        $DateTime = new \DateTime();
         $view->setVars([
-            'articles' => $Article->find('all', ['limit' => 5])
+            'articles' => $Article->find('all', ['limit' => 5, 'conditions' => ['publish_date < ? AND is_online = ?', $DateTime->format('Y-m-d H:i:s'), 1]])
         ]);
 
         return $view->parse();
@@ -58,37 +59,42 @@ class BlogController extends AbstractController
 
     public function adminArticleAddAction()
     {
-        $Article = new Article();
-        $ArticleContent = new ArticleContent();
         $Category = new Category();
         $Language = new Language();
 
         if (isset($_POST['add_article'])) {
+            $Article = new Article();
             $Article->allow_comments = false;
             $Article->is_online = false;
+
             foreach ($_POST as $key => $value) {
                 if ($key == 'publish_date' || $key == 'archive_date' || $key == 'category_id' || $key == 'allow_comments' || $key == 'is_online') {
                     $Article->{$key} = !empty($value) ? $value : null;
                 }
                 if ($key == 'language') {
                     foreach ($value as $language_id => $lang_data) {
-                        $ArticleContent->is_online = false;
+                        $ArticleContent[$language_id] = new ArticleContent();
+                        $ArticleContent[$language_id]->is_online = false;
                         foreach ($lang_data as $lang_key => $lang_value) {
-                            if ($lang_key == 'title' || $lang_key == 'content') {
-                                $ArticleContent->{$lang_key} = $lang_value;
+                            if ($lang_key == 'title' || $lang_key == 'content' || 'is_online') {
+                                $ArticleContent[$language_id]->{$lang_key} = $lang_value;
                             }
                         }
-                        $ArticleContent->language_id = $language_id;
+                        $ArticleContent[$language_id]->language_id = $language_id;
                     }
                 }
             }
+
             $conn = $Article->connection();
             $conn->transaction();
-            $a = $Article->save();
-            $ArticleContent->article_id = $Article->id;
-            $b = $ArticleContent->save();
+            $A = $Article->save();
 
-            if (!$a || !$b) {
+            foreach ($ArticleContent as $language_id => $value) {
+                $ArticleContent[$language_id]->article_id = $Article->id;
+                $AC[$language_id] = $ArticleContent[$language_id]->save();
+            }
+
+            if (!$A || in_array(false, $AC)) {
                 $conn->rollback();
             } else {
                 $conn->commit();
@@ -98,10 +104,10 @@ class BlogController extends AbstractController
 
         $view = new View('blog/admin_articles_add.phtml');
         $view->setVars([
-            'article' => $Article,
-            'article_content' => $ArticleContent,
-            'categories' => $Category->find('all'),
-            'languages' => $Language->find('all')
+            'article'         => $Article ?? null,
+            'article_content' => $ArticleContent ?? null,
+            'categories'      => $Category->find('all'),
+            'languages'       => $Language->find('all')
         ]);
 
         return $view->parse();
@@ -121,35 +127,42 @@ class BlogController extends AbstractController
 
     public function adminCategoryAddAction()
     {
-        $Category = new Category();
-        $CategoryContent = new CategoryContent();
+
         $Language = new Language();
 
         if (isset($_POST['add_category'])) {
+            $Category = new Category();
             $Category->is_enabled = false;
             $Category->is_online = false;
+
             foreach ($_POST as $key => $value) {
                 if ($key == 'is_enabled' || $key == 'is_online') {
                     $Category->{$key} = !empty($value) ? $value : null;
                 }
                 if ($key == 'language') {
                     foreach ($value as $language_id => $lang_data) {
+                        $CategoryContent[$language_id] = new CategoryContent();
                         foreach ($lang_data as $lang_key => $lang_value) {
                             if ($lang_key == 'name') {
-                                $CategoryContent->{$lang_key} = $lang_value;
+                                $CategoryContent[$language_id]->{$lang_key} = $lang_value;
                             }
                         }
-                        $CategoryContent->language_id = $language_id;
+                        $CategoryContent[$language_id]->language_id = $language_id;
                     }
                 }
             }
+
             $conn = $Category->connection();
             $conn->transaction();
-            $a = $Category->save();
-            $CategoryContent->category_id = $Category->id;
-            $b = $CategoryContent->save();
+            $C = $Category->save();
 
-            if (!$a || !$b) {
+            foreach ($CategoryContent as $language_id => $value) {
+                $CategoryContent[$language_id]->category_id = $Category->id;
+                $CC[$language_id] = $CategoryContent[$language_id]->save();
+            }
+
+
+            if (!$C || in_array(false, $CC)) {
                 $conn->rollback();
             } else {
                 $conn->commit();
@@ -159,10 +172,9 @@ class BlogController extends AbstractController
 
         $view = new View('blog/admin_categories_add.phtml');
         $view->setVars([
-            'category' => $Category,
-            'category_content' => $CategoryContent,
-            'postdata' => $_POST,
-            'languages' => $Language->find('all')
+            'category'         => $Category ?? null,
+            'category_content' => $CategoryContent ?? null,
+            'languages'        => $Language->find('all')
         ]);
 
         return $view->parse();
@@ -176,8 +188,8 @@ class BlogController extends AbstractController
         $article = $Article->first(['conditions' => ['id = ?', $article_id]]);
 
         $view->setVars([
-            'article' => $article,
-            'comments' => $article->allow_comments ? $this->invokeController('CommentController', 'indexAction', [$article_id]) : null,
+            'article'     => $article,
+            'comments'    => $article->allow_comments ? $this->invokeController('CommentController', 'indexAction', [$article_id]) : null,
             'commentform' => $article->allow_comments ? $this->invokeController('CommentController', 'showCommentFormAction', [$article_id]) : null,
         ]);
 

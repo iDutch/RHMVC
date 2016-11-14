@@ -28,7 +28,7 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <?php foreach ($this->languages as $language): ?>
-                <li role="presentation" <?= $language->is_default ? 'class="active"' : '' ?>><a href="#<?= $language->iso_code ?>" aria-controls="<?= $language->iso_code ?>" role="tab" data-toggle="tab"><?= $this->translate($language->iso_code) ?></a></li>
+                <li role="presentation" <?= $language->is_default ? 'class="active"' : '' ?>><a <?= isset($this->article_content[$language->id]->errors) && $this->article_content[$language->id]->errors->size() > 0 ? 'class=alert-danger' : '' ?> href="#<?= $language->iso_code ?>" aria-controls="<?= $language->iso_code ?>" role="tab" data-toggle="tab"><?= $this->translate($language->iso_code) ?></a></li>
             <?php endforeach; ?>
         </ul>
         <!-- Tab panes -->
@@ -44,7 +44,7 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
                                     <?php else: ?>
                                         <input type="hidden" name="language[<?= $language->id ?>][is_online]" value="0">
                                     <?php endif; ?>
-                                    <input type="checkbox" name="language[<?= $language->id ?>][is_online]" value="1" <?= $language->is_default ? 'checked disabled' : '' ?>> <?= $this->translate('is_online_language') ?>
+                                    <input type="checkbox" name="language[<?= $language->id ?>][is_online]" value="1" <?= $language->is_default ? 'checked disabled' : (isset($this->article_content[$language->id]->is_online) && $this->article_content[$language->id]->is_online ? 'checked' : '') ?>> <?= $this->translate('is_online_language') ?>
                                 </label>
                             </div>
                         </div>
@@ -52,15 +52,15 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('title') ?></label>
                         <div class="col-sm-10">
-                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="">
-                            <?= isset($this->article_content->errors) && null !== $this->article_content->errors->on('title') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article_content->errors->on('title')]) : '' ?>
+                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="<?= $this->article_content[$language->id]->title ?? '' ?>">
+                            <?= isset($this->article_content[$language->id]->errors) && null !== $this->article_content[$language->id]->errors->on('title') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article_content[$language->id]->errors->on('title')]) : '' ?>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('content') ?></label>
                         <div class="col-sm-10">
-                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"></textarea>
-                            <?= isset($this->article_content->errors) && null !== $this->article_content->errors->on('content') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article_content->errors->on('content')]) : '' ?>
+                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"><?= $this->article_content[$language->id]->content ?? '' ?></textarea>
+                            <?= isset($this->article_content[$language->id]->errors) && null !== $this->article_content[$language->id]->errors->on('content') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article_content[$language->id]->errors->on('content')]) : '' ?>
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
             <select name="category_id" class="form-control">
                 <option value="0"><?= $this->translate('choose_category') ?></option>
                 <?php foreach ($this->categories as $category): ?>
-                    <option value="<?= $category->id ?>"><?= $category->category_contents[0]->name ?></option>
+                    <option <?= isset($this->article->category_id) && $this->article->category_id == $category->id ? 'selected' : '' ?> value="<?= $category->id ?>"><?= $category->category_contents[0]->name ?></option>
                 <?php endforeach; ?>
             </select>
             <?= isset($this->article->errors) && null !== $this->article->errors->on('category_id') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article->errors->on('category_id')]) : '' ?>
@@ -83,7 +83,7 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('publish_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="publish_date" class="form-control datetime publish_date" value="">
+            <input type="text" name="publish_date" class="form-control datetime publish_date" value="<?= isset($this->article->publish_date) && $this->article->publish_date instanceof \DateTime ? $this->article->publish_date->format('Y-m-d H:i:s') : '' ?>">
             <?= isset($this->article->errors) && null !== $this->article->errors->on('publish_date') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->article->errors->on('publish_date')]) : '' ?>
         </div>
     </div>
@@ -97,7 +97,7 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
                 <label>
-                    <input name="allow_comments" value="1" type="checkbox"> <?= $this->translate('allow_comments') ?>
+                    <input <?= isset($this->article->allow_comments) && $this->article->allow_comments ? 'checked' : '' ?> name="allow_comments" value="1" type="checkbox"> <?= $this->translate('allow_comments') ?>
                 </label>
             </div>
         </div>
@@ -106,7 +106,7 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
                 <label>
-                    <input name="is_online" value="1" type="checkbox"> <?= $this->translate('is_online') ?>
+                    <input <?= isset($this->article->is_online) && $this->article->is_online ? 'checked' : '' ?> name="is_online" value="1" type="checkbox"> <?= $this->translate('is_online') ?>
                 </label>
             </div>
         </div>
