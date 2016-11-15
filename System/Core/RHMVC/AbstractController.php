@@ -40,21 +40,6 @@ abstract class AbstractController
     }
 
     /**
-     * Load a model
-     * @param string $model
-     * @return ActiveRecord\Model
-     */
-    protected function loadModel($model)
-    {
-        $model = 'Application\\Models\\' . $model;
-        if (!class_exists($model)) {
-            throw new Exception('AbstractController error: Model \'' . $controller . '\' not found!');
-        }
-
-        return new $model();
-    }
-
-    /**
      * Grab config file
      * @param string $name
      * @return array

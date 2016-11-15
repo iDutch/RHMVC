@@ -15,22 +15,24 @@ class BlogController extends AbstractController
 
     public function indexAction()
     {
-        /* @var $Article \Application\Models\Article */
-        $Article = $this->loadModel('Article');
+        $Article = new Article();
         $view = new View('blog/index.phtml');
         $DateTime = new \DateTime();
         $view->setVars([
-            'articles' => $Article->find('all', ['limit' => 5, 'conditions' => ['publish_date < ? AND is_online = ?', $DateTime->format('Y-m-d H:i:s'), 1]])
+            'articles' => $Article->find('all', ['limit' => 7, 'order' => 'publish_date DESC', 'conditions' => ['publish_date < ? AND is_online = ?', $DateTime->format('Y-m-d H:i:s'), 1]])
         ]);
 
         return $view->parse();
     }
 
-    public function adminAction($handler, $action = null)
+    public function adminAction($handler, $action = null, $article_id = null)
     {
         if ($handler == 'articles') {
             if ($action == 'add') {
                 return $this->adminArticleAddAction();
+            }
+            if ($action == 'edit') {
+                return $this->adminArticleEditAction($article_id);
             }
             return $this->adminArticleIndexAction();
         } else if ($handler == 'categories') {
@@ -47,8 +49,7 @@ class BlogController extends AbstractController
 
     private function adminArticleIndexAction()
     {
-        /* @var $Article \Application\Models\Article */
-        $Article = $this->loadModel('Article');
+        $Article = new Article();
         $view = new View('blog/admin_articles.phtml');
         $view->setVars([
             'articles' => $Article->find('all')
@@ -64,50 +65,40 @@ class BlogController extends AbstractController
 
         if (isset($_POST['add_article'])) {
             $Article = new Article();
-            $Article->allow_comments = false;
-            $Article->is_online = false;
-
-            foreach ($_POST as $key => $value) {
-                if ($key == 'publish_date' || $key == 'archive_date' || $key == 'category_id' || $key == 'allow_comments' || $key == 'is_online') {
-                    $Article->{$key} = !empty($value) ? $value : null;
-                }
-                if ($key == 'language') {
-                    foreach ($value as $language_id => $lang_data) {
-                        $ArticleContent[$language_id] = new ArticleContent();
-                        $ArticleContent[$language_id]->is_online = false;
-                        foreach ($lang_data as $lang_key => $lang_value) {
-                            if ($lang_key == 'title' || $lang_key == 'content' || 'is_online') {
-                                $ArticleContent[$language_id]->{$lang_key} = $lang_value;
-                            }
-                        }
-                        $ArticleContent[$language_id]->language_id = $language_id;
-                    }
-                }
-            }
-
-            $conn = $Article->connection();
-            $conn->transaction();
-            $A = $Article->save();
-
-            foreach ($ArticleContent as $language_id => $value) {
-                $ArticleContent[$language_id]->article_id = $Article->id;
-                $AC[$language_id] = $ArticleContent[$language_id]->save();
-            }
-
-            if (!$A || in_array(false, $AC)) {
-                $conn->rollback();
-            } else {
-                $conn->commit();
-                $this->redirect('/admin/blog/articles');
+            if ($Article->saveThroughTransaction($_POST)) {
+                $this->redirect('/admin/articles/');
             }
         }
 
         $view = new View('blog/admin_articles_add.phtml');
         $view->setVars([
-            'article'         => $Article ?? null,
-            'article_content' => $ArticleContent ?? null,
-            'categories'      => $Category->find('all'),
-            'languages'       => $Language->find('all')
+            'categories' => $Category->find('all'),
+            'languages'  => $Language->find('all'),
+            'post'       => $_POST ?? [],
+            'msg'        => $this->flashMessage()
+        ]);
+
+        return $view->parse();
+    }
+
+    public function adminArticleEditAction($article_id)
+    {
+        $Category = new Category();
+        $Language = new Language();
+        $Article = Article::find($article_id);
+
+        if (isset($_POST['edit_article'])) {
+
+            if ($Article->saveThroughTransaction($_POST)) {
+                $this->redirect('/admin/articles/');
+            }
+        }
+        $view = new View('blog/admin_articles_add.phtml');
+        $view->setVars([
+            'categories' => $Category->find('all'),
+            'languages'  => $Language->find('all'),
+            'post'       => isset($_POST['edit_article']) ? $_POST : $Article->get(),
+            'msg'        => $this->flashMessage()
         ]);
 
         return $view->parse();
