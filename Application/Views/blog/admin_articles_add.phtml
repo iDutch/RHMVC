@@ -5,19 +5,24 @@ $this->helper->appendJSFile('ckeditor/adapters/jquery.js');
 $this->helper->appendJSFile('moment-with-locales.js');
 $this->helper->appendJSFile('datetimepicker/datetimepicker.min.js');
 $this->helper->appendJSInline('
-    $(".datetime").datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss"
+    $(document).ready(function() {
+        $(".datetime").datetimepicker({
+            format: "YYYY-MM-DD HH:mm:ss"
+        });
+        $(".datetime2").datetimepicker({
+            useCurrent: false,
+            format: "YYYY-MM-DD HH:mm:ss"
+        });
+        $(".publish_date").on("dp.change", function (e) {
+            $(".archive_date").data("DateTimePicker").minDate(e.date);
+        });
+        $(".archive_date").on("dp.change", function (e) {
+            $(".publish_date").data("DateTimePicker").maxDate(e.date);
+        });
+
+        $(".publish_date").trigger("dp.change");
+        $(".ckeditor").ckeditor({language: "en"});
     });
-    $(".datetime2").datetimepicker({
-        useCurrent: false
-    });
-    $(".publish_date").on("dp.change", function (e) {
-        $(".archive_date").data("DateTimePicker").minDate(e.date);
-    });
-    $(".archive_date").on("dp.change", function (e) {
-        $(".publish_date").data("DateTimePicker").maxDate(e.date);
-    });
-    $(".ckeditor").ckeditor({language: "en"});
 ');
 
 $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
@@ -109,7 +114,7 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button name="add_article" type="submit" class="btn btn-xl btn-primary"><?= $this->translate('save') ?></button>
+            <button name="save_article" type="submit" class="btn btn-xl btn-primary"><?= $this->translate('save') ?></button>
         </div>
     </div>
 </form>

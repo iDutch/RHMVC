@@ -22,6 +22,17 @@ class Article extends Model
 
     public function saveThroughTransaction($params)
     {
+        $conn = $this->connection();
+        $conn->transaction();
+
+        if (isset($this->id)) {
+            $languages = ArticleContent::find('all', ['conditions' => ['article_id = ?', $this->id]]);
+            foreach ($languages as $ArticleContent) {
+                $ArticleContent->delete();
+            }
+            $ArticleContent = null;
+        }
+
         $this->allow_comments = false;
         $this->is_online = false;
 
@@ -43,8 +54,7 @@ class Article extends Model
             }
         }
 
-        $conn = $this->connection();
-        $conn->transaction();
+
         $A = $this->save();
 
         foreach ($ArticleContent as $language_id => $value) {
@@ -77,7 +87,6 @@ class Article extends Model
                 $data['language'][$language->language_id][$key] = $value;
             }
         }
-        var_dump($data);
         return $data;
     }
 

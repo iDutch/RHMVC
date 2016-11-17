@@ -63,10 +63,10 @@ class BlogController extends AbstractController
         $Category = new Category();
         $Language = new Language();
 
-        if (isset($_POST['add_article'])) {
+        if (isset($_POST['save_article'])) {
             $Article = new Article();
             if ($Article->saveThroughTransaction($_POST)) {
-                $this->redirect('/admin/articles/');
+                $this->redirect('/admin/blog/articles/');
             }
         }
 
@@ -87,10 +87,10 @@ class BlogController extends AbstractController
         $Language = new Language();
         $Article = Article::find($article_id);
 
-        if (isset($_POST['edit_article'])) {
+        if (isset($_POST['save_article'])) {
 
             if ($Article->saveThroughTransaction($_POST)) {
-                $this->redirect('/admin/articles/');
+                $this->redirect('/admin/blog/articles/');
             }
         }
         $view = new View('blog/admin_articles_add.phtml');
@@ -98,7 +98,7 @@ class BlogController extends AbstractController
             'categories' => $Category->find('all'),
             'languages'  => $Language->find('all'),
             'post'       => isset($_POST['edit_article']) ? $_POST : $Article->get(),
-            'msg'        => $this->flashMessage()
+            'msg'        => $this->flashmessages
         ]);
 
         return $view->parse();
@@ -106,8 +106,7 @@ class BlogController extends AbstractController
 
     private function adminCategoryIndexAction()
     {
-        /* @var $Category \Application\Models\Category */
-        $Category = $this->loadModel('Category');
+        $Category = new Category();
         $view = new View('blog/admin_categories.phtml');
         $view->setVars([
             'categories' => $Category->find('all')
@@ -118,7 +117,6 @@ class BlogController extends AbstractController
 
     public function adminCategoryAddAction()
     {
-
         $Language = new Language();
 
         if (isset($_POST['add_category'])) {
@@ -173,7 +171,6 @@ class BlogController extends AbstractController
 
     public function showArticleAction($article_id)
     {
-        /* @var $Article \Application\Models\Article */
         $Article = new Article();
         $view = new View('blog/single.phtml');
         $article = $Article->first(['conditions' => ['id = ?', $article_id]]);
@@ -189,8 +186,7 @@ class BlogController extends AbstractController
 
     public function showCategoryMenuAction()
     {
-        /* @var $Category Category */
-        $Category = $this->loadModel('Category');
+        $Category = new Category();
         $view = new View('blog/category_menu.phtml');
         $view->setVars([
             'categories' => $Category->find('all')
@@ -201,8 +197,7 @@ class BlogController extends AbstractController
 
     public function showArchiveMenuAction()
     {
-        /* @var $Article Article */
-        $Article = $this->loadModel('Article');
+        $Article = new Article();
         $view = new View('blog/category_menu.phtml');
         $view->setVars([
             'archivedates' => $Article->find_by_sql('SELECT publish_date, MONTH(publish_date) AS `month` FROM articles ORDER BY publish_date DESC GROUP BY month')

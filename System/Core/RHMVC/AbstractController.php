@@ -9,9 +9,15 @@ abstract class AbstractController
 {
 
     protected $layout = null;
+    protected $flashmessages = null;
 
+    /**
+     * Constructor
+     * @param type $layout
+     */
     public function __construct($layout = null)
     {
+        $this->flashmessages = new FlashMessages();
         $this->layout = $layout; //Pass layout to controllers so they can alter the main layout when needed
     }
 
@@ -62,14 +68,9 @@ abstract class AbstractController
     }
 
     /**
-     * Function wrapper for FlashMessages object
-     * @return FlashMessages
+     * Redirector
+     * @param type $url
      */
-    protected function flashMessage()
-    {
-        return new FlashMessages();
-    }
-
     protected function redirect($url)
     {
         header('Location: ' . $url);

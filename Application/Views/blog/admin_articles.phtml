@@ -8,13 +8,15 @@ $this->helper->appendJSInline('
             "language": ' . $this->translate('datatable_language') . ',
             "order": [[ 3, "desc" ]],
             "columnDefs": [{
-                "orderable": false, "targets": [0, 4]
+                "orderable": false, "targets": [0, 6]
             }],
             "columns": [
               { "width": "20px" },
               null,
               { "width": "80px" },
-              { "width": "115px" },
+              { "width": "110px" },
+              { "width": "80px" },
+              { "width": "80px" },
               { "width": "160px" }
             ]
         });
@@ -28,34 +30,44 @@ $this->helper->appendCSSFile('datatables/datatables.min.css');
 <?=
 
 $this->partial('admin_index_table.phtml', [
-    'fields' => [
+    'fields'        => [
             [
             'field' => 'id',
-            'type' => 'primary_key',
+            'type'  => 'primary_key',
             'label' => 'ID'
         ],
             [
             'field' => 'article_contents[0]->title',
-            'type' => '',
+            'type'  => '',
             'label' => 'Title'
         ],
             [
             'field' => 'category->category_contents[0]->name',
-            'type' => '',
+            'type'  => '',
             'label' => 'Category'
         ],
             [
             'field' => 'publish_date',
-            'type' => '',
-            'label' => 'Publish date'
+            'type'  => '',
+            'label' => 'Publish Date'
+        ],
+            [
+            'field' => 'is_online',
+            'type'  => 'boolean',
+            'label' => 'Online'
+        ],
+            [
+            'field' => 'allow_comments',
+            'type'  => 'boolean',
+            'label' => 'Allow Comments'
         ]
     ],
-    'messages' => null,
-    'items' => $this->articles,
-    'modulename' => 'blog',
+    'messages'      => null,
+    'items'         => $this->articles,
+    'modulename'    => 'blog',
     'modulehandler' => 'articles',
-    'permissions' => [
-        'read' => true,
+    'permissions'   => [
+        'read'   => true,
         'create' => true,
         'update' => true,
         'delete' => true
