@@ -25,19 +25,25 @@ class BlogController extends AbstractController
         return $view->parse();
     }
 
-    public function adminAction($handler, $action = null, $article_id = null)
+    public function adminAction($handler, $action = null, $item_id = null)
     {
         if ($handler == 'articles') {
             if ($action == 'add') {
-                return $this->adminArticleAddAction();
+                return $this->adminArticleFormAction();
             }
             if ($action == 'edit') {
-                return $this->adminArticleEditAction($article_id);
+                return $this->adminArticleFormAction($item_id);
+            }
+            if ($action == 'delete') {
+                $this->adminArticleDeleteAction($item_id);
             }
             return $this->adminArticleIndexAction();
         } else if ($handler == 'categories') {
             if ($action == 'add') {
-                return $this->adminCategoryAddAction();
+                return $this->adminCategoryFormAction();
+            }
+            if ($action == 'edit') {
+                return $this->adminCategoryFormAction($item_id);
             }
             return $this->adminCategoryIndexAction();
         } elseif ($handler == 'comments') {
@@ -58,50 +64,41 @@ class BlogController extends AbstractController
         return $view->parse();
     }
 
-    public function adminArticleAddAction()
+    public function adminArticleFormAction($article_id = null)
     {
         $Category = new Category();
         $Language = new Language();
+        if (!is_null($article_id)) {
+            $Article = Article::find($article_id);
+        } else {
+            $Article = new Article();
+        }
 
         if (isset($_POST['save_article'])) {
-            $Article = new Article();
             if ($Article->saveThroughTransaction($_POST)) {
                 $this->redirect('/admin/blog/articles/');
             }
         }
 
-        $view = new View('blog/admin_articles_add.phtml');
+        $view = new View('blog/admin_articles_form.phtml');
         $view->setVars([
-            'categories' => $Category->find('all'),
+            'categories' => $Category->find('all', ['conditions' => ['is_enabled = ?', 1]]),
             'languages'  => $Language->find('all'),
-            'post'       => $_POST ?? [],
-            'msg'        => $this->flashMessage()
+            'post'       => isset($_POST['save_article']) ? $_POST : $Article->getFormData(),
+            'msg'        => $this->flashmessages
         ]);
 
         return $view->parse();
     }
 
-    public function adminArticleEditAction($article_id)
+    private function adminArticleDeleteAction()
     {
-        $Category = new Category();
-        $Language = new Language();
+        $article_id = $_POST['item_id'] ?? null;
         $Article = Article::find($article_id);
-
-        if (isset($_POST['save_article'])) {
-
-            if ($Article->saveThroughTransaction($_POST)) {
-                $this->redirect('/admin/blog/articles/');
-            }
+        if (count($Article) && $Article->delete()) {
+            $this->redirect('/admin/blog/articles');
         }
-        $view = new View('blog/admin_articles_add.phtml');
-        $view->setVars([
-            'categories' => $Category->find('all'),
-            'languages'  => $Language->find('all'),
-            'post'       => isset($_POST['edit_article']) ? $_POST : $Article->get(),
-            'msg'        => $this->flashmessages
-        ]);
-
-        return $view->parse();
+        return false;
     }
 
     private function adminCategoryIndexAction()
@@ -115,55 +112,26 @@ class BlogController extends AbstractController
         return $view->parse();
     }
 
-    public function adminCategoryAddAction()
+    public function adminCategoryFormAction($category_id = null)
     {
         $Language = new Language();
-
-        if (isset($_POST['add_category'])) {
+        if (!is_null($category_id)) {
+            $Category = Category::find($category_id);
+        } else {
             $Category = new Category();
-            $Category->is_enabled = false;
-            $Category->is_online = false;
+        }
 
-            foreach ($_POST as $key => $value) {
-                if ($key == 'is_enabled' || $key == 'is_online') {
-                    $Category->{$key} = !empty($value) ? $value : null;
-                }
-                if ($key == 'language') {
-                    foreach ($value as $language_id => $lang_data) {
-                        $CategoryContent[$language_id] = new CategoryContent();
-                        foreach ($lang_data as $lang_key => $lang_value) {
-                            if ($lang_key == 'name') {
-                                $CategoryContent[$language_id]->{$lang_key} = $lang_value;
-                            }
-                        }
-                        $CategoryContent[$language_id]->language_id = $language_id;
-                    }
-                }
-            }
-
-            $conn = $Category->connection();
-            $conn->transaction();
-            $C = $Category->save();
-
-            foreach ($CategoryContent as $language_id => $value) {
-                $CategoryContent[$language_id]->category_id = $Category->id;
-                $CC[$language_id] = $CategoryContent[$language_id]->save();
-            }
-
-
-            if (!$C || in_array(false, $CC)) {
-                $conn->rollback();
-            } else {
-                $conn->commit();
-                $this->redirect('/admin/blog/categories');
+        if (isset($_POST['save_category'])) {
+            if ($Category->saveThroughTransaction($_POST)) {
+                $this->redirect('/admin/blog/categories/');
             }
         }
 
-        $view = new View('blog/admin_categories_add.phtml');
+        $view = new View('blog/admin_categories_form.phtml');
         $view->setVars([
-            'category'         => $Category ?? null,
-            'category_content' => $CategoryContent ?? null,
-            'languages'        => $Language->find('all')
+            'languages' => $Language->find('all'),
+            'post'      => isset($_POST['save_category']) ? $_POST : $Category->getFormData(),
+            'msg'       => $this->flashmessages
         ]);
 
         return $view->parse();

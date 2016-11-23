@@ -4,7 +4,7 @@ return [
     'basepath' => '', //Strip off subdirectories when needed.
     'routes'   => [
         //404 route
-        '/404'                                                                               => [
+        '/404'                                                                                => [
             'methods' => 'GET',
             'layout'  => 'empty.phtml',
             'content' => [
@@ -15,7 +15,7 @@ return [
                 ],
             ],
         ],
-        '/405'                                                                               => [
+        '/405'                                                                                => [
             'methods' => 'GET',
             'layout'  => 'empty.phtml',
             'content' => [
@@ -26,7 +26,7 @@ return [
                 ],
             ],
         ],
-        '((/)?(index)?)?'                                                                    => [
+        '((/)?(index)?)?'                                                                     => [
             'methods' => 'GET',
             'layout'  => 'bootstrap.phtml',
             'content' => [
@@ -44,7 +44,7 @@ return [
                 ]
             ]
         ],
-        '(/index)?/article/(?<article_id>[0-9]+)'                                            => [
+        '(/index)?/article/(?<article_id>[0-9]+)'                                             => [
             'methods' => 'GET|POST',
             'layout'  => 'bootstrap.phtml',
             'content' => [
@@ -64,7 +64,7 @@ return [
                 ]
             ]
         ],
-        '/admin'                                                                             => [
+        '/admin'                                                                              => [
             'methods' => 'GET',
             'layout'  => 'admin.phtml',
             'content' => [
@@ -75,7 +75,7 @@ return [
                 ],
             ]
         ],
-        '/admin/blog(/)?(?<handler>[a-z]+)?(/)?(?<action>[a-z]+)?(/)?(?<article_id>[0-9]+)?' => [
+        '/admin/blog(/)?(?<handler>[a-z]+)?(/)?(?<action>(add|edit))?(/)?(?<item_id>[0-9]+)?' => [
             'methods' => 'GET|POST',
             'layout'  => 'admin.phtml',
             'content' => [
@@ -83,9 +83,31 @@ return [
                     'controller' => 'BlogController',
                     'action'     => 'adminAction',
                     'params'     => [
-                        'handler'    => 'articles',
-                        'action'     => null,
-                        'article_id' => null
+                        'handler' => 'articles',
+                        'action'  => null,
+                        'item_id' => null,
+                    ],
+                ],
+            ],
+            'sidebar' => [
+                    [
+                    'controller' => 'BlogController',
+                    'action'     => 'showAdminMenuAction',
+                    'params'     => [],
+                ]
+            ]
+        ],
+        '/admin/blog(/)?(?<handler>[a-z]+)?(/)?(?<action>(delete))?(/)?(?<item_id>[0-9]+)?'   => [
+            'methods' => 'GET|POST',
+            'layout'  => 'admin.phtml',
+            'content' => [
+                    [
+                    'controller' => 'BlogController',
+                    'action'     => 'adminAction',
+                    'params'     => [
+                        'handler' => 'articles',
+                        'action'  => null,
+                        'item_id' => null,
                     ],
                 ],
             ],

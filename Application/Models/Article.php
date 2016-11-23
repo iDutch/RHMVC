@@ -45,7 +45,7 @@ class Article extends Model
                     $ArticleContent[$language_id] = new ArticleContent();
                     $ArticleContent[$language_id]->is_online = false;
                     foreach ($lang_data as $lang_key => $lang_value) {
-                        if ($lang_key == 'title' || $lang_key == 'content' || 'is_online') {
+                        if ($lang_key == 'title' || $lang_key == 'content' || $lang_key == 'is_online') {
                             $ArticleContent[$language_id]->{$lang_key} = $lang_value;
                         }
                     }
@@ -53,7 +53,6 @@ class Article extends Model
                 }
             }
         }
-
 
         $A = $this->save();
 
@@ -75,7 +74,7 @@ class Article extends Model
         }
     }
 
-    public function get()
+    public function getFormData()
     {
         $data = [];
         foreach ($this->to_array() as $key => $value) {
