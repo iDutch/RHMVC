@@ -8,15 +8,13 @@ class Comment extends Model
 {
 
     static $belongs_to = [
-        ['article'],
-        ['user']
+            ['article'],
+            ['user']
     ];
-
     static $validates_presence_of = [
-        ['author_name', 'allow_null' => true],
-        ['content']
+            ['author_name', 'allow_null' => true],
+            ['content']
     ];
-
     static $before_save = ['sanitize'];
 
     public function sanitize()
@@ -27,7 +25,7 @@ class Comment extends Model
 
     private function cleanXSS($value)
     {
-        return str_replace(['&','<','>','"','\''], ['&amp;','&lt;','&gt;','&quot;','&#x27;'], $value);
+        return str_replace(['&', '<', '>', '"', '\''], ['&amp;', '&lt;', '&gt;', '&quot;', '&#x27;'], $value);
     }
 
 }

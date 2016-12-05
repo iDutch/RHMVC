@@ -2,56 +2,56 @@
 
 return [
     'basepath' => '', //Strip off subdirectories when needed.
-    'routes' => [
+    'routes'   => [
         //404 route
-        '/404' => [
+        '/404'                                                                                => [
             'methods' => 'GET',
-            'layout' => 'empty.phtml',
+            'layout'  => 'empty.phtml',
             'content' => [
                     [
                     'controller' => 'ErrorController',
-                    'action' => 'error404Action',
-                    'params' => [],
+                    'action'     => 'error404Action',
+                    'params'     => [],
                 ],
             ],
         ],
-        '/405' => [
+        '/405'                                                                                => [
             'methods' => 'GET',
-            'layout' => 'empty.phtml',
+            'layout'  => 'empty.phtml',
             'content' => [
                     [
                     'controller' => 'ErrorController',
-                    'action' => 'error405Action',
-                    'params' => [],
+                    'action'     => 'error405Action',
+                    'params'     => [],
                 ],
             ],
         ],
-        '((/)?(index)?)?' => [
+        '((/)?(index)?)?'                                                                     => [
             'methods' => 'GET',
-            'layout' => 'bootstrap.phtml',
+            'layout'  => 'bootstrap.phtml',
             'content' => [
                     [
                     'controller' => 'BlogController',
-                    'action' => 'indexAction',
-                    'params' => [],
+                    'action'     => 'indexAction',
+                    'params'     => [],
                 ],
             ],
             'sidebar' => [
                     [
                     'controller' => 'BlogController',
-                    'action' => 'showCategoryMenuAction',
-                    'params' => [],
+                    'action'     => 'showCategoryMenuAction',
+                    'params'     => [],
                 ]
             ]
         ],
-        '(/index)?/article/(?<article_id>[0-9]+)' => [
+        '(/index)?/article/(?<article_id>[0-9]+)'                                             => [
             'methods' => 'GET|POST',
-            'layout' => 'bootstrap.phtml',
+            'layout'  => 'bootstrap.phtml',
             'content' => [
                     [
                     'controller' => 'BlogController',
-                    'action' => 'showArticleAction',
-                    'params' => [
+                    'action'     => 'showArticleAction',
+                    'params'     => [
                         'article_id' => null,
                     ],
                 ],
@@ -59,40 +59,63 @@ return [
             'sidebar' => [
                     [
                     'controller' => 'BlogController',
-                    'action' => 'showCategoryMenuAction',
-                    'params' => [],
+                    'action'     => 'showCategoryMenuAction',
+                    'params'     => [],
                 ]
             ]
         ],
-        '/admin' => [
+        '/admin'                                                                              => [
             'methods' => 'GET',
-            'layout' => 'admin.phtml',
+            'layout'  => 'admin.phtml',
             'content' => [
                     [
                     'controller' => 'DashboardController',
-                    'action' => 'indexAction',
-                    'params' => [],
+                    'action'     => 'indexAction',
+                    'params'     => [],
                 ],
             ]
         ],
-        '/admin/blog((/)?(?<handler>[a-z]+))?((/)?(?<action>.*))?' => [
+        '/admin/blog(/)?(?<handler>[a-z]+)?(/)?(?<action>(add|edit))?(/)?(?<item_id>[0-9]+)?' => [
             'methods' => 'GET|POST',
-            'layout' => 'admin.phtml',
+            'layout'  => 'admin.phtml',
             'content' => [
                     [
                     'controller' => 'BlogController',
-                    'action' => 'adminAction',
-                    'params' => [
+                    'action'     => 'adminAction',
+                    'params'     => [
                         'handler' => 'articles',
-                        'action' => null
+                        'action'  => null,
+                        'item_id' => null,
                     ],
                 ],
             ],
             'sidebar' => [
                     [
                     'controller' => 'BlogController',
-                    'action' => 'showAdminMenuAction',
-                    'params' => [],
+                    'action'     => 'showAdminMenuAction',
+                    'params'     => [],
+                ]
+            ]
+        ],
+        '/admin/blog(/)?(?<handler>[a-z]+)?(/)?(?<action>(delete))?(/)?(?<item_id>[0-9]+)?'   => [
+            'methods' => 'GET|POST',
+            'layout'  => 'admin.phtml',
+            'content' => [
+                    [
+                    'controller' => 'BlogController',
+                    'action'     => 'adminAction',
+                    'params'     => [
+                        'handler' => 'articles',
+                        'action'  => null,
+                        'item_id' => null,
+                    ],
+                ],
+            ],
+            'sidebar' => [
+                    [
+                    'controller' => 'BlogController',
+                    'action'     => 'showAdminMenuAction',
+                    'params'     => [],
                 ]
             ]
         ]

@@ -4,13 +4,19 @@ namespace Application\Controllers;
 
 use System\Core\RHMVC\AbstractController;
 use System\Core\RHMVC\View;
+use Application\Models\Comment;
 
-class CommentController extends AbstractController {
+class CommentController extends AbstractController
+{
 
+    /**
+     *
+     * @param type $article_id
+     * @return type
+     */
     public function indexAction($article_id)
     {
-        /* @var $Comment /Application/Models/Comment */
-        $Comment = $this->loadModel('Comment');
+        $Comment = new Comment();
         $view = new View('comment/index.phtml');
         $view->setVars([
             'comments' => $Comment->find('all', ['limit' => 10, 'conditions' => ['article_id = ?', $article_id], 'order' => 'post_date desc'])
@@ -19,11 +25,14 @@ class CommentController extends AbstractController {
         return $view->parse();
     }
 
+    /**
+     *
+     * @param type $article_id
+     * @return type
+     */
     public function showCommentFormAction($article_id)
     {
-        /* @var $Comment Comment */
-        $Comment = $this->loadModel('Comment');
-
+        $Comment = new Comment();
         if (isset($_POST['add_comment'])) {
             //var_dump($_POST); exit;
             if (empty($_SESSION['user']->id)) {

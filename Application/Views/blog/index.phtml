@@ -1,8 +1,8 @@
 <?php foreach ($this->articles as $article): ?>
-<article>
-    <h2><?= $article->article_contents[0]->title ?></h2>
-    <p><?= $article->article_contents[0]->content ?></p>
-    <hr>
-    <span>Datum: <?= strftime('%A, %e %B %Y', $article->publish_date->getTimestamp()) ?></span> <span>Category: <?= $article->category->category_contents[0]->name ?></span>
-</article>
+    <article>
+        <h2><a href="/article/<?= $article->id ?>"><?= $article->article_contents[0]->title ?></a></h2>
+        <p><?= $article->article_contents[0]->content ?></p>
+        <hr>
+        <span>Datum: <?= strftime('%A, %e %B %Y', $article->publish_date->getTimestamp()) ?></span> <span>Category: <?= $article->category->category_contents[0]->name ?></span>
+    </article>
 <?php endforeach; ?>

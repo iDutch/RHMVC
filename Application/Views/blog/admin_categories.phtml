@@ -1,5 +1,7 @@
 <?php
-$this->helper->appendJSFile('datatables.min.js');
+
+$this->helper->appendJSFile('datatables/datatables.min.js');
+$this->helper->appendJSFile('datatables/datatables.bootstrap.min.js');
 $this->helper->appendJSInline('
     $(document).ready(function() {
         $(".table").DataTable({
@@ -21,7 +23,7 @@ $this->helper->appendJSInline('
         });
     });
 ');
-$this->helper->appendCSSFile('datatables.min.css');
+$this->helper->appendCSSFile('datatables/datatables.min.css');
 ?>
 <?=
 
@@ -51,6 +53,7 @@ $this->partial('admin_index_table.phtml', [
     'messages' => null,
     'items' => $this->categories,
     'modulename' => 'blog',
+    'modulehandler' => 'categories',
     'permissions' => [
         'read' => true,
         'create' => true,

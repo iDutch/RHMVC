@@ -3,26 +3,31 @@ $this->helper->appendJSInline('var CKEDITOR_BASEPATH = "/static/js/ckeditor/";')
 $this->helper->appendJSFile('ckeditor/ckeditor.js');
 $this->helper->appendJSFile('ckeditor/adapters/jquery.js');
 $this->helper->appendJSFile('moment-with-locales.js');
-$this->helper->appendJSFile('bootstrap-datetimepicker.min.js');
+$this->helper->appendJSFile('datetimepicker/datetimepicker.min.js');
 $this->helper->appendJSInline('
-    $(".datetime").datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss"
+    $(document).ready(function() {
+        $(".datetime").datetimepicker({
+            format: "YYYY-MM-DD HH:mm:ss"
+        });
+        $(".datetime2").datetimepicker({
+            useCurrent: false,
+            format: "YYYY-MM-DD HH:mm:ss"
+        });
+        $(".publish_date").on("dp.change", function (e) {
+            $(".archive_date").data("DateTimePicker").minDate(e.date);
+        });
+        $(".archive_date").on("dp.change", function (e) {
+            $(".publish_date").data("DateTimePicker").maxDate(e.date);
+        });
+
+        $(".publish_date").trigger("dp.change");
+        $(".ckeditor").ckeditor({language: "en"});
     });
-    $(".datetime2").datetimepicker({
-        useCurrent: false
-    });
-    $(".publish_date").on("dp.change", function (e) {
-        $(".archive_date").data("DateTimePicker").minDate(e.date);
-    });
-    $(".archive_date").on("dp.change", function (e) {
-        $(".publish_date").data("DateTimePicker").maxDate(e.date);
-    });
-    $(".ckeditor").ckeditor({language: "en"});
 ');
 
-$this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
+$this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
 ?>
-
+<?= $this->msg->display() ?>
 <form class="form-horizontal" method="post">
     <div>
         <!-- Nav tabs -->
@@ -44,7 +49,7 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
                                     <?php else: ?>
                                         <input type="hidden" name="language[<?= $language->id ?>][is_online]" value="0">
                                     <?php endif; ?>
-                                    <input type="checkbox" name="language[<?= $language->id ?>][is_online]" value="1" <?= $language->is_default ? 'checked disabled' : '' ?>> <?= $this->translate('is_online_language') ?>
+                                    <input type="checkbox" name="language[<?= $language->id ?>][is_online]" value="1" <?= $language->is_default ? 'checked disabled' : (isset($this->post['language'][$language->id]['is_online']) && $this->post['language'][$language->id]['is_online'] ? 'checked' : '') ?>> <?= $this->translate('is_online_language') ?>
                                 </label>
                             </div>
                         </div>
@@ -52,13 +57,13 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('title') ?></label>
                         <div class="col-sm-10">
-                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="">
+                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="<?= $this->post['language'][$language->id]['title'] ?? '' ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('content') ?></label>
                         <div class="col-sm-10">
-                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"></textarea>
+                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"><?= $this->post['language'][$language->id]['content'] ?? '' ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -72,7 +77,7 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
             <select name="category_id" class="form-control">
                 <option value="0"><?= $this->translate('choose_category') ?></option>
                 <?php foreach ($this->categories as $category): ?>
-                    <option value="<?= $category->id ?>"><?= $category->category_contents[0]->name ?></option>
+                    <option <?= isset($this->post['category_id']) && $this->post['category_id'] == $category->id ? 'selected' : '' ?> value="<?= $category->id ?>"><?= $category->category_contents[0]->name ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -80,20 +85,20 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('publish_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" required name="publish_date" class="form-control datetime publish_date" value="">
+            <input type="text" name="publish_date" class="form-control datetime publish_date" value="<?= $this->post['publish_date'] ?? '' ?>">
         </div>
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('archive_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="archive_date" class="form-control datetime2 archive_date" value="">
+            <input type="text" name="archive_date" class="form-control datetime2 archive_date" value="<?= $this->post['archive_date'] ?? '' ?>">
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
                 <label>
-                    <input name="allow_comments" value="1" type="checkbox"> <?= $this->translate('allow_comments') ?>
+                    <input <?= isset($this->post['allow_comments']) && $this->post['allow_comments'] ? 'checked' : '' ?> name="allow_comments" value="1" type="checkbox"> <?= $this->translate('allow_comments') ?>
                 </label>
             </div>
         </div>
@@ -102,14 +107,14 @@ $this->helper->appendCSSFile('bootstrap-datetimepicker.min.css');
         <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
                 <label>
-                    <input name="is_online" value="1" type="checkbox"> <?= $this->translate('is_online') ?>
+                    <input <?= isset($this->post['is_online']) && $this->post['is_online'] ? 'checked' : '' ?> name="is_online" value="1" type="checkbox"> <?= $this->translate('is_online') ?>
                 </label>
             </div>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button name="add_article" type="submit" class="btn btn-xl btn-primary"><?= $this->translate('save') ?></button>
+            <button name="save_article" type="submit" class="btn btn-xl btn-primary"><?= $this->translate('save') ?></button>
         </div>
     </div>
 </form>

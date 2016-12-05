@@ -4,6 +4,7 @@ namespace System\Core\RHMVC;
 
 use System\Core\RHMVC\Translator;
 use System\Core\RHMVC\Helper;
+use Exception;
 
 class View
 {
@@ -12,17 +13,23 @@ class View
     private $vars = array();
     private $helper;
 
+    /**
+     * Constructor
+     * @param type $view
+     * @param type $isLayout
+     * @throws \Exception
+     */
     public function __construct($view, $isLayout = false)
     {
         $this->helper = Helper::getInstance($view);
         if ($isLayout) {
             if (!file_exists(LAYOUT_DIR . $view)) {
-                throw new \Exception('View error: Cannot load layout: \'' . LAYOUT_DIR . $view . '\'');
+                throw new Exception('View error: Cannot load layout: \'' . LAYOUT_DIR . $view . '\'');
             }
             $this->view = LAYOUT_DIR . $view;
         } else {
             if (!file_exists(VIEW_DIR . $view)) {
-                throw new \Exception('View error: Cannot load view: \'' . VIEW_DIR . $view . '\'');
+                throw new Exception('View error: Cannot load view: \'' . VIEW_DIR . $view . '\'');
             }
             $this->view = VIEW_DIR . $view;
         }
@@ -57,14 +64,31 @@ class View
         return ob_get_clean();
     }
 
-    function __set($key, $value){
+    /**
+     * Magic setter
+     * @param type $key
+     * @param type $value
+     */
+    public function __set($key, $value)
+    {
         $this->vars[$key] = $value; //create new set data[key] = value without setters;
     }
 
-    function __get($key){
+    /**
+     * Magic getter
+     * @param type $key
+     * @return type Mixed
+     */
+    public function __get($key)
+    {
         return $this->vars[$key];
     }
 
+    /**
+     * Translator function
+     * @param type $key
+     * @return type
+     */
     public function translate($key)
     {
         return Translator::getInstance('en')->translate($key);
