@@ -5,9 +5,7 @@ namespace Application\Controllers;
 use System\Core\RHMVC\AbstractController;
 use System\Core\RHMVC\View;
 use Application\Models\Article;
-use Application\Models\ArticleContent;
 use Application\Models\Category;
-use Application\Models\CategoryContent;
 use Application\Models\Language;
 
 class BlogController extends AbstractController
@@ -84,8 +82,7 @@ class BlogController extends AbstractController
         $view->setVars([
             'categories' => $Category->find('all', ['conditions' => ['is_enabled = ?', 1]]),
             'languages'  => $Language->find('all'),
-            'post'       => isset($_POST['save_article']) ? $_POST : $Article->getFormData(),
-            'msg'        => $this->flashmessages
+            'post'       => isset($_POST['save_article']) ? $_POST : $Article->getFormData()
         ]);
 
         return $view->parse();
@@ -93,7 +90,7 @@ class BlogController extends AbstractController
 
     private function adminArticleDeleteAction()
     {
-        $article_id = $_POST['item_id'] ?? null;
+        $article_id = isset($_POST['item_id']) ? $_POST['item_id'] : null;
         $Article = Article::find($article_id);
         if (count($Article) && $Article->delete()) {
             $this->redirect('/admin/blog/articles');
@@ -130,8 +127,7 @@ class BlogController extends AbstractController
         $view = new View('blog/admin_categories_form.phtml');
         $view->setVars([
             'languages' => $Language->find('all'),
-            'post'      => isset($_POST['save_category']) ? $_POST : $Category->getFormData(),
-            'msg'       => $this->flashmessages
+            'post'      => isset($_POST['save_category']) ? $_POST : $Category->getFormData()
         ]);
 
         return $view->parse();

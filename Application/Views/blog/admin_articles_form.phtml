@@ -1,10 +1,10 @@
 <?php
-$this->helper->appendJSInline('var CKEDITOR_BASEPATH = "/static/js/ckeditor/";');
-$this->helper->appendJSFile('ckeditor/ckeditor.js');
-$this->helper->appendJSFile('ckeditor/adapters/jquery.js');
-$this->helper->appendJSFile('moment-with-locales.js');
-$this->helper->appendJSFile('datetimepicker/datetimepicker.min.js');
-$this->helper->appendJSInline('
+$this->_helper->appendJSInline('var CKEDITOR_BASEPATH = "/static/js/ckeditor/";');
+$this->_helper->appendJSFile('ckeditor/ckeditor.js');
+$this->_helper->appendJSFile('ckeditor/adapters/jquery.js');
+$this->_helper->appendJSFile('moment-with-locales.js');
+$this->_helper->appendJSFile('datetimepicker/datetimepicker.min.js');
+$this->_helper->appendJSInline('
     $(document).ready(function() {
         $(".datetime").datetimepicker({
             format: "YYYY-MM-DD HH:mm:ss"
@@ -25,9 +25,8 @@ $this->helper->appendJSInline('
     });
 ');
 
-$this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
+$this->_helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
 ?>
-<?= $this->msg->display() ?>
 <form class="form-horizontal" method="post">
     <div>
         <!-- Nav tabs -->
@@ -57,13 +56,15 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('title') ?></label>
                         <div class="col-sm-10">
-                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="<?= $this->post['language'][$language->id]['title'] ?? '' ?>">
+                            <input type="text" name="language[<?= $language->id ?>][title]" class="form-control" value="<?= !empty($this->post['language'][$language->id]['title']) ? $this->post['language'][$language->id]['title'] : '' ?>">
+                            <?= $this->_messages->display($this->partial('formfield_error.phtml'), 'title'.$language->id, 8) ?>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('content') ?></label>
                         <div class="col-sm-10">
-                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"><?= $this->post['language'][$language->id]['content'] ?? '' ?></textarea>
+                            <textarea name="language[<?= $language->id ?>][content]" class="form-control ckeditor"><?= !empty($this->post['language'][$language->id]['content']) ? $this->post['language'][$language->id]['content'] : '' ?></textarea>
+                            <?= $this->_messages->display($this->partial('formfield_error.phtml'), 'content'.$language->id, 8) ?>
                         </div>
                     </div>
                 </div>
@@ -80,18 +81,20 @@ $this->helper->appendCSSFile('datetimepicker/datetimepicker.min.css');
                     <option <?= isset($this->post['category_id']) && $this->post['category_id'] == $category->id ? 'selected' : '' ?> value="<?= $category->id ?>"><?= $category->category_contents[0]->name ?></option>
                 <?php endforeach; ?>
             </select>
+            <?= $this->_messages->display($this->partial('formfield_error.phtml'), 'category_id', 8) ?>
         </div>
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('publish_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="publish_date" class="form-control datetime publish_date" value="<?= $this->post['publish_date'] ?? '' ?>">
+            <input type="text" name="publish_date" class="form-control datetime publish_date" value="<?= !empty($this->post['publish_date']) ? $this->post['publish_date'] : '' ?>">
+            <?= $this->_messages->display($this->partial('formfield_error.phtml'), 'publish_date', 8) ?>
         </div>
     </div>
     <div class="form-group">
         <label for="" class="col-sm-2 control-label"><?= $this->translate('archive_date') ?></label>
         <div class="col-sm-10">
-            <input type="text" name="archive_date" class="form-control datetime2 archive_date" value="<?= $this->post['archive_date'] ?? '' ?>">
+            <input type="text" name="archive_date" class="form-control datetime2 archive_date" value="<?= !empty($this->post['archive_date']) ? $this->post['publish_date'] : '' ?>">
         </div>
     </div>
     <div class="form-group">

@@ -1,8 +1,8 @@
 <?php
 
-$this->helper->appendJSFile('datatables/datatables.min.js');
-$this->helper->appendJSFile('datatables/datatables.bootstrap.min.js');
-$this->helper->appendJSInline('
+$this->_helper->appendJSFile('datatables/datatables.min.js');
+$this->_helper->appendJSFile('datatables/datatables.bootstrap.min.js');
+$this->_helper->appendJSInline('
     $(document).ready(function() {
         $(".table").DataTable({
             "language": ' . $this->translate('datatable_language') . ',
@@ -28,7 +28,7 @@ $this->helper->appendJSInline('
 
     });
 ');
-$this->helper->appendCSSFile('datatables/datatables.min.css');
+$this->_helper->appendCSSFile('datatables/datatables.min.css');
 ?>
 <?=
 
@@ -65,7 +65,6 @@ $this->partial('admin_index_table.phtml', [
             'label' => 'Allow Comments'
         ]
     ],
-    'messages'      => null,
     'items'         => $this->articles,
     'modulename'    => 'blog',
     'modulehandler' => 'articles',

@@ -2,14 +2,14 @@
 
 namespace System\Core\RHMVC;
 
-use Plasticbrain\FlashMessages\FlashMessages;
+use System\Libs\Messages\Messages;
 use Exception;
 
 abstract class AbstractController
 {
 
     protected $layout = null;
-    protected $flashmessages = null;
+    protected $_messages = null;
 
     /**
      * Constructor
@@ -17,7 +17,7 @@ abstract class AbstractController
      */
     public function __construct($layout = null)
     {
-        $this->flashmessages = new FlashMessages();
+        $this->_messages = Messages::getInstance();
         $this->layout = $layout; //Pass layout to controllers so they can alter the main layout when needed
     }
 

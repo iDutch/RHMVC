@@ -12,8 +12,8 @@ class ArticleContent extends Model
             ['language']
     ];
     static $validates_presence_of = [
-            ['title'],
-            ['content'],
+            ['title', 'message' => 'Title cannot be empty.'],
+            ['content', 'message' => 'Content cannot be empty.'],
             ['article_id']
     ];
     static $validates_numericality_of = [

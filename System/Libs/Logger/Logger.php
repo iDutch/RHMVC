@@ -1,6 +1,6 @@
 <?php
 
-namespace libs\Logger;
+namespace System\Libs;
 
 class Logger
 {

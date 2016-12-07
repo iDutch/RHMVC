@@ -2,11 +2,9 @@
 
 namespace Application\Models;
 
-use ActiveRecord\Model;
-use Application\Models\ArticleContent;
-use Plasticbrain\FlashMessages\FlashMessages;
+use System\Core\RHMVC\AbstractModel;
 
-class Article extends Model
+class Article extends AbstractModel
 {
 
     static $belongs_to = [
@@ -16,8 +14,8 @@ class Article extends Model
             ['article_contents', 'conditions' => ['language_id = ?', 1]]
     ];
     static $validates_presence_of = [
-            ['publish_date'],
-            ['category_id']
+            ['publish_date', 'message' => 'Publish date cannot be empty.'],
+            ['category_id', 'message' => 'Please choose a category.']
     ];
 
     public function saveThroughTransaction($params)
@@ -63,9 +61,17 @@ class Article extends Model
 
         if (!$A || in_array(false, $AC)) {
             $conn->rollback();
-            $msg = new FlashMessages();
-            foreach ($this->errors->full_messages() as $k => $message) {
-                $msg->error($message);
+            if (count($this->errors->get_raw_errors())) {
+                foreach ($this->errors->get_raw_errors() as $field => $message) {
+                    $this->messages->error($field, $message);
+                }
+            }
+            foreach ($ArticleContent as $language_id => $AC) {
+                if (count($AC->errors->get_raw_errors())) {
+                    foreach ($AC->errors->get_raw_errors() as $field => $message) {
+                        $this->messages->error($field.$language_id, $message);
+                    }
+                }
             }
             return false;
         } else {

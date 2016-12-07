@@ -18,7 +18,7 @@
         </div>
     </div>
 </div>
-<?= $this->messages ?>
+<?= $this->_messages->display($this->partial('alert.phtml')) ?>
 <table class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
         <tr>
@@ -37,11 +37,11 @@
             <tr>
                 <?php foreach ($this->fields as $field): ?>
                     <?php if ($field['type'] == 'primary_key'): ?>
-                        <td><input type="checkbox" value="<?= $this->helper->getClassProperty($item, $field['field']) ?>"></td>
+                        <td><input type="checkbox" value="<?= $this->_helper->getClassProperty($item, $field['field']) ?>"></td>
                     <?php elseif ($field['type'] == 'boolean'): ?>
-                        <td><?= $this->helper->getClassProperty($item, $field['field']) ? '<span class="label label-success">' . $this->translate('yes') . '</span>' : '<span class="label label-danger">' . $this->translate('no') . '</span>' ?></td>
+                        <td><?= $this->_helper->getClassProperty($item, $field['field']) ? '<span class="label label-success">' . $this->translate('yes') . '</span>' : '<span class="label label-danger">' . $this->translate('no') . '</span>' ?></td>
                     <?php else: ?>
-                        <td><?= $this->helper->getClassProperty($item, $field['field']) ?></td>
+                        <td><?= $this->_helper->getClassProperty($item, $field['field']) ?></td>
                     <?php endif; ?>
                 <?php endforeach; ?>
                 <td>

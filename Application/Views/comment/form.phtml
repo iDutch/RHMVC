@@ -1,10 +1,10 @@
 <?php
-$this->helper->appendJSInline('var CKEDITOR_BASEPATH = "/static/js/ckeditor/";');
-$this->helper->appendJSFIle('ckeditor/ckeditor.js');
-$this->helper->appendJSFIle('ckeditor/adapters/jquery.js');
-$this->helper->appendJSFile('ckeditor/commentform-config.js');
+$this->_helper->appendJSInline('var CKEDITOR_BASEPATH = "/static/js/ckeditor/";');
+$this->_helper->appendJSFIle('ckeditor/ckeditor.js');
+$this->_helper->appendJSFIle('ckeditor/adapters/jquery.js');
+$this->_helper->appendJSFile('ckeditor/commentform-config.js');
 
-$this->helper->appendJSInline('
+$this->_helper->appendJSInline('
     $("#message").ckeditor(config);
 ');
 ?>
@@ -13,14 +13,14 @@ $this->helper->appendJSInline('
         <label for="name" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-10">
             <input id="name" type="text" name="author_name" class="form-control" placeholder="Name" value="<?= $this->comment->author_name ?>">
-            <?= isset($this->comment->errors) && null !== $this->comment->errors->on('author_name') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->comment->errors->on('author_name')]) : '' ?>
+            <?= $this->_messages->display($this->partial('formfield_error.phtml'), 'author_name', 8) ?>
         </div>
     </div>
     <div class="form-group">
         <label for="message" class="col-sm-2 control-label">Message</label>
         <div class="col-sm-10">
             <textarea id="message" rows="7" class="form-control" name="content"><?= $this->comment->content ?></textarea>
-            <?= isset($this->comment->errors) && null !== $this->comment->errors->on('content') ? $this->partial('alert.phtml', ['alert_type' => 'alert-danger', 'message' => $this->comment->errors->on('content')]) : '' ?>
+            <?= $this->_messages->display($this->partial('formfield_error.phtml'), 'content', 8) ?>
         </div>
     </div>
     <div class="form-group">

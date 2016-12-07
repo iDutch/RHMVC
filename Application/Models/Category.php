@@ -2,10 +2,9 @@
 
 namespace Application\Models;
 
-use ActiveRecord\Model;
-use Application\Models\CategoryContent;
+use System\Core\RHMVC\AbstractModel;
 
-class Category extends Model
+class Category extends AbstractModel
 {
 
     static $table_name = 'categories';
@@ -56,9 +55,8 @@ class Category extends Model
 
         if (!$C || in_array(false, $CC)) {
             $conn->rollback();
-            $msg = new FlashMessages();
-            foreach ($this->errors->full_messages() as $k => $message) {
-                $msg->error($message);
+            foreach ($this->errors->get_raw_errors() as $field => $message) {
+                $this->flashmessages->error($message);
             }
             return false;
         } else {

@@ -2,36 +2,37 @@
 
 namespace System\Core\RHMVC;
 
-use System\Core\RHMVC\Translator;
-use System\Core\RHMVC\Helper;
 use Exception;
+use System\Libs\Messages\Messages;
 
 class View
 {
 
-    private $view;
-    private $vars = array();
-    private $helper;
+    private $_view;
+    private $_vars = array();
+    private $_helper;
+    private $_messages;
 
     /**
-     * Constructor
-     * @param type $view
-     * @param type $isLayout
-     * @throws \Exception
+     * View constructor.
+     * @param $view
+     * @param bool $isLayout
+     * @throws Exception
      */
     public function __construct($view, $isLayout = false)
     {
-        $this->helper = Helper::getInstance($view);
+        $this->_helper = Helper::getInstance($view);
+        $this->_messages = Messages::getInstance();
         if ($isLayout) {
             if (!file_exists(LAYOUT_DIR . $view)) {
                 throw new Exception('View error: Cannot load layout: \'' . LAYOUT_DIR . $view . '\'');
             }
-            $this->view = LAYOUT_DIR . $view;
+            $this->_view = LAYOUT_DIR . $view;
         } else {
             if (!file_exists(VIEW_DIR . $view)) {
                 throw new Exception('View error: Cannot load view: \'' . VIEW_DIR . $view . '\'');
             }
-            $this->view = VIEW_DIR . $view;
+            $this->_view = VIEW_DIR . $view;
         }
     }
 
@@ -45,14 +46,14 @@ class View
     public function render()
     {
         ob_start();
-        require $this->view;
+        require $this->_view;
         return ob_get_flush();
     }
 
     public function parse()
     {
         ob_start();
-        require $this->view;
+        require $this->_view;
         return ob_get_clean();
     }
 
@@ -66,28 +67,28 @@ class View
 
     /**
      * Magic setter
-     * @param type $key
-     * @param type $value
+     * @param $key
+     * @param $value
      */
     public function __set($key, $value)
     {
-        $this->vars[$key] = $value; //create new set data[key] = value without setters;
+        $this->_vars[$key] = $value; //create new set data[key] = value without setters;
     }
 
     /**
      * Magic getter
-     * @param type $key
-     * @return type Mixed
+     * @param $key
+     * @return Mixed
      */
     public function __get($key)
     {
-        return $this->vars[$key];
+        return $this->_vars[$key];
     }
 
     /**
      * Translator function
-     * @param type $key
-     * @return type
+     * @param $key
+     * @return Translator
      */
     public function translate($key)
     {

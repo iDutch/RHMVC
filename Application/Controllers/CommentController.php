@@ -48,6 +48,9 @@ class CommentController extends AbstractController
             if ($Comment->save()) {
                 $this->redirect('/article/' . $article_id);
             }
+            foreach ($Comment->errors->get_raw_errors() as $field => $message) {
+                $this->_messages->error($field, $message);
+            }
         }
 
         $view = new View('comment/form.phtml');

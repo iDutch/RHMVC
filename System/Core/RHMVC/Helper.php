@@ -7,23 +7,22 @@ use MatthiasMullie\Minify;
 class Helper
 {
 
-    private static $instance;
+    private static $instance = null;
     private $javascripts = [];
     private $stylesheets = [];
-    public $view;
+    private $view;
 
     public static function getInstance($view)
     {
         if (!isset(self::$instance)) {
-            self::$instance = new self();
+            self::$instance = new self($view);
         }
-        self::$instance->view = $view;
         return self::$instance;
     }
 
-    public function __construct()
+    public function __construct($view)
     {
-
+        $this->view = $view;
     }
 
     public function appendJSFile($file)
@@ -151,7 +150,7 @@ class Helper
         $properties = explode('->', $propertystring);
         $tmp = $obj;
         foreach ($properties as $property) {
-            if (preg_match('/\[(?<index>[0-9]+)\]/', $property, $matches)) {
+            if (preg_match('/\[(?<index>[0-9]+)\]/', $property, $matches)) { //Property is array
                 $property = preg_replace('/\[[0-9]+\]/', '', $property);
                 $tmp = $tmp->{$property}[$matches['index']];
             } else {
