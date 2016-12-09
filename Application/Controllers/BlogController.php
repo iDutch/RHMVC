@@ -7,6 +7,7 @@ use System\Core\RHMVC\View;
 use Application\Models\Article;
 use Application\Models\Category;
 use Application\Models\Language;
+use DateTime;
 
 class BlogController extends AbstractController
 {
@@ -15,9 +16,31 @@ class BlogController extends AbstractController
     {
         $Article = new Article();
         $view = new View('blog/index.phtml');
-        $DateTime = new \DateTime();
+        $DateTime = new DateTime();
         $view->setVars([
             'articles' => $Article->find('all', ['limit' => 7, 'order' => 'publish_date DESC', 'conditions' => ['publish_date < ? AND is_online = ?', $DateTime->format('Y-m-d H:i:s'), 1]])
+        ]);
+
+        return $view->parse();
+    }
+
+    public function archiveAction($year, $month)
+    {
+        $Article = new Article();
+        $view = new View('blog/index.phtml');
+        $view->setVars([
+            'articles' => $Article->find('all', ['order' => 'publish_date DESC', 'conditions' => ['YEAR(publish_date) = ? AND MONTH(publish_date) = ? AND is_online = ?', $year, $month, 1]])
+        ]);
+
+        return $view->parse();
+    }
+
+    public function categoryAction($category_id)
+    {
+        $Article = new Article();
+        $view = new View('blog/index.phtml');
+        $view->setVars([
+            'articles' => $Article->find('all', ['conditions' => ['category_id = ?', $category_id]])
         ]);
 
         return $view->parse();
@@ -62,7 +85,7 @@ class BlogController extends AbstractController
         return $view->parse();
     }
 
-    public function adminArticleFormAction($article_id = null)
+    private function adminArticleFormAction($article_id = null)
     {
         $Category = new Category();
         $Language = new Language();
@@ -109,7 +132,7 @@ class BlogController extends AbstractController
         return $view->parse();
     }
 
-    public function adminCategoryFormAction($category_id = null)
+    private function adminCategoryFormAction($category_id = null)
     {
         $Language = new Language();
         if (!is_null($category_id)) {
@@ -162,9 +185,9 @@ class BlogController extends AbstractController
     public function showArchiveMenuAction()
     {
         $Article = new Article();
-        $view = new View('blog/category_menu.phtml');
+        $view = new View('blog/archive_menu.phtml');
         $view->setVars([
-            'archivedates' => $Article->find_by_sql('SELECT publish_date, MONTH(publish_date) AS `month` FROM articles ORDER BY publish_date DESC GROUP BY month')
+            'archivedates' => $Article->find_by_sql('SELECT publish_date, MONTH(publish_date) AS `month`, YEAR(publish_date) AS `year` FROM articles GROUP BY `year`,`month` ORDER BY publish_date DESC')
         ]);
 
         return $view->parse();
