@@ -1,6 +1,6 @@
 <h4>Categories</h4>
 <ul class="list-unstyled">
     <?php foreach ($this->categories as $category): ?>
-        <li><a href="/category/<?= $category->id ?>/<?= str_replace(' ', '-', $category->category_contents[0]->name) ?>"><?= $category->category_contents[0]->name ?></li>
+        <li><a href="/category/<?= $category->id ?>/<?= str_replace(' ', '-', $category->category_contents[0]->name) ?>"><?= $category->category_contents[0]->name ?></a></li>
     <?php endforeach; ?>
 </ul>

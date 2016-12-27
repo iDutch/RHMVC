@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Regex based routes
+ * Valid routes examples:
+ * /home/:param[\w]+        One or more alphanummeric characters same as [a-zA-Z0-9_]
+ * /home/:param[a-z]{5}
+ * /home/:param[0-9]{1,5}
+ *
+ */
+
 return [
     'basepath' => '', //Strip off subdirectories when needed.
     'routes' => [
@@ -26,7 +35,7 @@ return [
                 ],
             ],
         ],
-        '((/)?(index)?)?' => [
+        '[/index]/' => [
             'methods' => 'GET',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -49,7 +58,7 @@ return [
                 ]
             ]
         ],
-        '(/index)?/article/(?<article_id>[0-9]+)' => [
+        '[/index]/article/:article_id[0-9]+' => [
             'methods' => 'GET|POST',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -74,7 +83,7 @@ return [
                 ]
             ]
         ],
-        '(/index)?/archive/(?<year>[0-9]+)/(?<month>[0-9]{1,2})' => [
+        '[/index]/archive/:year[0-9]{4}/:month[0-9]{1,2}' => [
             'methods' => 'GET',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -100,13 +109,13 @@ return [
                 ]
             ]
         ],
-        '(/index)?/category/(?<category_id>[0-9]+)/(.*)' => [
+        '[/index]/category/:category_id[0-9]+/(.*)' => [
             'methods' => 'GET',
             'layout' => 'bootstrap.phtml',
             'content' => [
                 [
                     'controller' => 'BlogController',
-                    'action' => 'archiveAction',
+                    'action' => 'categoryAction',
                     'params' => [
                         'category_id' => null
                     ],
@@ -136,7 +145,18 @@ return [
                 ],
             ]
         ],
-        '/admin/blog(/)?(?<handler>[a-z]+)?(/)?(?<action>(add|edit))?(/)?(?<item_id>[0-9]+)?' => [
+        '/admin/login' => [
+            'methods' => 'GET|POST',
+            'layout' => 'login.phtml',
+            'content' => [
+                [
+                    'controller' => 'UserController',
+                    'action' => 'loginAction',
+                    'params' => [],
+                ],
+            ],
+        ],
+        '/admin/blog/[:handler[a-z]+/[:action[a-z]+/:item_id[0-9]+]}}' => [
             'methods' => 'GET|POST',
             'layout' => 'admin.phtml',
             'content' => [

@@ -8,15 +8,15 @@ class CategoryContent extends Model
 {
 
     static $belongs_to = [
-            ['category'],
-            ['language']
+        ['category'],
+        ['language']
     ];
     static $validates_presence_of = [
-            ['name'],
-            ['category_id']
+        ['name'],
+        ['category_id']
     ];
     static $validates_numericality_of = [
-            ['category_id', 'only_integer' => true]
+        ['category_id', 'only_integer' => true]
     ];
     static $before_save = ['sanitize'];
 

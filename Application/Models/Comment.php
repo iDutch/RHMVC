@@ -8,13 +8,15 @@ class Comment extends Model
 {
 
     static $belongs_to = [
-            ['article'],
-            ['user']
+        ['article'],
+        ['user']
     ];
+
     static $validates_presence_of = [
-            ['author_name', 'allow_null' => true],
-            ['content']
+        ['author_name', 'allow_null' => true, 'message' => 'You must provide a name.'],
+        ['content', 'message' => 'You must type something...']
     ];
+
     static $before_save = ['sanitize'];
 
     public function sanitize()

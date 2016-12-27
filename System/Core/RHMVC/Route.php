@@ -2,7 +2,6 @@
 
 namespace System\Core\RHMVC;
 
-use System\Core\RHMVC\View;
 use Exception;
 
 class Route

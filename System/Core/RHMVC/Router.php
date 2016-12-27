@@ -2,7 +2,6 @@
 
 namespace System\Core\RHMVC;
 
-use System\Core\RHMVC\Route;
 use Exception;
 
 class Router
@@ -31,6 +30,9 @@ class Router
     {
         $uri = str_replace($this->routerconfig['basepath'], '', $uri);
         foreach ($this->routerconfig['routes'] as $route => $routedata) {
+
+            $route = $this->toRegex($route);
+
             if(preg_match('#^(/([a-z]{2}))?'.$route.'$#', $uri, $matches)) {
                 if (!in_array($_SERVER['REQUEST_METHOD'], explode('|', $routedata['methods']))) {
                     return new Route($this->routerconfig['routes']['/405']);
@@ -45,6 +47,43 @@ class Router
     {
         $router =  new self();
         return $router->getRoute($uri)->dispatch();
+    }
+
+    /**
+     * Parse route to regex
+     *
+     * @param $route
+     * @return String
+     */
+    private function toRegex($route)
+    {
+        if (preg_match_all('#((\\[[\\w-\\\\/]+[\\]]*)|((\\[)?(\\:[\\w-]+(\\[[\\w-\\\\]+\\]|\\([\\w|]+\\))(\\+|({[0-9]+}|{[0-9]+,[0-9]+}))?(\\/)?)(\\])*))#', $route, $matches)) {
+            foreach ($matches[0] as $match) {
+                $replaced_match = preg_replace('#([\\[]?):([\\w-]+)\\[([\\w-]+)\\](\\+|({[0-9]+}|{[0-9]+,[0-9]+}))([\\]]*)#','$1?<$2>[$3]$4$6', $match);
+                if (strpos($match,':') === false) { //Route part is optional but not a variable
+                    $replaced_match = str_replace(['[',']'], ['(',')?'], $replaced_match);
+                } else {
+                    if (preg_match('#^([\[]+)#', $replaced_match, $submatches)) { //Opening bracket found indicating variable URL part
+                        //Replace with parenthesis
+                        $replaced_match = substr($replaced_match, strlen($submatches[0]) - 1) . str_replace(']',')?', $submatches[0]);
+                    } else {
+                        //Prepend parenthesis
+                        $replaced_match = '(' . $replaced_match;
+                    }
+
+                    if (preg_match('#([\]]+)$#', $replaced_match, $submatches)) { // One or more closing brackets found? Replace them with closing parentheses each with a '?'
+                        //Closing optional variable URL part
+                        $replaced_match = substr($replaced_match, 0, -strlen($submatches[0])) . str_replace(']',')?', $submatches[0]);
+                    } else {
+                        //Closing mandatory variable url part
+                        $replaced_match = $replaced_match . ')';
+                    }
+                }
+                $route = str_replace($match, $replaced_match, $route);
+            }
+            return $route;
+        }
+        return $route;
     }
 
 }
