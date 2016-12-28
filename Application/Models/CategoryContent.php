@@ -12,7 +12,7 @@ class CategoryContent extends Model
         ['language']
     ];
     static $validates_presence_of = [
-        ['name'],
+        ['name', 'message' => 'Category name cannot be empty'],
         ['category_id']
     ];
     static $validates_numericality_of = [

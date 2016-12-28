@@ -4,6 +4,7 @@ namespace System\Core\RHMVC;
 
 use Exception;
 use System\Libs\Messages\Messages;
+use System\Core\RHMVC\Router;
 
 class View
 {
@@ -12,6 +13,7 @@ class View
     private $_vars = array();
     private $_helper;
     private $_messages;
+    private $_router;
 
     /**
      * View constructor.
@@ -23,6 +25,7 @@ class View
     {
         $this->_helper = Helper::getInstance($view);
         $this->_messages = Messages::getInstance();
+        $this->_router = new Router();
         if ($isLayout) {
             if (!file_exists(LAYOUT_DIR . $view)) {
                 throw new Exception('View error: Cannot load layout: \'' . LAYOUT_DIR . $view . '\'');

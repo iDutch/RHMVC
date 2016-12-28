@@ -1,6 +1,6 @@
 <h4>Categories</h4>
 <ul class="list-unstyled">
     <?php foreach ($this->categories as $category): ?>
-        <li><a href="/category/<?= $category->id ?>/<?= str_replace(' ', '-', $category->category_contents[0]->name) ?>"><?= $category->category_contents[0]->name ?></a></li>
+        <li><a href="<?= $this->_router->getURLByRouteName('blog/category', ['category_id' => $category->id, 'category_name' => str_replace(' ', '_', $category->category_contents[0]->name)]) ?>"><?= $category->category_contents[0]->name ?></a></li>
     <?php endforeach; ?>
 </ul>

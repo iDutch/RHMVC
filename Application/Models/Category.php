@@ -55,8 +55,17 @@ class Category extends AbstractModel
 
         if (!$C || in_array(false, $CC)) {
             $conn->rollback();
-            foreach ($this->errors->get_raw_errors() as $field => $message) {
-                $this->flashmessages->error($message);
+            if (count($this->errors->get_raw_errors())) {
+                foreach ($this->errors->get_raw_errors() as $field => $message) {
+                    $this->flashmessages->error($message);
+                }
+            }
+            foreach ($CategoryContent as $language_id => $CC) {
+                if (count($CC->errors->get_raw_errors())) {
+                    foreach ($CC->errors->get_raw_errors() as $field => $message) {
+                        $this->messages->error($field.$language_id, $message);
+                    }
+                }
             }
             return false;
         } else {

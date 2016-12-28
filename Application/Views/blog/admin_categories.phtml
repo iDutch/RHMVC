@@ -1,8 +1,8 @@
 <?php
 
-$this->helper->appendJSFile('datatables/datatables.min.js');
-$this->helper->appendJSFile('datatables/datatables.bootstrap.min.js');
-$this->helper->appendJSInline('
+$this->_helper->appendJSFile('datatables/datatables.min.js');
+$this->_helper->appendJSFile('datatables/datatables.bootstrap.min.js');
+$this->_helper->appendJSInline('
     $(document).ready(function() {
         $(".table").DataTable({
             "language": ' . $this->translate('datatable_language') . ',
@@ -20,10 +20,12 @@ $this->helper->appendJSInline('
         });
         $(".delete-single").on("click", function() {
             $("#singleModal").modal({backdrop: "static"});
+            $("#item_id").val($(this).attr("data-id"));
+            console.log($(this).attr("data-id"));
         });
     });
 ');
-$this->helper->appendCSSFile('datatables/datatables.min.css');
+$this->_helper->appendCSSFile('datatables/datatables.min.css');
 ?>
 <?=
 

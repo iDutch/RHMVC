@@ -13,7 +13,8 @@ return [
     'basepath' => '', //Strip off subdirectories when needed.
     'routes' => [
         //404 route
-        '/404' => [
+        '404' => [
+            'route' => '/404',
             'methods' => 'GET',
             'layout' => 'empty.phtml',
             'content' => [
@@ -24,7 +25,8 @@ return [
                 ],
             ],
         ],
-        '/405' => [
+        '405' => [
+            'route' => '/405',
             'methods' => 'GET',
             'layout' => 'empty.phtml',
             'content' => [
@@ -35,7 +37,8 @@ return [
                 ],
             ],
         ],
-        '[/index]/' => [
+        'index' => [
+            'route' => '/',
             'methods' => 'GET',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -58,7 +61,8 @@ return [
                 ]
             ]
         ],
-        '[/index]/article/:article_id[0-9]+' => [
+        'blog/article' => [
+            'route' => '/article/(?<article_id>[0-9]+)',
             'methods' => 'GET|POST',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -83,7 +87,8 @@ return [
                 ]
             ]
         ],
-        '[/index]/archive/:year[0-9]{4}/:month[0-9]{1,2}' => [
+        'blog/archive' => [
+            'route' => '/archive/(?<year>[0-9]{4})/(?<month>[0-9]{1,2})',
             'methods' => 'GET',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -109,7 +114,8 @@ return [
                 ]
             ]
         ],
-        '[/index]/category/:category_id[0-9]+/(.*)' => [
+        'blog/category' => [
+            'route' => '/category/(?<category_id>[0-9]+)/(?<category_name>[\w-]+)',
             'methods' => 'GET',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -134,7 +140,8 @@ return [
                 ]
             ]
         ],
-        '/admin' => [
+        'admin/index' => [
+            'route' => '/admin',
             'methods' => 'GET',
             'layout' => 'admin.phtml',
             'content' => [
@@ -145,7 +152,8 @@ return [
                 ],
             ]
         ],
-        '/admin/login' => [
+        'admin/login' => [
+            'route' => '/admin/login',
             'methods' => 'GET|POST',
             'layout' => 'login.phtml',
             'content' => [
@@ -156,7 +164,8 @@ return [
                 ],
             ],
         ],
-        '/admin/blog/[:handler[a-z]+/[:action[a-z]+/:item_id[0-9]+]}}' => [
+        'admin/blog/add_edit' => [
+            'route' => '/admin/blog(/)?(?<handler>[a-z]+)?(/)?(?<action>(add|edit))?(/)?(?<item_id>[0-9]+)?',
             'methods' => 'GET|POST',
             'layout' => 'admin.phtml',
             'content' => [
@@ -178,8 +187,9 @@ return [
                 ]
             ]
         ],
-        '/admin/blog(/)?(?<handler>[a-z]+)?(/)?(?<action>(delete))?(/)?(?<item_id>[0-9]+)?' => [
-            'methods' => 'GET|POST',
+        'admin/blog/delete' => [
+            'route' => '/admin/blog(/)?(?<handler>[a-z]+)?(/)?(?<action>(delete))?(/)?(?<item_id>[0-9]+)?',
+            'methods' => 'POST',
             'layout' => 'admin.phtml',
             'content' => [
                 [

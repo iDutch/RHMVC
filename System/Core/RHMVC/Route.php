@@ -74,4 +74,10 @@ class Route
         return $string;
     }
 
+    public function getURL(array $params = [])
+    {
+        $route = preg_replace('#\\(\\?\\<([\\w-]+)\\>(\\[[\\w-\\\\]+\\]|\\([\\w|]+\\))(\\+|{[0-9,]+})?\\)(\\?)?#', '$1', $this->routedata['route']);
+        return str_replace(array_keys($params), array_values($params), $route);
+    }
+
 }

@@ -56,7 +56,7 @@ class BlogController extends AbstractController
                 return $this->adminArticleFormAction($item_id);
             }
             if ($action == 'delete') {
-                $this->adminArticleDeleteAction($item_id);
+                $this->adminArticleDeleteAction();
             }
             return $this->adminArticleIndexAction();
         } else if ($handler == 'categories') {
@@ -66,11 +66,14 @@ class BlogController extends AbstractController
             if ($action == 'edit') {
                 return $this->adminCategoryFormAction($item_id);
             }
+            if ($action == 'delete') {
+                $this->adminCategoryDeleteAction();
+            }
             return $this->adminCategoryIndexAction();
         } elseif ($handler == 'comments') {
             $this->redirect('/404');
         } else {
-            $this->redirect('/404');
+            return $this->adminArticleIndexAction();
         }
     }
 
@@ -154,6 +157,16 @@ class BlogController extends AbstractController
         ]);
 
         return $view->parse();
+    }
+
+    private function adminCategoryDeleteAction()
+    {
+        $category_id = isset($_POST['item_id']) ? $_POST['item_id'] : null;
+        $Category = Category::find($category_id);
+        if (count($Category) && $Category->delete()) {
+            $this->redirect('/admin/blog/categories');
+        }
+        return false;
     }
 
     public function showArticleAction($article_id)
