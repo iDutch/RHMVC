@@ -2,7 +2,7 @@
 
 return [
     'blog' => [
-        '/admin/blog/articles' => 'Aticles',
+        '/admin/blog/articles' => 'Articles',
         '/admin/blog/categories' => 'Categories',
         '/admin/blog/comments' => 'Comments',
     ]

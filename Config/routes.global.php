@@ -37,6 +37,30 @@ return [
                 ],
             ],
         ],
+        '418' => [ //See https://tools.ietf.org/html/rfc2324
+            'route' => '/418',
+            'methods' => 'GET',
+            'layout' => 'empty.phtml',
+            'content' => [
+                [
+                    'controller' => 'ErrorController',
+                    'action' => 'error418Action',
+                    'params' => [],
+                ],
+            ],
+        ],
+        '500' => [
+            'route' => '/500',
+            'methods' => 'GET',
+            'layout' => 'empty.phtml',
+            'content' => [
+                [
+                    'controller' => 'ErrorController',
+                    'action' => 'error500Action',
+                    'params' => [],
+                ],
+            ],
+        ],
         'index' => [
             'route' => '/',
             'methods' => 'GET',
@@ -179,11 +203,13 @@ return [
                     ],
                 ],
             ],
-            'sidebar' => [
+            'submenu' => [
                 [
                     'controller' => 'BlogController',
                     'action' => 'showAdminMenuAction',
-                    'params' => [],
+                    'params' => [
+                        'handler' => 'articles',
+                    ],
                 ]
             ]
         ],
@@ -202,7 +228,7 @@ return [
                     ],
                 ],
             ],
-            'sidebar' => [
+            'submenu' => [
                 [
                     'controller' => 'BlogController',
                     'action' => 'showAdminMenuAction',

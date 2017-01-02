@@ -1,5 +1,5 @@
-<ul class="list-unstyled">
+<ul class="nav nav-pills well">
     <?php foreach ($this->items as $url => $name): ?>
-        <li><a href="<?= $url ?>"><?= $name ?></a></li>
+        <li <?= $this->handler == strtolower(str_replace(' ', '_', $name)) ? 'class="active"' : '' ?>><a href="<?= $url ?>"><?= $name ?></a></li>
     <?php endforeach; ?>
 </ul>

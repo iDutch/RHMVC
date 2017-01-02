@@ -13,15 +13,22 @@ $this->_helper->appendJSInline('
             "columns": [
               { "width": "20px" },
               null,
-              { "width": "80px" },
-              { "width": "80px" },
+              { "width": "65px" },
+              { "width": "65px" },
               { "width": "160px" }
             ]
         });
         $(".delete-single").on("click", function() {
             $("#singleModal").modal({backdrop: "static"});
             $("#item_id").val($(this).attr("data-id"));
-            console.log($(this).attr("data-id"));
+        });
+        $(".delete-multi").on("click", function() {
+            $("#multiModal").modal({backdrop: "static"});
+            $("input[type=checkbox]").each(function(){
+                if ($(this).is(":checked")) {
+                    $("#multiDeleteForm").append("<input name=item_id[] type=hidden value=" + $(this).val() + ">");
+                }
+            });
         });
     });
 ');

@@ -55,40 +55,6 @@ class Router
         return $router->getRoute($uri, self::URI)->dispatch();
     }
 
-    /**
-     * Parse route to regex
-     *
-     * @param $route
-     * @return String
-     */
-    private function toRegex($route)
-    {
-        if (preg_match_all('#((\\[[\\w-\\\\/]+[\\]]*)|((\\[)?(\\:[\\w-]+(\\[[\\w-\\\\]+\\]|\\([\\w|]+\\))(\\+|({[0-9]+}|{[0-9]+,[0-9]+}))?(\\/)?)(\\])*))#', $route, $matches)) {
-            foreach ($matches[0] as $match) {
-                $replaced_match = preg_replace('#([\\[]?):([\\w-]+)(\\[[\\w-]+\\]|\\([\\w-|]+\\))(\\+|({[0-9]+}|{[0-9]+,[0-9]+}))?([\\]]*)#','$1?<$2>$3$4$6', $match);
-                if (strpos($match,':') === false) { //Route part is optional but not a variable
-                    $replaced_match = str_replace(['[',']'], ['(',')?'], $replaced_match);
-                } else {
-                    if (preg_match('#^([\[]+)#', $replaced_match, $submatches)) { //Opening bracket found indicating variable URL par
-                        //Replace with parenthesis
-                        $replaced_match = str_replace('[','(', $submatches[0]) . substr($replaced_match, strlen($submatches[0]));
-                    }
-                    if (preg_match('#([\]]+)$#', $replaced_match, $submatches)) { // One or more closing brackets found? Replace them with closing parentheses each with a '?'
-                        //Closing optional variable URL part
-                        $replaced_match = substr($replaced_match, 0, -strlen($submatches[0])) . str_replace(']',')?', $submatches[0]);
-                    }
-                    //Prepend parenthesis
-                    $replaced_match = '(' . $replaced_match;
-                    //Closing mandatory variable url part
-                    $replaced_match = $replaced_match . ')';
-                }
-                $route = str_replace($match, $replaced_match, $route);
-            }
-            return $route;
-        }
-        return $route;
-    }
-
     public static function getURLByRouteName($name, $params = [])
     {
         $router =  new self();

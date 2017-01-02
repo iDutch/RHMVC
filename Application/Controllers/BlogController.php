@@ -8,6 +8,7 @@ use Application\Models\Article;
 use Application\Models\Category;
 use Application\Models\Language;
 use DateTime;
+use Exception;
 
 class BlogController extends AbstractController
 {
@@ -162,8 +163,18 @@ class BlogController extends AbstractController
     private function adminCategoryDeleteAction()
     {
         $category_id = isset($_POST['item_id']) ? $_POST['item_id'] : null;
-        $Category = Category::find($category_id);
-        if (count($Category) && $Category->delete()) {
+        $Category = Category::find($category_id); //Can be an integer or array of integers
+        if (count($Category) === 1) { //Single delete
+            if (!$Category->delete()) {
+                throw new Exception('Failed to delete Category with ID: ' . $Category->id, 500);
+            }
+            $this->redirect('/admin/blog/categories');
+        } else if (count($Category) > 1) {
+            foreach ($Category as $C) {
+                if (!$C->delete()) {
+                    throw new Exception('Failed to delete Category with ID: ' . $Category->id, 500);
+                }
+            }
             $this->redirect('/admin/blog/categories');
         }
         return false;
@@ -206,12 +217,13 @@ class BlogController extends AbstractController
         return $view->parse();
     }
 
-    public function showAdminMenuAction()
+    public function showAdminMenuAction($handler)
     {
         $items = $this->getConfig('adminmenu')['blog'];
         $view = new View('blog/admin_menu.phtml');
         $view->setVars([
-            'items' => $items
+            'items' => $items,
+            'handler' => $handler
         ]);
 
         return $view->parse();

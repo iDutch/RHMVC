@@ -1,9 +1,15 @@
 <?php
 
-namespace System\Libs;
+namespace System\Libs\Logger;
+
+use DateTime;
 
 class Logger
 {
+
+    const AUDIT_TRAIL = 'Audit_trail';
+    const EXCEPTION = 'Exception';
+    const AUTHORISATION = 'Authorisation';
 
     private static $instance = null;
 
@@ -15,13 +21,17 @@ class Logger
         return self::$instance;
     }
 
-    public function log($message)
+    public static function log($message, $type = self::AUDIT_TRAIL)
     {
         
         $date = new DateTime();
-        $logmessage = $date->format('Y-m-d H:i:s') . " " . $message ."\n";
+        $logmessage = "[" . $date->format('Y-m-d H:i:s') . "] " . $message ."\n";
 
-        $logfile = __DIR__ . '/../../../application/logs/adminlog-' . $date->format('Y-m-d') . '.log';
+        if (!file_exists(LOG_DIR . $type)) {
+            mkdir(LOG_DIR . $type);
+        }
+
+        $logfile = LOG_DIR . $type . '/' . $date->format('Y-m-d') . '.log';
 
         $handle = fopen($logfile, 'a');
         fwrite($handle, $logmessage);

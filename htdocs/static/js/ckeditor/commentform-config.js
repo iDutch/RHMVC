@@ -16,5 +16,5 @@ var config = {
 		{ name: 'colors', groups: [ 'colors' ] },
 		{ name: 'about', groups: [ 'about' ] }
 	],
-    removeButtons: 'Subscript,Superscript,Source,Maximize,HorizontalRule,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Scayt,Anchor,Outdent,Indent,Blockquote,Styles,Format,About'
+    removeButtons: 'Subscript,Superscript,Source,Maximize,HorizontalRule,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Scayt,Anchor,Outdent,Indent,Blockquote,Styles,Format,About,Strike'
 };
