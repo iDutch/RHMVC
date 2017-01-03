@@ -31,9 +31,13 @@ class Route
                 $template_vars[$segment] = null;
                 //Loop through controllers for each segment
                 foreach ($controllers as $k => $controller) {
+                    foreach ($this->routeparams as $key => $value) {
+                        if (array_key_exists($key, $this->routedata[$segment][$k]['params']) && !empty($value)) {
+                            $controller['params'][$key] = $value;
+                        }
+                    }
                     //Append content returned from controller to segment
-                    var_dump($this->routeparams);
-                    $template_vars[$segment] .= $this->invokeController($controller, $this->routeparams);
+                    $template_vars[$segment] .= $this->invokeController($controller);
                 }
             }
         }
@@ -47,7 +51,7 @@ class Route
         return $template_vars['content']; //Return when layout is set to null. Recommended usage for AJAX calls and JSON reponses
     }
 
-    private function invokeController(array $controller_info, array $params)
+    private function invokeController(array $controller_info)
     {
         $controller = 'Application\\Controllers\\' . $controller_info['controller'];
 
@@ -63,7 +67,7 @@ class Route
         }
 
         //Does it returns a string? If not, it can't be appended to a layout segment so we throw an Exception
-        $string = call_user_func_array(array($controller, $controller_info['action']), $params);
+        $string = call_user_func_array(array($controller, $controller_info['action']), $controller_info['params']);
         if (!is_string($string)) {
             throw new Exception('Route error: ' . $controller_info['controller'] . '::' . $controller_info['action'] . ' does not return a string! ' . ucfirst(gettype($string)) . ' returned instead!');
         }
