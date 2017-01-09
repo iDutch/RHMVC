@@ -13,3 +13,6 @@ define('JS_DIR', __DIR__ . '/../htdocs/static/js/');
 
 //Config dir
 define('CONFIG_DIR', __DIR__ . '/');
+
+//
+define('WSS_URL', 'ws://192.168.1.120:8080');

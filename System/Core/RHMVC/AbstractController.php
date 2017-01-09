@@ -3,6 +3,7 @@
 namespace System\Core\RHMVC;
 
 use System\Libs\Messages\Messages;
+use WebSocket\Client;
 use Exception;
 
 abstract class AbstractController
@@ -74,6 +75,13 @@ abstract class AbstractController
     protected function redirect($url)
     {
         header('Location: ' . $url);
+    }
+
+    protected function sendWebSocketMessage($message, $title = '', $icon = '', $type = 'info')
+    {
+        $client = new Client(WSS_URL);
+        $message = (object) ['message' => $message, 'title' => $title, 'icon' => $icon, 'type' => $type];
+        $client->send(json_encode($message));
     }
 
 }

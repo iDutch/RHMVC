@@ -1,3 +1,42 @@
+<?php
+$this->_helper->appendJSFile('bootstrap-notify/bootstrap-notify.min.js');
+$this->_helper->appendJSInline('
+    var conn = new WebSocket("ws://rhmvc.local:8080");
+    conn.onopen = function(e) {
+        console.log("Connection established!");
+    };
+    conn.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        $.notify({
+            // options
+            icon: "" + data.icon + "",
+            title: "" + data.title + "",
+            message: "" + data.message + ""
+        },{
+            // settings
+            element: "body",
+            type: "" + data.type + "",
+            allow_dismiss: true,
+            newest_on_top: true,
+            showProgressbar: false,
+            placement: {
+                from: "bottom",
+                align: "right"
+            },
+            offset: 20,
+            spacing: 10,
+            delay: 5000,
+            mouse_over: null,
+            animate: {
+                enter: "animated lightSpeedIn",
+                exit: "animated lightSpeedOut"
+            },
+            icon_type: "class",
+        });
+    }
+');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,6 +57,7 @@
         <link href="/static/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
         <?= $this->_helper->appendCSSFile('theme.less'); ?>
+        <?= $this->_helper->appendCSSFile('animate/animate.css'); ?>
         <?= $this->_helper->getCSS(); ?>
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

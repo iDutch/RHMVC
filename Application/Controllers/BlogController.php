@@ -49,6 +49,7 @@ class BlogController extends AbstractController
 
     public function adminAction($handler, $action = null, $item_id = null)
     {
+        $this->sendWebSocketMessage("The admin page has been loaded...", "", "glyphicon glyphicon-warning-sign", "warning");
         if ($handler == 'articles') {
             if ($action == 'add') {
                 return $this->adminArticleFormAction();

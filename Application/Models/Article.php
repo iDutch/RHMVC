@@ -76,6 +76,7 @@ class Article extends AbstractModel
             return false;
         } else {
             $conn->commit();
+            $this->sendWebSocketMessage("A new article has been added!");
             return true;
         }
     }
@@ -94,5 +95,7 @@ class Article extends AbstractModel
         }
         return $data;
     }
+
+
 
 }
