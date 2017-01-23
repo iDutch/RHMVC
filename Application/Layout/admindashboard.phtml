@@ -56,9 +56,8 @@ $this->_helper->appendJSInline('
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <link href="/static/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-        <?php $this->_helper->appendCSSFile('bootstrap-additions.css'); ?>
-        <?php $this->_helper->appendCSSFile('theme.less'); ?>
-        <?php $this->_helper->appendCSSFile('animate/animate.css'); ?>
+        <?= $this->_helper->appendCSSFile('theme.less'); ?>
+        <?= $this->_helper->appendCSSFile('animate/animate.css'); ?>
         <?= $this->_helper->getCSS(); ?>
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -92,13 +91,8 @@ $this->_helper->appendJSInline('
 
         <div class="container">
             <div class="row">
-                <div id="submenu" class="column col-md-12"><?= $this->submenu ?></div>
-            </div>
-            <div class="row">
-
                 <div id="content" class="column col-md-12"><?= $this->content ?></div>
             </div>
-
         </div><!-- /.container -->
 
 

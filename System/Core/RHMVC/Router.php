@@ -2,6 +2,7 @@
 
 namespace System\Core\RHMVC;
 
+use Application\Models\Language;
 use Exception;
 
 class Router
@@ -39,7 +40,12 @@ class Router
         }
         foreach ($this->routerconfig['routes'] as $name => $routedata) {
             $route = $routedata['route'];
-            if((preg_match('#^(/([a-z]{2}))?'.$route.'$#', $uri, $matches) && $get_method === self::URI) || ($name == $routename && $get_method === self::NAME)) {
+            if((preg_match('#^(/(?<language>[a-z]{2}))?'.$route.'$#', $uri, $matches) && $get_method === self::URI) || ($name == $routename && $get_method === self::NAME)) {
+                if ($get_method === self::URI) {
+                    //Set language
+                    $language = !empty($matches['language']) ? strtolower($matches['language']) : null;
+                    $this->setLanguage($language);
+                }
                 if (!in_array($_SERVER['REQUEST_METHOD'], explode('|', $routedata['methods'])) && $get_method === self::URI) {
                     return new Route($this->routerconfig['routes']['405']);
                 }
@@ -47,6 +53,17 @@ class Router
             }
         }
         return new Route($this->routerconfig['routes']['404']);
+    }
+
+    private function setLanguage($lang = '')
+    {
+        $language = Language::first(['conditions' => ['iso_code = ?', strtoupper($lang)]]);
+        if (count($language)) { //Language exists? Then set it.
+            $_SESSION['language'] = $language->attributes();
+        } else { //Not exists? Set to default language
+            $_SESSION['language'] = Language::first(['conditions' => ['is_default = ?', 1]])->attributes();
+        }
+        setlocale(LC_TIME, $_SESSION['language']['locale']);
     }
 
     public static function loadRoute($uri)

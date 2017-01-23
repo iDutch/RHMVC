@@ -8,11 +8,11 @@ use WebSocket\Client;
 
 abstract class AbstractModel extends Model
 {
-    protected $messages = null;
+    protected $_messages = null;
 
     public function __construct(array $attributes=array(), $guard_attributes=true, $instantiating_via_find=false, $new_record=true)
     {
-        $this->messages = Messages::getInstance();
+        $this->_messages = Messages::getInstance();
         parent::__construct($attributes, $guard_attributes, $instantiating_via_find, $new_record);
     }
 

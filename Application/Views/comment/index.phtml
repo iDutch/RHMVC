@@ -3,7 +3,7 @@
     <div class="col-md-12">
         <?php foreach ($this->comments as $comment): ?>
             <div class="comment">
-                <strong><?= $comment->user instanceof \User ? $comment->user->username : $comment->author_name ?> on <?= strftime('%A, %e %B %Y', $comment->post_date->getTimestamp()) ?></strong>:<br>
+                <strong><?= $comment->user instanceof Application\Models\User ? $comment->user->username : $comment->author_name ?>: <?= strftime('%A, %e %B %Y', $comment->post_date->getTimestamp()) ?></strong>:<br>
                 <?= $comment->content ?>
             </div>
         <?php endforeach; ?>

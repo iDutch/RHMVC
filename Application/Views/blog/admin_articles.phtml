@@ -20,59 +20,44 @@ $this->_helper->appendJSInline('
               { "width": "160px" }
             ]
         });
-        $(".delete-single").on("click", function() {
-            $("#singleModal").modal({backdrop: "static"});
-            $("#item_id").val($(this).attr("data-id"));
-            console.log($(this).attr("data-id"));
-        });
-
     });
 ');
 $this->_helper->appendCSSFile('datatables/datatables.min.css');
-?>
-<?=
-
-$this->partial('admin_index_table.phtml', [
-    'fields'        => [
-            [
+echo $this->partial('admin_index_table.phtml', [
+    'fields' => [
+        [
             'field' => 'id',
-            'type'  => 'primary_key',
+            'type' => 'primary_key',
             'label' => 'ID'
         ],
-            [
+        [
             'field' => 'article_contents[0]->title',
-            'type'  => '',
+            'type' => '',
             'label' => 'Title'
         ],
-            [
+        [
             'field' => 'category->category_contents[0]->name',
-            'type'  => '',
+            'type' => '',
             'label' => 'Category'
         ],
-            [
+        [
             'field' => 'publish_date',
-            'type'  => '',
+            'type' => '',
             'label' => 'Publish Date'
         ],
-            [
+        [
             'field' => 'is_online',
-            'type'  => 'boolean',
+            'type' => 'boolean',
             'label' => 'Online'
         ],
-            [
+        [
             'field' => 'allow_comments',
-            'type'  => 'boolean',
+            'type' => 'boolean',
             'label' => 'Allow Comments'
         ]
     ],
-    'items'         => $this->articles,
-    'modulename'    => 'blog',
+    'items' => $this->articles,
+    'modulename' => 'blog',
     'modulehandler' => 'articles',
-    'permissions'   => [
-        'read'   => true,
-        'create' => true,
-        'update' => true,
-        'delete' => true
-    ]
+    'permissions' => $this->permissions
 ]);
-?>

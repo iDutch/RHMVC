@@ -1,5 +1,4 @@
 <?php
-
 $this->_helper->appendJSFile('datatables/datatables.min.js');
 $this->_helper->appendJSFile('datatables/datatables.bootstrap.min.js');
 $this->_helper->appendJSInline('
@@ -18,25 +17,10 @@ $this->_helper->appendJSInline('
               { "width": "160px" }
             ]
         });
-        $(".delete-single").on("click", function() {
-            $("#singleModal").modal({backdrop: "static"});
-            $("#item_id").val($(this).attr("data-id"));
-        });
-        $(".delete-multi").on("click", function() {
-            $("#multiModal").modal({backdrop: "static"});
-            $("input[type=checkbox]").each(function(){
-                if ($(this).is(":checked")) {
-                    $("#multiDeleteForm").append("<input name=item_id[] type=hidden value=" + $(this).val() + ">");
-                }
-            });
-        });
     });
 ');
 $this->_helper->appendCSSFile('datatables/datatables.min.css');
-?>
-<?=
-
-$this->partial('admin_index_table.phtml', [
+echo $this->partial('admin_index_table.phtml', [
     'fields' => [
             [
             'field' => 'id',
@@ -63,11 +47,5 @@ $this->partial('admin_index_table.phtml', [
     'items' => $this->categories,
     'modulename' => 'blog',
     'modulehandler' => 'categories',
-    'permissions' => [
-        'read' => true,
-        'create' => true,
-        'update' => true,
-        'delete' => true
-    ]
+    'permissions' => $this->permissions
 ]);
-?>

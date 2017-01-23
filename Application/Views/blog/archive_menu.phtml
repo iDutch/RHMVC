@@ -1,6 +1,6 @@
-<h4>Archive</h4>
+<h4><?= $this->translate('archive') ?></h4>
 <ul class="list-unstyled">
     <?php foreach ($this->archivedates as $archivedate): ?>
-        <li><a href="<?= $this->_router->getURLByRouteName('blog/archive', ['year' => $archivedate->publish_date->format('Y'), 'month' => $archivedate->publish_date->format('m')]) ?>"><?= strftime('%B %Y', $archivedate->publish_date->getTimestamp()) ?></a></li>
+        <li><a href="<?= $this->_router->getURLByRouteName('blog/archive', ['year' => $archivedate->publish_date->format('Y'), 'month' => $archivedate->publish_date->format('m')]) ?>"><?= ucfirst(strftime('%B %Y', $archivedate->publish_date->getTimestamp())) ?></a></li>
     <?php endforeach; ?>
 </ul>

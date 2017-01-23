@@ -8,5 +8,6 @@ return array(
     'sign in'                       => 'Inloggen',
     'enter your password'           => 'Voer jouw wachtwoord in.',
     'forgot your password'          => 'Wachtwoord vergeten?',
-    'enter email address/username'  => 'Voer jouw gebruikersnaam of e-mailadres in.'
+    'enter email address/username'  => 'Voer jouw gebruikersnaam of e-mailadres in.',
+    'forgot password'               => 'Wachtwoord vergeten?'
 );

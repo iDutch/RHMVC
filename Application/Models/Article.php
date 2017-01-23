@@ -11,7 +11,7 @@ class Article extends AbstractModel
             ['category']
     ];
     static $has_many = [
-            ['article_contents', 'conditions' => ['language_id = ?', 1]]
+            ['article_contents']
     ];
     static $validates_presence_of = [
             ['publish_date', 'message' => 'Publish date cannot be empty.'],
@@ -63,13 +63,13 @@ class Article extends AbstractModel
             $conn->rollback();
             if (count($this->errors->get_raw_errors())) {
                 foreach ($this->errors->get_raw_errors() as $field => $message) {
-                    $this->messages->error($field, $message);
+                    $this->_messages->error($field, $message);
                 }
             }
             foreach ($ArticleContent as $language_id => $AC) {
                 if (count($AC->errors->get_raw_errors())) {
                     foreach ($AC->errors->get_raw_errors() as $field => $message) {
-                        $this->messages->error($field.$language_id, $message);
+                        $this->_messages->error($field.$language_id, $message);
                     }
                 }
             }

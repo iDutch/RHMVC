@@ -4,7 +4,6 @@ namespace System\Core\RHMVC;
 
 use Exception;
 use System\Libs\Messages\Messages;
-use System\Core\RHMVC\Router;
 
 class View
 {
@@ -95,7 +94,7 @@ class View
      */
     public function translate($key)
     {
-        return Translator::getInstance('en')->translate($key);
+        return Translator::getInstance(strtolower($_SESSION['language']['iso_code']))->translate($key);
     }
 
 }

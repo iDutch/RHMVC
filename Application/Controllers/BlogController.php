@@ -3,6 +3,7 @@
 namespace Application\Controllers;
 
 use System\Core\RHMVC\AbstractController;
+use System\Core\RHMVC\Router;
 use System\Core\RHMVC\View;
 use Application\Models\Article;
 use Application\Models\Category;
@@ -13,13 +14,20 @@ use Exception;
 class BlogController extends AbstractController
 {
 
+    use PermissionTrait;
+
     public function indexAction()
     {
-        $Article = new Article();
         $view = new View('blog/index.phtml');
         $DateTime = new DateTime();
         $view->setVars([
-            'articles' => $Article->find('all', ['limit' => 7, 'order' => 'publish_date DESC', 'conditions' => ['publish_date < ? AND is_online = ?', $DateTime->format('Y-m-d H:i:s'), 1]])
+            'articles' => Article::all([
+                'select' => 'articles.id, articles.publish_date, article_contents.title, article_contents.content, cc.name',
+                'joins' => ['article_contents', 'category', 'JOIN category_contents cc ON (cc.category_id = categories.id)'],
+                'conditions' => ['articles.is_online = 1 AND article_contents.is_online = 1 AND categories.is_online = 1 AND article_contents.language_id = ? AND cc.language_id = ? AND articles.publish_date <= ?', $_SESSION['language']['id'], $_SESSION['language']['id'], $DateTime->format('Y-m-d H:i:s')],
+                'order' => 'articles.publish_date DESC',
+                'limit' => 10
+            ])
         ]);
 
         return $view->parse();
@@ -27,10 +35,13 @@ class BlogController extends AbstractController
 
     public function archiveAction($year, $month)
     {
-        $Article = new Article();
         $view = new View('blog/index.phtml');
         $view->setVars([
-            'articles' => $Article->find('all', ['order' => 'publish_date DESC', 'conditions' => ['YEAR(publish_date) = ? AND MONTH(publish_date) = ? AND is_online = ?', $year, $month, 1]])
+            'articles' => Article::all([
+                'select' => 'articles.id, articles.publish_date, article_contents.title, article_contents.content, cc.name',
+                'joins' => ['article_contents', 'category', 'JOIN category_contents cc ON (cc.category_id = categories.id)'],
+                'conditions' => ['articles.is_online = 1 AND article_contents.is_online = 1 AND categories.is_online = 1 AND article_contents.language_id = ? AND cc.language_id = ? AND YEAR(publish_date) = ? AND MONTH(publish_date) = ?', $_SESSION['language']['id'], $_SESSION['language']['id'], $year, $month]
+            ])
         ]);
 
         return $view->parse();
@@ -38,10 +49,13 @@ class BlogController extends AbstractController
 
     public function categoryAction($category_id)
     {
-        $Article = new Article();
         $view = new View('blog/index.phtml');
         $view->setVars([
-            'articles' => $Article->find('all', ['conditions' => ['category_id = ?', $category_id]])
+            'articles' => Article::all([
+                'select' => 'articles.id, articles.publish_date, article_contents.title, article_contents.content, cc.name',
+                'joins' => ['article_contents', 'category', 'JOIN category_contents cc ON (cc.category_id = categories.id)'],
+                'conditions' => ['articles.is_online = 1 AND article_contents.is_online = 1 AND categories.is_online = 1 AND article_contents.language_id = ? AND cc.language_id = ? AND articles.category_id = ?', $_SESSION['language']['id'], $_SESSION['language']['id'], $category_id]
+            ])
         ]);
 
         return $view->parse();
@@ -49,7 +63,6 @@ class BlogController extends AbstractController
 
     public function adminAction($handler, $action = null, $item_id = null)
     {
-        $this->sendWebSocketMessage("The admin page has been loaded...", "", "glyphicon glyphicon-warning-sign", "warning");
         if ($handler == 'articles') {
             if ($action == 'add') {
                 return $this->adminArticleFormAction();
@@ -81,10 +94,15 @@ class BlogController extends AbstractController
 
     private function adminArticleIndexAction()
     {
+        if (!$this->hasPermission(self::$ALLOW_READ)) {
+            $this->redirect('/admin');
+        }
+
         $Article = new Article();
         $view = new View('blog/admin_articles.phtml');
         $view->setVars([
-            'articles' => $Article->find('all')
+            'articles' => $Article->find('all'),
+            'permissions' => $this->getPermissionsArray()
         ]);
 
         return $view->parse();
@@ -92,24 +110,28 @@ class BlogController extends AbstractController
 
     private function adminArticleFormAction($article_id = null)
     {
-        $Category = new Category();
-        $Language = new Language();
         if (!is_null($article_id)) {
+            if (!$this->hasPermission(self::$ALLOW_UPDATE)) {
+                $this->redirect('/admin/blog/articles');
+            }
             $Article = Article::find($article_id);
         } else {
+            if (!$this->hasPermission(self::$ALLOW_CREATE)) {
+                $this->redirect('/admin/blog/articles');
+            }
             $Article = new Article();
         }
 
         if (isset($_POST['save_article'])) {
             if ($Article->saveThroughTransaction($_POST)) {
-                $this->redirect('/admin/blog/articles/');
+                $this->redirect('/admin/blog/articles');
             }
         }
 
         $view = new View('blog/admin_articles_form.phtml');
         $view->setVars([
-            'categories' => $Category->find('all', ['conditions' => ['is_enabled = ?', 1]]),
-            'languages'  => $Language->find('all'),
+            'categories' => Category::all(['conditions' => ['is_enabled = ?', 1]]),
+            'languages'  => Language::all(),
             'post'       => isset($_POST['save_article']) ? $_POST : $Article->getFormData()
         ]);
 
@@ -118,20 +140,38 @@ class BlogController extends AbstractController
 
     private function adminArticleDeleteAction()
     {
+        if (!$this->hasPermission(self::$ALLOW_DELETE)) {
+            $this->redirect('/admin/blog/articles');
+        }
+
         $article_id = isset($_POST['item_id']) ? $_POST['item_id'] : null;
         $Article = Article::find($article_id);
-        if (count($Article) && $Article->delete()) {
+        if (count($Article) === 1) {
+            if (!$Article->delete()) {
+                throw new Exception('Failed to delete Article with ID: ' . $Category->id, 500);
+            }
             $this->redirect('/admin/blog/articles');
+        } else if (count($Category) > 1) {
+            foreach ($Category as $C) {
+                if (!$C->delete()) {
+                    throw new Exception('Failed to delete Category with ID: ' . $Category->id, 500);
+                }
+            }
+            $this->redirect('/admin/blog/categories');
         }
         return false;
     }
 
     private function adminCategoryIndexAction()
     {
-        $Category = new Category();
+        if (!$this->hasPermission(self::$ALLOW_READ)) {
+            $this->redirect('/admin');
+        }
+
         $view = new View('blog/admin_categories.phtml');
         $view->setVars([
-            'categories' => $Category->find('all')
+            'categories' => Category::all(),
+            'permissions' => $this->getPermissionsArray()
         ]);
 
         return $view->parse();
@@ -139,22 +179,27 @@ class BlogController extends AbstractController
 
     private function adminCategoryFormAction($category_id = null)
     {
-        $Language = new Language();
         if (!is_null($category_id)) {
+            if (!$this->hasPermission(self::$ALLOW_UPDATE)) {
+                $this->redirect('/admin/blog/categories');
+            }
             $Category = Category::find($category_id);
         } else {
+            if (!$this->hasPermission(self::$ALLOW_CREATE)) {
+                $this->redirect('/admin/blog/categories');
+            }
             $Category = new Category();
         }
 
         if (isset($_POST['save_category'])) {
             if ($Category->saveThroughTransaction($_POST)) {
-                $this->redirect('/admin/blog/categories/');
+                $this->redirect('/admin/blog/categories');
             }
         }
 
         $view = new View('blog/admin_categories_form.phtml');
         $view->setVars([
-            'languages' => $Language->find('all'),
+            'languages' => Language::all(),
             'post'      => isset($_POST['save_category']) ? $_POST : $Category->getFormData()
         ]);
 
@@ -209,10 +254,15 @@ class BlogController extends AbstractController
 
     public function showArchiveMenuAction()
     {
-        $Article = new Article();
         $view = new View('blog/archive_menu.phtml');
         $view->setVars([
-            'archivedates' => $Article->find_by_sql('SELECT publish_date, MONTH(publish_date) AS `month`, YEAR(publish_date) AS `year` FROM articles GROUP BY `year`,`month` ORDER BY publish_date DESC')
+            'archivedates' => Article::all([
+                'select' => 'articles.publish_date, MONTH(articles.publish_date) AS `month`, YEAR(articles.publish_date) AS `year`',
+                'joins' => ['article_contents', 'category'],
+                'conditions' => ['articles.is_online = 1 AND article_contents.is_online = 1 AND categories.is_online = 1 AND article_contents.language_id = ?', $_SESSION['language']['id']],
+                'group' => '`year`,`month`',
+                'order' => 'articles.publish_date DESC'
+            ])
         ]);
 
         return $view->parse();

@@ -160,4 +160,10 @@ class Helper
         return $tmp;
     }
 
+    public function my_strftime($format, $timestamp)
+    {
+        $format = str_replace('%O', date('S', $timestamp), $format);
+        return strftime($format, $timestamp);
+    }
+
 }

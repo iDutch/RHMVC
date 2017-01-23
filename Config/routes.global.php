@@ -62,7 +62,7 @@ return [
             ],
         ],
         'index' => [
-            'route' => '/',
+            'route' => '(/)?',
             'methods' => 'GET',
             'layout' => 'bootstrap.phtml',
             'content' => [
@@ -164,10 +164,10 @@ return [
                 ]
             ]
         ],
-        'admin/index' => [
+        'admin/dashboard' => [
             'route' => '/admin',
             'methods' => 'GET',
-            'layout' => 'admin.phtml',
+            'layout' => 'admindashboard.phtml',
             'content' => [
                 [
                     'controller' => 'DashboardController',
@@ -184,6 +184,18 @@ return [
                 [
                     'controller' => 'UserController',
                     'action' => 'loginAction',
+                    'params' => [],
+                ],
+            ],
+        ],
+        'admin/requestpassword' => [
+            'route' => '/admin/requestpassword',
+            'methods' => 'GET|POST',
+            'layout' => 'login.phtml',
+            'content' => [
+                [
+                    'controller' => 'UserController',
+                    'action' => 'requestPasswordAction',
                     'params' => [],
                 ],
             ],

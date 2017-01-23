@@ -5,8 +5,8 @@ namespace System\Core\RHMVC;
 class Translator
 {
 
-    private static $instance = array();
-    private $translations = array();
+    private static $instance = [];
+    private $translations = [];
 
     public static function getInstance($language_iso_code)
     {
@@ -37,7 +37,7 @@ class Translator
         return call_user_func_array('sprintf', array_merge((array) $format, $array));
     }
 
-    public function translate($key, array $array = array())
+    public function translate($key, array $array = [])
     {
         if (array_key_exists($key, $this->translations)) {
             return $this->sprintf_array($this->translations[$key], $array);

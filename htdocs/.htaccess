@@ -1,4 +1,7 @@
-SetEnv IS_DEVEL True
+SetEnv IS_DEVELOPMENT   True
+SetEnv IS_TEST          False
+SetEnv IS_ACCEPTANCE    False
+SetEnv IS_PRODUCTION    False
 
 RewriteEngine On
 

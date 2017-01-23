@@ -1,7 +1,13 @@
 <div class="row">
     <div class="col-md-6">
         <div class="well">
-            ...
+            <?php foreach ($this->latest_comments as $comment): ?>
+                <h5>
+                    <?= $comment->user instanceof Application\Models\User ? $comment->user->username : $comment->author_name ?>: <?= strftime('%A, %e %B %Y', $comment->post_date->getTimestamp()) ?><br>
+                    <small><?= strlen($comment->content) > 130 ? substr($comment->content, 0, 130).'...' : $comment->content ?></small>
+                </h5>
+
+            <?php endforeach; ?>
         </div>
     </div>
     <div class="col-md-6"></div>

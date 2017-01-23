@@ -8,5 +8,6 @@ return array(
     'sign in'                       => 'Login',
     'enter your password'           => 'Enter your password.',
     'forgot your password'          => 'Forgot your password?',
-    'enter email address/username'  => 'Enter your username or email address.'
+    'enter email address/username'  => 'Enter your username or email address.',
+    'forgot password'               => 'Forgot password?'
 );

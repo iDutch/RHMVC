@@ -1,3 +1,27 @@
+<?php
+$this->_helper->appendJSInline('
+    $(".model-id-selector").on("click", function(){
+        $("#mass-actions").addClass("disabled");
+        $(".model-id-selector").each(function(){
+            if ($(this).is(":checked")) {
+                $("#mass-actions").removeClass("disabled");
+            }
+        });
+    });
+    $(".delete-single").on("click", function() {
+        $("#singleModal").modal({backdrop: "static"});
+        $("#item_id").val($(this).attr("data-id"));
+    });
+    $(".delete-multi").on("click", function() {
+        $("#multiModal").modal({backdrop: "static"});
+        $(".model-id-selector").each(function(){
+            if ($(this).is(":checked")) {
+                $("#multiDeleteForm").append("<input name=item_id[] type=hidden value=" + $(this).val() + ">");
+            }
+        });
+    });
+');
+?>
 <div class="modal fade" id="singleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -57,7 +81,7 @@
             <tr>
                 <?php foreach ($this->fields as $field): ?>
                     <?php if ($field['type'] == 'primary_key'): ?>
-                        <td><input type="checkbox" value="<?= $this->_helper->getClassProperty($item, $field['field']) ?>"></td>
+                        <td><input class="model-id-selector" type="checkbox" value="<?= $this->_helper->getClassProperty($item, $field['field']) ?>"></td>
                     <?php elseif ($field['type'] == 'boolean'): ?>
                         <td><?= $this->_helper->getClassProperty($item, $field['field']) ? '<span class="label label-success">' . $this->translate('yes') . '</span>' : '<span class="label label-danger">' . $this->translate('no') . '</span>' ?></td>
                     <?php else: ?>
@@ -95,15 +119,23 @@
                         <?php endif; ?>
                     </div>
                     <div class="btn-group pull-right" role="group" aria-label="...">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button id="mass-actions" type="button" class="btn disabled btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <?= $this->translate('with_selected') ?> <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
+                        <ul class="dropdown-menu multi-level">
+                            <li class="dropdown-submenu">
+                                <a href="#">More...</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                </ul>
+                            </li>
                             <li><a href="#">Another action</a></li>
                             <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a class="delete-multi" href="#"><?= $this->translate('delete') ?></a></li>
+                            <?php if ($this->permissions['delete']): ?>
+                                <li role="separator" class="divider"></li>
+                                <li><a class="delete-multi" href="#"><?= $this->translate('delete') ?></a></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </div>

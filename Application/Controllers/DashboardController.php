@@ -14,17 +14,7 @@ class DashboardController extends AbstractController
     {
         $view = new View('dashboard/index.phtml');
         $view->setVars([
-            'latest_comments' => Comment::find('all', ['limit' => 5, 'order' => 'post_date desc'])
-        ]);
-
-        return $view->parse();
-    }
-
-    public function categoryMenuAction()
-    {
-        $view = new View('blog/category_menu.phtml');
-        $view->setVars([
-            'categories' => Category::find('all')
+            'latest_comments' => Comment::find('all', ['limit' => 10, 'order' => 'post_date desc'])
         ]);
 
         return $view->parse();

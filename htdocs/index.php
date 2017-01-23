@@ -1,15 +1,16 @@
 <?php
 
 session_start();
-setlocale(LC_TIME, 'en_EN');
 
 use System\Core\RHMVC\Router;
 use System\Libs\Logger\Logger;
+use Application\Models\User;
 
-if (isset($_SERVER['IS_DEVEL'])) {
+if ((isset($_SERVER['IS_DEVELOPMENT']) && $_SERVER['IS_DEVELOPMENT'] == "True") || (isset($_SERVER['IS_TEST']) && $_SERVER['IS_TEST'] == "True")) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 }
+
 require __DIR__ . '/../Config/settings.global.php';
 
 try {
@@ -25,11 +26,19 @@ try {
     });
     ActiveRecord\Connection::$datetime_format = 'Y-m-d H:i:s';
 
+    if (!isset($_SESSION['user'])) {
+        User::authenticateByCookie();
+    }
+
     $router = new Router();
 
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $router->getRoute($uri)->dispatch();
 } catch (Exception $e) {
+    if ((isset($_SERVER['IS_DEVELOPMENT']) && $_SERVER['IS_DEVELOPMENT'] == "True") || (isset($_SERVER['IS_TEST']) && $_SERVER['IS_TEST'] == "True")) {
+        echo $e->getMessage();
+    }
+
     Logger::log('Caught exception: ' . $e->getMessage(), Logger::EXCEPTION);
 
     $router = new Router();

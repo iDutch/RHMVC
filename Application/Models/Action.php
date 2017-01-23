@@ -11,4 +11,8 @@ class Action extends Model
         ['user_roles']
     ];
 
+    static $belongs_to = [
+        ['module', 'through' => 'user_roles']
+    ];
+
 }

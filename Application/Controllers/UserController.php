@@ -9,20 +9,26 @@ use Application\Models\User;
 class UserController extends AbstractController
 {
 
-    /**
-     *
-     * @return string
-     */
     public function loginAction()
     {
+        if (isset($_SESSION['user'])) {
+            $this->redirect('/admin');
+        }
+
         if (isset($_POST['login'])) {
-            $user = User::first(['conditions' => ['username = ? OR email = ?', $_POST['username'], $_POST['username']]]);
-            var_dump($user);
-            if ($user->authenticate($_POST['password'])) {
-                $this->redirect('/admin/blog');
+            $user = User::first(['conditions' => ['username = ? OR emailaddress = ?', $_POST['username'], $_POST['username']]]);
+            if (count($user)) {
+                if ($user->authenticate($_POST['password'], isset($_POST['rememberme']))) {
+                    $this->redirect('/admin');
+                }
+            } else {
+                $this->_messages->error('emailaddress', 'invalid user');
             }
         }
         $view = new View('user/login.phtml');
+        $view->setVars([
+           'post' => $_POST
+        ]);
 
         return $view->parse();
     }
