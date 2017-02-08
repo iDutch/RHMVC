@@ -2,6 +2,8 @@
 
 namespace Application\Controllers;
 
+use ReflectionClass;
+
 trait PermissionTrait
 {
     private static $ALLOW_READ = 1;
@@ -11,7 +13,7 @@ trait PermissionTrait
 
     protected function hasPermission($permission)
     {
-        if (isset($_SESSION['user']['user_roles']) && (intval($_SESSION['user']['user_roles'][(new \ReflectionClass($this))->getShortName()]) & intval($permission)) != 0) {
+        if (isset($_SESSION['user']['user_roles']) && (intval($_SESSION['user']['user_roles'][(new ReflectionClass($this))->getShortName()]) & intval($permission)) != 0) {
             return true;
         }
         return false;
@@ -20,13 +22,13 @@ trait PermissionTrait
     protected function getPermissionsArray()
     {
         $permissions = [];
-        foreach ($this->get_static_vars((new \ReflectionClass($this))->getName()) as $key => $value) {
+        foreach ($this->_getStaticVars((new ReflectionClass($this))->getName()) as $key => $value) {
             $permissions[$key] = $this->hasPermission($value);
         }
         return $permissions;
     }
 
-    private function get_static_vars($class) {
+    private function _getStaticVars($class) {
         $result = [];
         foreach (get_class_vars($class) as $name => $default) {
             if (isset($class::$$name)) {

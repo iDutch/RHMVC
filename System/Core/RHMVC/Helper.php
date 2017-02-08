@@ -14,10 +14,14 @@ class Helper
 
     public static function getInstance($view)
     {
-        if (!isset(self::$instance)) {
+        if (!self::$instance instanceof self) {
             self::$instance = new self($view);
+            return self::$instance;
+        } else {
+            $instance = self::$instance;
+            $instance->view = $view;
+            return $instance;
         }
-        return self::$instance;
     }
 
     public function __construct($view)
@@ -130,7 +134,7 @@ class Helper
         }
         $hash = md5($css);
         if (!file_exists(CSS_DIR . 'cache/minified-' . $hash . '.css') || $debug) {
-            $options = array('compress' => true);
+            $options = array('compress' => !$debug);
             $parser = new \Less_Parser($options);
             $parser->parse($css);
             $css = $parser->getCss();
@@ -140,7 +144,7 @@ class Helper
         }
 
         if ($debug) {
-            return "<style>\n" . $css . "</css>\n";
+            return "<style>\n" . $css . "</style>\n";
         }
         return '<link type="text/css" rel="stylesheet" href="/static/css/cache/minified-' . $hash . '.css">';
     }

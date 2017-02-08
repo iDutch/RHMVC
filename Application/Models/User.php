@@ -67,19 +67,21 @@ class User extends AbstractModel
         $PasswordrequestToken->expire_date = $datetime;
         $PasswordrequestToken->save();
 
-        $Mailer = new PHPMailer();
-        $Mailer->setFrom(FROM_ADDRESS, FROM_NAME);
-        $Mailer->Subject = ''
+        $mailer_config = $this->getConfig('mailsettings');
 
-        if (USE_SMTP) {
-            $Mailer->isSMTP();
-            $Mailer->Host = SMTP_HOST;
+        $Mailer = new PHPMailer();
+        $Mailer->setFrom($mailer_config['from_address'], $mailer_config['from_name']);
+        $Mailer->Subject = '';
+        $Mailer->isSMTP($mailer_config['use_smtp']);
+        if ($mailer_config['use_smtp']) {
+            $Mailer->Host = $mailer_config['smtp_host'];
             $Mailer->SMTPAuth = true;
-            $Mailer->Username = SMTP_USERNAME;
-            $Mailer->Password = SMTP_PASSWORD;
-            $Mailer->SMTPSecure = SMTP_ENCRYPTION;
-            $Mailer->Port = SMTP_PORT;
+            $Mailer->Username = $mailer_config['use_smtp'];
+            $Mailer->Password = $mailer_config['use_smtp'];
+            $Mailer->SMTPSecure = $mailer_config['use_smtp'];
+            $Mailer->Port = $mailer_config['use_smtp'];
         }
+        $Mailer->addAddress($this->emailaddress, $this->firstname . ' ' . $this->lastname);
     }
 
     private function _storeCookie() {

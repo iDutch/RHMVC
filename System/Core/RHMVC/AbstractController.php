@@ -2,8 +2,7 @@
 
 namespace System\Core\RHMVC;
 
-use System\Libs\Messages\Messages;
-use WebSocket\Client;
+use WebSocket\Client as WSClient;
 use Exception;
 
 abstract class AbstractController
@@ -77,9 +76,17 @@ abstract class AbstractController
         header('Location: ' . $url);
     }
 
+    /**
+     * Connect to WS server and send a message
+     * @param string $message
+     * @param string $title
+     * @param string $icon
+     * @param string $type
+     */
     protected function sendWebSocketMessage($message, $title = '', $icon = '', $type = 'info')
     {
-        $client = new Client(WSS_URL);
+        $ws_config = $this->getConfig('websocket');
+        $client = new WSClient($ws_config['ws_url']);
         $message = (object) ['message' => $message, 'title' => $title, 'icon' => $icon, 'type' => $type];
         $client->send(json_encode($message));
     }
