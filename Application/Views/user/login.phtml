@@ -37,18 +37,17 @@ $this->_helper->appendCSSInline('
 ');
 ?>
 <form class="form-signin" method="post">
+    <?= $this->_messenger->display($this->partial('alert.phtml'), 'login') ?>
     <h2 class="form-signin-heading"><?= $this->translate('sign in header') ?></h2>
     <label for="inputEmail" class="sr-only"><?= $this->translate('username or email address') ?></label>
     <input type="text" name="username" id="inputEmail" class="form-control" placeholder="<?= $this->translate('username or email address') ?>" required autofocus value="<?= isset($this->post['username']) ? $this->post['username'] : '' ?>">
-    <?= $this->_messages->display($this->partial('formfield_error.phtml'), 'emailaddress') ?>
     <label for="inputPassword" class="sr-only"><?= $this->translate('password') ?></label>
     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="<?= $this->translate('password') ?>" required>
-    <?= $this->_messages->display($this->partial('formfield_error.phtml'), 'password') ?>
     <div class="checkbox">
         <label>
             <input name="rememberme" type="checkbox" value="remember-me"> <?= $this->translate('remember me') ?>
         </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" name="login" type="submit"><?= $this->translate('sign in') ?></button>
-    <a href="<?= $this->_router->getURLByRouteName('admin/requestpassword') ?>" class="btn btn-lg btn-default btn-block"><?= $this->translate('forgot password') ?></a>
+    <a href="<?= $this->_router->getURLByRouteName('admin/request-reset-password') ?>" class="btn btn-lg btn-default btn-block"><?= $this->translate('forgot password') ?></a>
 </form>

@@ -72,10 +72,10 @@ class Router
         return $router->getRoute($uri, self::URI)->dispatch();
     }
 
-    public static function getURLByRouteName($name, $params = [])
+    public static function getURLByRouteName($name, $params = [], $canonical = false)
     {
         $router =  new self();
-        return $router->getRoute($name, self::NAME)->getURL($params);
+        return $canonical ? APP_URL . $router->getRoute($name, self::NAME)->getURL($params) : $router->getRoute($name, self::NAME)->getURL($params);
     }
 
 }

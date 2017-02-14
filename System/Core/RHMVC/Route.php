@@ -59,7 +59,8 @@ class Route
             throw new Exception('Route error: Controller \'' . $controller . '\' not found!');
         }
 
-        $controller = new $controller($this->layout);
+        $ServiceContainer = ServiceContainer::getInstance();
+        $controller = new $controller($this->layout, $ServiceContainer->get('messenger'), $ServiceContainer->get('translator'));
 
         //Does the action exists?
         if (!method_exists($controller, $controller_info['action'])) {

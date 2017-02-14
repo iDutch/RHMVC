@@ -14,7 +14,7 @@
                         <label for="" class="col-sm-2 control-label"><?= $this->translate('name') ?></label>
                         <div class="col-sm-10">
                             <input type="text" name="language[<?= $language->id ?>][name]" class="form-control" value="<?= isset($this->post['language'][$language->id]['name']) ? $this->post['language'][$language->id]['name'] : '' ?>">
-                            <?= $this->_messages->display($this->partial('formfield_error.phtml'), 'name'.$language->id, 8) ?>
+                            <?= $this->_messenger->display($this->partial('formfield_error.phtml'), 'name'.$language->id, 8) ?>
                         </div>
                     </div>
                 </div>

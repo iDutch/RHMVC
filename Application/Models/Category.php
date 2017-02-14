@@ -57,13 +57,13 @@ class Category extends AbstractModel
             $conn->rollback();
             if (count($this->errors->get_raw_errors())) {
                 foreach ($this->errors->get_raw_errors() as $field => $message) {
-                    $this->_messages->error($message);
+                    $this->_messenger->error($message);
                 }
             }
             foreach ($CategoryContent as $language_id => $CC) {
                 if (count($CC->errors->get_raw_errors())) {
                     foreach ($CC->errors->get_raw_errors() as $field => $message) {
-                        $this->_messages->error($field.$language_id, $message);
+                        $this->_messenger->error($field.$language_id, $message);
                     }
                 }
             }

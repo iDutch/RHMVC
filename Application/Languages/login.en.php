@@ -9,5 +9,7 @@ return array(
     'enter your password'           => 'Enter your password.',
     'forgot your password'          => 'Forgot your password?',
     'enter email address/username'  => 'Enter your username or email address.',
-    'forgot password'               => 'Forgot password?'
+    'forgot password'               => 'Forgot password?',
+    'reset password header'         => 'Reset password',
+    'email address'                 => 'Email address',
 );

@@ -63,13 +63,13 @@ class Article extends AbstractModel
             $conn->rollback();
             if (count($this->errors->get_raw_errors())) {
                 foreach ($this->errors->get_raw_errors() as $field => $message) {
-                    $this->_messages->error($field, $message);
+                    $this->_messenger->error($field, $message);
                 }
             }
             foreach ($ArticleContent as $language_id => $AC) {
                 if (count($AC->errors->get_raw_errors())) {
                     foreach ($AC->errors->get_raw_errors() as $field => $message) {
-                        $this->_messages->error($field.$language_id, $message);
+                        $this->_messenger->error($field.$language_id, $message);
                     }
                 }
             }

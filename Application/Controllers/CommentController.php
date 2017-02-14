@@ -49,7 +49,7 @@ class CommentController extends AbstractController
                 $this->redirect('/article/' . $article_id);
             }
             foreach ($Comment->errors->get_raw_errors() as $field => $message) {
-                $this->_messages->error($field, $message);
+                $this->_messenger->error($field, $message);
             }
         }
 

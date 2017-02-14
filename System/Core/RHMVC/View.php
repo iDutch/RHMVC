@@ -3,15 +3,12 @@
 namespace System\Core\RHMVC;
 
 use Exception;
-use System\Libs\Messages\Messages;
 
-class View
+class View extends AbstractView
 {
 
     private $_view;
     private $_vars = array();
-    private $_helper;
-    private $_messages;
     private $_router;
 
     /**
@@ -22,8 +19,9 @@ class View
      */
     public function __construct($view, $isLayout = false)
     {
-        $this->_helper = Helper::getInstance($view);
-        $this->_messages = Messages::getInstance();
+        $ServiceContainer = ServiceContainer::getInstance();
+        parent::__construct($ServiceContainer->get('helper'), $ServiceContainer->get('translator'), $ServiceContainer->get('messenger'));
+
         $this->_router = new Router();
         if ($isLayout) {
             if (!file_exists(LAYOUT_DIR . $view)) {
@@ -94,7 +92,7 @@ class View
      */
     public function translate($key)
     {
-        return Translator::getInstance(strtolower($_SESSION['language']['iso_code']))->translate($key);
+        return $this->_translator->translate($key);
     }
 
 }

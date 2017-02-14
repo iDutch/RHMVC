@@ -188,15 +188,29 @@ return [
                 ],
             ],
         ],
-        'admin/requestpassword' => [
-            'route' => '/admin/requestpassword',
+        'admin/request-reset-password' => [
+            'route' => '/admin/request-reset-password',
             'methods' => 'GET|POST',
             'layout' => 'login.phtml',
             'content' => [
                 [
                     'controller' => 'UserController',
-                    'action' => 'requestPasswordAction',
+                    'action' => 'requestResetPasswordAction',
                     'params' => [],
+                ],
+            ],
+        ],
+        'admin/reset-password/token' => [
+            'route' => '/admin/reset-password/(?<token>[\W\w]+)',
+            'methods' => 'GET|POST',
+            'layout' => 'login.phtml',
+            'content' => [
+                [
+                    'controller' => 'UserController',
+                    'action' => 'resetPasswordAction',
+                    'params' => [
+                        'token' => null
+                    ],
                 ],
             ],
         ],

@@ -151,13 +151,13 @@ class BlogController extends AbstractController
                 throw new Exception('Failed to delete Article with ID: ' . $Category->id, 500);
             }
             $this->redirect('/admin/blog/articles');
-        } else if (count($Category) > 1) {
-            foreach ($Category as $C) {
-                if (!$C->delete()) {
+        } else if (count($Article) > 1) {
+            foreach ($Article as $A) {
+                if (!$A->delete()) {
                     throw new Exception('Failed to delete Category with ID: ' . $Category->id, 500);
                 }
             }
-            $this->redirect('/admin/blog/categories');
+            $this->redirect('/admin/blog/articles');
         }
         return false;
     }

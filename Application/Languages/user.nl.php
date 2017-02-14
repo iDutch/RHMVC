@@ -21,4 +21,6 @@ return array(
     'Paragraph_module'  => 'Paragrafen',
     'Form_module'       => 'Formulieren',
 
+    'password reset mail sent' => 'Er is een mail verzonden naar <strong>%s</strong> met informatie om het wachtwoord te resetten.'
+
 );

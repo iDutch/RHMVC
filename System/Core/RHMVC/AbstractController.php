@@ -2,6 +2,7 @@
 
 namespace System\Core\RHMVC;
 
+use System\Libs\Messenger\Messenger;
 use WebSocket\Client as WSClient;
 use Exception;
 
@@ -9,15 +10,19 @@ abstract class AbstractController
 {
 
     protected $layout = null;
-    protected $_messages = null;
+    protected $_messenger = null;
+    protected $_translator = null;
 
     /**
-     * Constructor
-     * @param type $layout
+     * AbstractController constructor.
+     * @param null $layout
+     * @param Messenger $messenger
+     * @param Translator $translator
      */
-    public function __construct($layout = null)
+    public function __construct($layout = null, Messenger $messenger, Translator $translator)
     {
-        $this->_messages = Messages::getInstance();
+        $this->_messenger = $messenger;
+        $this->_translator = $translator;
         $this->layout = $layout; //Pass layout to controllers so they can alter the main layout when needed
     }
 
@@ -36,7 +41,8 @@ abstract class AbstractController
             throw new Exception('AbstractController error: Controller \'' . $controller . '\' not found!');
         }
 
-        $controller = new $controller($this->layout);
+        $ServiceContainer = ServiceContainer::getInstance();
+        $controller = new $controller($this->layout, $ServiceContainer->get('messenger'));
 
         if (!method_exists($controller, $action)) {
             throw new Exception('AbstractController error: ' . $controller . ' :: ' . $action . ' does not exist!');

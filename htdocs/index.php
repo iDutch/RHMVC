@@ -3,6 +3,10 @@
 session_start();
 
 use System\Core\RHMVC\Router;
+use System\Core\RHMVC\ServiceContainer;
+use System\Core\RHMVC\Helper;
+use System\Libs\Messenger\Messenger;
+use System\Core\RHMVC\Translator;
 use System\Libs\Logger\Logger;
 use Application\Models\User;
 
@@ -29,6 +33,18 @@ try {
 
     });
     ActiveRecord\Connection::$datetime_format = 'Y-m-d H:i:s';
+
+    $ServiceContainer = ServiceContainer::getInstance();
+    $ServiceContainer->set('helper', function(){
+        return new Helper();
+    }, true);
+    $ServiceContainer->set('messenger', function(){
+        return new Messenger();
+    }, true);
+    $ServiceContainer->set('translator', function(){
+        return new Translator();
+    }, true);
+
 
     if (!isset($_SESSION['user'])) {
         User::authenticateByCookie();

@@ -7,7 +7,7 @@ use WebSocket\Client;
 
 abstract class AbstractModel extends ActiveRecordModel
 {
-    protected $_messages = null;
+    protected $_messenger = null;
 
     /**
      * AbstractModel constructor.
@@ -18,7 +18,7 @@ abstract class AbstractModel extends ActiveRecordModel
      */
     public function __construct(array $attributes=array(), $guard_attributes=true, $instantiating_via_find=false, $new_record=true)
     {
-        $this->_messages = Messages::getInstance();
+        $this->_messenger = ServiceContainer::getInstance()->get('messenger');
         parent::__construct($attributes, $guard_attributes, $instantiating_via_find, $new_record);
     }
 

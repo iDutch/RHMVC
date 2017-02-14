@@ -21,4 +21,7 @@ return array(
     'Paragraph_module'  => 'Paragraphs',
     'Form_module'       => 'Forms',
 
+    'password reset mail sent' => 'A mail has been sent to <strong>%s</strong> containing information to reset the password.',
+    'password has been reset' => 'Your password has been reset. Click <a href="%s"> to back to the login page.'
+
 );

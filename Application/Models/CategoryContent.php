@@ -2,9 +2,9 @@
 
 namespace Application\Models;
 
-use ActiveRecord\Model;
+use System\Core\RHMVC\AbstractModel;
 
-class CategoryContent extends Model
+class CategoryContent extends AbstractModel
 {
 
     static $belongs_to = [

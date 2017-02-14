@@ -1,5 +1,7 @@
 <?php
 
+define('APP_URL', 'http://rhmvc.local');
+
 //Application dirs
 define('LOG_DIR', __DIR__ . '/../Application/Logs/');
 define('PARTIAL_DIR', __DIR__ . '/../Application/Partials/');

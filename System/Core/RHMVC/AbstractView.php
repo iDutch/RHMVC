@@ -1,21 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Digitaal Kantoor
- * Date: 30-1-2017
- * Time: 16:02
- */
 
 namespace System\Core\RHMVC;
 
 
-abstract class AbstractView extends Core
+use System\Libs\Messenger\Messenger;
+
+abstract class AbstractView
 {
 
     protected $_helper;
+    protected $_translator;
+    protected $_messenger;
 
-    protected function __construct($helper)
+    protected function __construct(Helper $helper, Translator $translator, Messenger $messenger)
     {
         $this->_helper = $helper;
+        $this->_translator = $translator;
+        $this->_messenger = $messenger;
     }
 }

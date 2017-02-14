@@ -7,27 +7,9 @@ use MatthiasMullie\Minify;
 class Helper
 {
 
-    private static $instance = null;
     private $javascripts = [];
     private $stylesheets = [];
     private $view;
-
-    public static function getInstance($view)
-    {
-        if (!self::$instance instanceof self) {
-            self::$instance = new self($view);
-            return self::$instance;
-        } else {
-            $instance = self::$instance;
-            $instance->view = $view;
-            return $instance;
-        }
-    }
-
-    public function __construct($view)
-    {
-        $this->view = $view;
-    }
 
     public function appendJSFile($file)
     {

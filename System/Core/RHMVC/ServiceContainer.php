@@ -5,12 +5,22 @@ namespace System\Core\RHMVC;
 use InvalidArgumentException;
 
 
-class Container
+class ServiceContainer
 {
+
+    private static $instance = null;
 
     protected $values        = array();
     protected $shared        = array();
     protected $instances     = array();
+
+    public static function getInstance()
+    {
+        if (!self::$instance instanceof self) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
 
     public function set($key, $value, $shared = false)
     {

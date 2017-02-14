@@ -1,10 +1,9 @@
 <?php
 
-namespace System\Libs\Messages;
+namespace System\Libs\Messenger;
 
-class Messages
+class Messenger
 {
-    private static $instance = null;
 
     const INFO      = 1;
     const SUCCESS   = 2;
@@ -19,17 +18,6 @@ class Messages
     ];
 
     private $messages = [];
-
-    /**
-     * @return null|Messages
-     */
-    public static function getInstance()
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
 
     public function __construct(){}
 
